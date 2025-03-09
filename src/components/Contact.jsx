@@ -5,7 +5,6 @@ const teamMembers = [
   {
     name: "Devdeep Saha",
     role: "Designer, FrontEnd",
-    quote: "I love my Job!",
     image: "/src/Assets/Images/Team/Devdeep.jpeg",
     email: "mailto:devdeep120205@gmail.com",
     linkedin: "https://www.linkedin.com/in/devdeep-saha-3b4570260",
@@ -14,7 +13,7 @@ const teamMembers = [
   {
     name: "Saheli Mondal",
     role: "UI/UX, FrontEnd",
-    quote: "I Hate The Designer...",
+
     image: "/src/Assets/Images/Team/Saheli.jpg",
     email: "mailto:saheli.mondal.prof@gmail.com",
     linkedin: "https://www.linkedin.com/in/saheli-mondal-b9387729b/",
@@ -22,8 +21,7 @@ const teamMembers = [
   },
   {
     name: "Santanu Pramanik",
-    role: "BackEnd",
-    quote: "I hate them both...",
+    role: "Web Developer",
     image: "/src/Assets/Images/Team/Santanu.jpeg",
     email: "mailto:prasantanu00@gmail.com",
     linkedin: "https://www.linkedin.com/in/santanu-pramanik-290b66229b/",
@@ -36,7 +34,7 @@ const TeamSection = () => {
   return (
     <section id="contact">
       <div className="container py-5">
-        <h2 className="text-center mb-5">Our Team</h2>
+        <h1 className="text-center mb-5">Our Team</h1>
         <div className="row g-4 justify-content-center">
           {teamMembers.map((member, index) => (
             <div className="col-md-3" key={index}>

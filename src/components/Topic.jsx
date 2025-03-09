@@ -22,7 +22,7 @@ const TopicSection = () => {
   return (
     <section id="topic">
       <div className="container">
-        <h2 className="text-center">Explore Topics</h2>
+        <h1 className="text-center">Explore Topics</h1>
         <div className="row">
           {topics.map((topic, index) => (
             <div key={index} className="col-lg-3 col-md-6 col-sm-12 topic-card mt-2">

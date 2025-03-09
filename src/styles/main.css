@@ -1,5 +1,15 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Protest+Revolution&family=Quicksand:wght@300..700&display=swap");
+#contact .container, #topic .container, #feature .container, #about .container, #home .container {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 3rem 5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
 #networkCanvas {
   position: fixed;
   z-index: -1;
@@ -236,15 +246,6 @@ nav#stick {
   /* For very small mobile screens */
 }
 #home .container {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 3rem 5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transform: translateY(20px);
-  opacity: 0;
   animation: slideUp 0.8s ease-out forwards;
   /* Code Container */
 }
@@ -576,12 +577,8 @@ nav#stick {
 }
 
 #about {
-  background-color: rgba(32, 32, 32, 0.8);
   margin-top: 3rem;
   padding: 2rem 0;
-}
-#about h1 {
-  color: var(--primary-text);
 }
 #about h4 {
   color: var(--light-yellow);
@@ -599,13 +596,10 @@ nav#stick {
   padding: 40px 0;
 }
 #feature .container {
-  max-width: 1140px;
   margin: 0 auto;
 }
 #feature h1 {
-  color: var(--primary-text);
   margin-bottom: 30px;
-  border-bottom: 3px solid var(--light-red);
   padding-bottom: 10px;
 }
 #feature .row {
@@ -634,7 +628,7 @@ nav#stick {
   background: var(--primary-text);
 }
 #feature .col-lg-4:hover .icon-box i {
-  background: linear-gradient(90deg, #ff7e7e 0%, #ff4848 50%, #a30101 100%);
+  background: linear-gradient(90deg, #3e3e3e 0%, #1f1f1f 50%, #000000 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -650,7 +644,7 @@ nav#stick {
 #feature .icon-box {
   width: 60px;
   height: 60px;
-  background: linear-gradient(90deg, #ff7e7e 0%, #ff4848 50%, #a30101 100%);
+  background: linear-gradient(90deg, #ffeebb 0%, #fff585 50%, #ffd042 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -660,18 +654,13 @@ nav#stick {
 }
 #feature .icon-box i {
   font-size: 24px;
-  color: var(--primary-text);
+  color: var(--secondary-background);
   transition: color 0.3s ease;
 }
 #feature p {
   font-weight: 500;
   font-size: 1.2rem;
   color: var(--primary-text);
-  background: linear-gradient(90deg, #ff7e7e 0%, #ff7979 50%, #ffbcbc 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: color 0.3s ease;
 }
 
 #topic {
@@ -680,13 +669,10 @@ nav#stick {
 #topic .container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 2rem 1rem 4rem;
 }
-#topic h2 {
-  color: var(--primary-text);
-  font-size: 2.5rem;
+#topic h1 {
   font-weight: 600;
-  border-bottom: 3px solid var(--light-blue);
   padding-bottom: 10px;
   margin-bottom: 2rem;
 }
@@ -934,6 +920,80 @@ nav#stick {
   }
 }
 
+#contact .container {
+  padding: 2rem 0;
+}
+#contact h1 {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+#contact .team-card {
+  color: var(--primary-text);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+#contact .team-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--secondary-text);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+#contact .team-card:hover .team-photo {
+  border-color: var(--light-yellow);
+}
+#contact .team-card:hover .social-icons a {
+  opacity: 1;
+  transform: translateY(0);
+}
+#contact .team-card .team-photo {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+#contact .team-card h5 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+#contact .team-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--secondary-text);
+}
+#contact .team-card p:last-child {
+  font-style: italic;
+  font-size: 0.85rem;
+}
+#contact .team-card .social-icons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+#contact .team-card .social-icons a {
+  color: var(--light-yellow);
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  transform: translateY(5px);
+}
+#contact .team-card .social-icons a:hover {
+  color: var(--dark-yellow);
+  transform: translateY(-2px);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -985,6 +1045,7 @@ html body h1 {
   font-weight: 900;
   line-height: 4.3rem;
   font-family: var(--primary-font);
+  color: var(--primary-text);
 }
 html body h2 {
   font-weight: 700;

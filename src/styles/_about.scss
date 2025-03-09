@@ -1,12 +1,10 @@
 #about {
-  background-color: rgba(32, 32, 32, 0.8);
+
   margin-top: 3rem;
   padding: 2rem 0;
-
-  h1 {
-    color: var(--primary-text);
+  .container{
+    @extend %glass-background !optional;
   }
-
   h4 {
     color: var(--light-yellow);
     line-height: 2.5rem;
