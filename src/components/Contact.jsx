@@ -13,7 +13,6 @@ const teamMembers = [
   {
     name: "Saheli Mondal",
     role: "UI/UX, FrontEnd",
-
     image: "/src/Assets/Images/Team/Saheli.jpg",
     email: "mailto:saheli.mondal.prof@gmail.com",
     linkedin: "https://www.linkedin.com/in/saheli-mondal-b9387729b/",
@@ -27,7 +26,6 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/santanu-pramanik-290b66229b/",
     twitter: "https://x.com/SantanuPra64579",
   },
- 
 ];
 
 const TeamSection = () => {
@@ -49,7 +47,7 @@ const TeamSection = () => {
                 <p className="text-center">
                   <em>{member.quote}</em>
                 </p>
-                <div className="social-icons">
+                <div className="social-links">
                   {member.email && (
                     <a href={member.email} target="_blank" rel="noopener noreferrer">
                       <i className="fa-solid fa-envelope"></i>

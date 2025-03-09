@@ -8,11 +8,21 @@ import Contact from "./Contact";
 function Main() {
   return (
     <div className="Main">
-      <Home />
-      <About />
-      <Feature />
-      <Topic />
-      <Contact />
+      <section id="home-section">
+        <Home />
+      </section>
+      <section id="about-section">
+        <About />
+      </section>
+      <section id="feature-section">
+        <Feature />
+      </section>
+      <section id="topic-section">
+        <Topic />
+      </section>
+      <section id="contact-section">
+        <Contact />
+      </section>
     </div>
   );
 }

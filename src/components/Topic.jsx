@@ -19,6 +19,11 @@ const topics = [
 const TopicSection = () => {
   const navigate = useNavigate(); // Hook to navigate
 
+  const handleNavigation = (route) => {
+    navigate(route);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <section id="topic">
       <div className="container">
@@ -34,7 +39,7 @@ const TopicSection = () => {
                 <button 
                   type="button" 
                   className="btn btn-outline"
-                  onClick={() => navigate(topic.route)} // Navigate dynamically
+                  onClick={() => handleNavigation(topic.route)}
                 >
                   Explore <i className="fa-solid fa-magnifying-glass"></i>
                 </button>

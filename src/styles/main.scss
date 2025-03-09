@@ -10,13 +10,37 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
+
+body {
+  padding-top: 80px; // Height of your navbar
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000000, #0e0d1c, #2d2c31);
+}
+
+.app-container {
+  min-height: calc(100vh - 80px); // Subtract navbar height
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
 :active,
 :hover,
 :focus {
   outline: 0 !important;
   outline-offset: 0;
 }
+
 //variables
 :root {
   --primary-background: #0d0d0d;
@@ -39,7 +63,6 @@
   --dark-orange: #ff9248;
   --primary-font: "Josefin Sans", sans-serif;
   --secondary-font: "Montserrat Alternates", serif;
-  // --tertiary-font: "Protest Revolution", sans-serif;
   --font-h1: 2.8vw;
   --font-span-h1: 3.2vw;
   --font-h4: 1.5vw;
@@ -49,16 +72,18 @@
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
+  
   body {
     font-size: 100%;
-    background: linear-gradient(135deg, #000000, #0e0d1c, #2d2c31);
-
+    margin: 0;
+    
     h1 {
       font-size: 3rem;
       font-weight: 900;
       line-height: 4.3rem;
       font-family: var(--primary-font);
-      color:(var(--primary-text))
+      color: var(--primary-text);
     }
 
     h2 {
@@ -71,7 +96,6 @@ html {
     h4 {
       font-size: 1.5rem;
       font-weight: 400;
-
       font-family: var(--primary-font);
       text-align: justify;
     }
@@ -120,7 +144,7 @@ html {
   border-radius: 20px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 3rem 5rem;
+  padding: 2rem 3rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   transform: translateY(20px);
@@ -139,6 +163,9 @@ html {
   }
 }
 
+// Section spacing
+
+
 // Custom Scrollbar
 ::-webkit-scrollbar {
   width: 0.625rem;
@@ -149,6 +176,31 @@ html {
 
   &-thumb {
     background: var(--primary-color);
+  }
+}
+
+.Main {
+  section {
+    scroll-margin-top: 80px;
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 0;
+
+    &#home-section {
+      margin-top: -80px;
+
+    }
+
+  
+
+    .container {
+      margin: 0 auto;
+      width: 100%;
+
+    }
   }
 }
 

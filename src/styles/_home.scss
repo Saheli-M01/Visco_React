@@ -59,12 +59,14 @@
 
     /* Code Container */
     .right {
+      position: relative;
+
       .code-container {
         background: rgba(13, 17, 23, 0.95);
         white-space: pre-wrap;
         word-wrap: break-word;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        padding: 0;
+        padding: 0 30px;
         border-radius: 12px;
         color: var(--primary-text);
         font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
@@ -74,7 +76,7 @@
         margin-top: 2rem;
      
         overflow: hidden;
-        max-height: 520px;
+        max-height: 450px;
         position: relative;
         transform: translateY(20px);
         opacity: 0;
@@ -85,11 +87,10 @@
         // Editor Header
         &::before {
           content: "• • •";
-
           position: sticky;
           top: 0;
-          left: 0;
-          width: 100%;
+          left: -30px;
+          width: calc(100% + 60px);
           height: 35px;
           background: rgba(30, 34, 40, 0.95);
           border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -101,21 +102,10 @@
           letter-spacing: 2px;
           border-radius: 12px 12px 0 0;
           z-index: 10;
+          margin: 0 -30px;
         }
 
-        // Line Numbers Container
-        &::after {
-          content: "";
-          position: absolute;
-          top: 35px;
-          left: 0;
-          bottom: 0;
-          width: 50px;
-          background: rgba(30, 34, 40, 0.6);
-          border-right: 1px solid rgba(255, 255, 255, 0.1);
-          z-index: 5;
-          height: calc(100% - 35px);
-        }
+        
 
         // Main Content Wrapper
         .code-content {
@@ -129,6 +119,19 @@
           white-space: pre;
           tab-size: 2;
           z-index: 1;
+
+          &::before {
+            content: "";
+            position: fixed;
+            top: 35px;
+            left: 0;
+            width: 50px;
+            background: rgba(30, 34, 40, 0.6);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            height: calc(100% - 35px);
+            z-index: 5;
+            pointer-events: none;
+          }
 
           // Line Numbers
           counter-reset: line;
@@ -243,13 +246,10 @@
         font-family: var(--secondary-font);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: absolute;
-        right: 1rem;
-        top: 1rem;
-        z-index: 1;
         border: none;
         padding: 0;
         opacity: 0;
-        animation: fadeIn 0.5s ease-out forwards 1.2s;
+        z-index: 20;
 
         &:hover {
           background: transparent;
@@ -264,9 +264,16 @@
         }
       }
 
+      #toggleAnimation {
+        right: 4rem;
+        top: 1rem;
+        animation: fadeIn 0.5s ease-out forwards 1.2s;
+      }
+
       #skip {
-        top: 4rem;
-        animation-delay: 1.4s;
+        right: 1rem;
+        top: 1rem;
+        animation: fadeIn 0.5s ease-out forwards 1.4s;
       }
 
       #toggleIcon {

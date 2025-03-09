@@ -37,15 +37,18 @@
   }
 
   @mixin card-hover-image {
-    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(238deg) brightness(103%) contrast(101%);
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%)
+      hue-rotate(238deg) brightness(103%) contrast(101%);
   }
 
   @mixin card-theme($light-color, $dark-color) {
     .card-content {
       @include card-base-style;
       background: linear-gradient(#111010, #212121) padding-box,
-        linear-gradient(145deg, transparent 35%, $light-color, $dark-color) border-box;
-      p, button {
+        linear-gradient(145deg, transparent 35%, $light-color, $dark-color)
+          border-box;
+      p,
+      button {
         color: $light-color;
       }
       button {
@@ -79,42 +82,69 @@
     &:nth-child(1) {
       @include card-theme(var(--light-blue), var(--dark-blue));
       .card-content .icon-container img {
-        filter: brightness(0) saturate(100%);
-        opacity: 0.7;
+        filter: brightness(0) saturate(100%) invert(83%) sepia(11%)
+          saturate(1122%) hue-rotate(190deg) brightness(103%) contrast(96%);
+        transition: filter 0.3s ease;
+      }
+      .card-content:hover .icon-container img {
+        filter: brightness(0) saturate(100%) invert(83%) sepia(11%)
+          saturate(1122%) hue-rotate(190deg) brightness(90%) contrast(110%);
       }
     }
-
+    
     &:nth-child(2) {
       @include card-theme(var(--light-violet), var(--dark-violet));
       .card-content .icon-container img {
-        filter: brightness(0) saturate(100%);
-        opacity: 0.7;
+        filter: brightness(0) saturate(100%) invert(87%) sepia(9%)
+          saturate(1023%) hue-rotate(220deg) brightness(103%) contrast(95%);
+        transition: filter 0.3s ease;
+      }
+      .card-content:hover .icon-container img {
+        filter: brightness(0) saturate(100%) invert(87%) sepia(9%)
+          saturate(1023%) hue-rotate(220deg) brightness(90%) contrast(110%);
       }
     }
-
+    
     &:nth-child(3) {
       @include card-theme(var(--light-red), var(--dark-red));
       .card-content .icon-container img {
-        filter: brightness(0) saturate(100%);
-        opacity: 0.7;
+        filter: brightness(0) saturate(100%) invert(75%) sepia(51%)
+          saturate(499%) hue-rotate(320deg) brightness(104%) contrast(101%);
+        transition: filter 0.3s ease;
+      }
+      .card-content:hover .icon-container img {
+        filter: brightness(0) saturate(100%) invert(75%) sepia(51%)
+          saturate(499%) hue-rotate(320deg) brightness(90%) contrast(110%);
       }
     }
-
+    
     &:nth-child(4) {
       @include card-theme(var(--light-green), var(--dark-green));
       .card-content .icon-container img {
-        filter: brightness(0) saturate(100%);
-        opacity: 0.7;
+        filter: brightness(0) saturate(100%) invert(90%) sepia(10%)
+          saturate(567%) hue-rotate(90deg) brightness(102%) contrast(96%);
+        transition: filter 0.3s ease;
+      }
+      .card-content:hover .icon-container img {
+        filter: brightness(0) saturate(100%) invert(90%) sepia(10%)
+          saturate(567%) hue-rotate(90deg) brightness(85%) contrast(110%);
       }
     }
-
+    
     &:nth-child(5) {
       @include card-theme(var(--light-orange), var(--dark-orange));
       .card-content .icon-container img {
-        filter: brightness(0) saturate(100%);
-        opacity: 0.7;
+        filter: brightness(0) saturate(100%) invert(89%) sepia(18%)
+          saturate(669%) hue-rotate(40deg) brightness(103%) contrast(101%);
+        transition: filter 0.3s ease;
+      }
+      .card-content:hover .icon-container img {
+        filter: brightness(0) saturate(100%) invert(89%) sepia(18%)
+          saturate(669%) hue-rotate(40deg) brightness(85%) contrast(110%);
       }
     }
+    
+
 
     .card-content {
       .icon-container {
@@ -130,9 +160,6 @@
           height: 60px;
           object-fit: contain;
           transition: transform 0.3s ease;
-          &:hover {
-            transform: translateY(-10px);
-          }
         }
       }
 
@@ -159,7 +186,7 @@
         text-transform: uppercase;
         font-size: 15px;
         border-radius: 0;
-        padding: 10px ;
+        padding: 10px;
         i {
           margin-left: 5px;
         }
@@ -210,7 +237,7 @@
       min-width: 280px;
       max-width: 100%;
     }
-    
+
     .row {
       gap: 1rem;
     }

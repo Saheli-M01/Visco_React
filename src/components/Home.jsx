@@ -262,7 +262,7 @@ const Home = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-6 left">
-              <h1>
+              <h1 className="py-4">
                 Where <span>O(n<sup>100</sup>)</span> Complexity Turns into{" "}
                 <span>O(1)</span> Understanding
               </h1>
