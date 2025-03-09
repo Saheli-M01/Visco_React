@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/_tree.scss"; // Import SCSS file
+import "../styles/Topics/_tree.scss";
 
 const Tree = () => {
     const renderTree = (nodes) => {

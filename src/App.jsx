@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Main from './components/Main';
 import Navbar from './components/Navbar';
 import Array from './Topics/array'; // Import Array page
-import Sort from "./components/sort";
-import LinkedList from "./components/linkedList";
-import Tree from "./components/tree";
-import Graph from "./components/graph";
+import Sort from "./Topics/sort"; // Import Sort page
+import LinkedList from "./Topics/linkedList";
+import Tree from "./Topics/tree";
+import Graph from "./Topics/graph";
 import Background from './components/BackgroundAnimation';
 
 

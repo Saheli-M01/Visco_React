@@ -2,10 +2,9 @@
     padding: 40px 0;
   
     .container {
-      @extend %glass-background !optional;
-
+      max-width: 1140px;
       margin: 0 auto;
-      
+      @extend %glass-background !optional;
     }
   
     h1 {

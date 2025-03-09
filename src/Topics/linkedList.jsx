@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/_linkedlist.scss"; // Import styles
+import "../styles/Topics/_linkedList.scss";// Import styles
 
 const LinkedList = () => {
   return (

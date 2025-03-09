@@ -9,7 +9,6 @@
   }
 
   h1 {
-
     font-weight: 600;
     padding-bottom: 10px;
     margin-bottom: 2rem;
@@ -22,185 +21,102 @@
     justify-content: center;
   }
 
+  @mixin card-base-style {
+    background: linear-gradient(#111010, #212121) padding-box;
+    height: 230px;
+    padding: 20px;
+    color: white;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transform-origin: right bottom;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  @mixin card-hover-image {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(238deg) brightness(103%) contrast(101%);
+  }
+
+  @mixin card-theme($light-color, $dark-color) {
+    .card-content {
+      @include card-base-style;
+      background: linear-gradient(#111010, #212121) padding-box,
+        linear-gradient(145deg, transparent 35%, $light-color, $dark-color) border-box;
+      p, button {
+        color: $light-color;
+      }
+      button {
+        border: 2px solid $light-color;
+      }
+      &:hover {
+        .card-name {
+          color: $light-color;
+        }
+        p {
+          color: var(--primary-text);
+        }
+        button {
+          background: $light-color;
+          color: var(--primary-background);
+          border: 2px solid $light-color;
+        }
+        .icon-container img {
+          filter: brightness(0) saturate(100%);
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+
   .topic-card {
     flex: 1;
     min-width: 240px;
     max-width: 280px;
 
     &:nth-child(1) {
-      .card-content {
-        background: linear-gradient(#111010, #212121) padding-box,
-          linear-gradient(145deg, transparent 35%, var(--light-blue), var(--medium-blue)) border-box;
-        p, button {
-          color: var(--light-blue);
-        }
-        button {
-          border: 2px solid var(--light-blue);
-        }
-        .icon-container img {
-          filter: brightness(0) saturate(100%) invert(83%) sepia(11%) saturate(1122%) hue-rotate(190deg) brightness(103%) contrast(96%);
-        }
-        &:hover {
-          .card-name {
-            color: var(--light-blue);
-          }
-          p {
-            color: var(--primary-text);
-          }
-          button {
-            background: var(--light-blue);
-            color: var(--primary-background);
-            border: 2px solid var(--light-blue);
-          }
-          .icon-container img {
-            filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(238deg) brightness(103%) contrast(101%);
-          }
-        }
+      @include card-theme(var(--light-blue), var(--dark-blue));
+      .card-content .icon-container img {
+        filter: brightness(0) saturate(100%);
+        opacity: 0.7;
       }
     }
 
     &:nth-child(2) {
-      .card-content {
-        background: linear-gradient(#111010, #212121) padding-box,
-          linear-gradient(145deg, transparent 35%, var(--light-violet), var(--dark-violet)) border-box;
-        p, button {
-          color: var(--light-violet);
-        }
-        button {
-          border: 2px solid var(--light-violet);
-        }
-        .icon-container img {
-          filter: brightness(0) saturate(100%) invert(88%) sepia(11%) saturate(1122%) hue-rotate(219deg) brightness(103%) contrast(96%);
-        }
-        &:hover {
-          .card-name {
-            color: var(--light-violet);
-          }
-          p {
-            color: var(--primary-text);
-          }
-          button {
-            background: var(--light-violet);
-            color: var(--primary-background);
-            border: 2px solid var(--light-violet);
-          }
-          .icon-container img {
-            filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(238deg) brightness(103%) contrast(101%);
-          }
-        }
+      @include card-theme(var(--light-violet), var(--dark-violet));
+      .card-content .icon-container img {
+        filter: brightness(0) saturate(100%);
+        opacity: 0.7;
       }
     }
 
     &:nth-child(3) {
-      .card-content {
-        background: linear-gradient(#111010, #212121) padding-box,
-          linear-gradient(145deg, transparent 35%, var(--light-red), var(--dark-red)) border-box;
-        p, button {
-          color: var(--light-red);
-        }
-        button {
-          border: 2px solid var(--light-red);
-        }
-        .icon-container img {
-          filter: brightness(0) saturate(100%) invert(85%) sepia(20%) saturate(7075%) hue-rotate(313deg) brightness(101%) contrast(101%);
-        }
-        &:hover {
-          .card-name {
-            color: var(--light-red);
-          }
-          p {
-            color: var(--primary-text);
-          }
-          button {
-            background: var(--light-red);
-            color: var(--primary-background);
-            border: 2px solid var(--light-red);
-          }
-          .icon-container img {
-            filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(238deg) brightness(103%) contrast(101%);
-          }
-        }
+      @include card-theme(var(--light-red), var(--dark-red));
+      .card-content .icon-container img {
+        filter: brightness(0) saturate(100%);
+        opacity: 0.7;
       }
     }
 
     &:nth-child(4) {
-      .card-content {
-        background: linear-gradient(#111010, #212121) padding-box,
-          linear-gradient(145deg, transparent 35%, var(--light-green), var(--dark-green)) border-box;
-        p, button {
-          color: var(--light-green);
-        }
-        button {
-          border: 2px solid var(--light-green);
-        }
-        .icon-container img {
-          filter: brightness(0) saturate(100%) invert(94%) sepia(8%) saturate(1144%) hue-rotate(78deg) brightness(103%) contrast(94%);
-        }
-        &:hover {
-          .card-name {
-            color: var(--light-green);
-          }
-          p {
-            color: var(--primary-text);
-          }
-          button {
-            background: var(--light-green);
-            color: var(--primary-background);
-            border: 2px solid var(--light-green);
-          }
-          .icon-container img {
-            filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(238deg) brightness(103%) contrast(101%);
-          }
-        }
+      @include card-theme(var(--light-green), var(--dark-green));
+      .card-content .icon-container img {
+        filter: brightness(0) saturate(100%);
+        opacity: 0.7;
       }
     }
 
     &:nth-child(5) {
-      .card-content {
-        background: linear-gradient(#111010, #212121) padding-box,
-          linear-gradient(145deg, transparent 35%, var(--light-orange), var(--dark-orange)) border-box;
-        p, button {
-          color: var(--light-orange);
-        }
-        button {
-          border: 2px solid var(--light-orange);
-        }
-        .icon-container img {
-          filter: brightness(0) saturate(100%) invert(89%) sepia(18%) saturate(669%) hue-rotate(313deg) brightness(103%) contrast(101%);
-        }
-        &:hover {
-          .card-name {
-            color: var(--light-orange);
-          }
-          p {
-            color: var(--primary-text);
-          }
-          button {
-            background: var(--light-orange);
-            color: var(--primary-background);
-            border: 2px solid var(--light-orange);
-          }
-          .icon-container img {
-            filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(238deg) brightness(103%) contrast(101%);
-          }
-        }
+      @include card-theme(var(--light-orange), var(--dark-orange));
+      .card-content .icon-container img {
+        filter: brightness(0) saturate(100%);
+        opacity: 0.7;
       }
     }
 
     .card-content {
-      height: 230px;
-      padding: 20px;
-      color: white;
-      border: 2px solid transparent;
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      transform-origin: right bottom;
-      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-
-      /* Icon Container */
       .icon-container {
         position: relative;
         width: 100%;
@@ -213,7 +129,10 @@
           width: 60px;
           height: 60px;
           object-fit: contain;
-          transition: transform 0.3s ease, filter 0.3s ease;
+          transition: transform 0.3s ease;
+          &:hover {
+            transform: translateY(-10px);
+          }
         }
       }
 
@@ -235,24 +154,14 @@
 
       button {
         width: 9rem;
-        background-color: transparent;
-        padding: 10px 20px;
-        font-weight: 600;
+        position: relative;
+        top: 20px;
         text-transform: uppercase;
         font-size: 15px;
         border-radius: 0;
-        position: relative;
-        top: 20px;
-        transition: all 0.3s ease;
-
+        padding: 10px ;
         i {
           margin-left: 5px;
-        }
-      }
-
-      &:hover {
-        .icon-container img {
-          transform: translateY(-10px);
         }
       }
     }
