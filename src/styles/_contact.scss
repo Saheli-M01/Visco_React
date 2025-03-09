@@ -1,0 +1,70 @@
+#contact {
+    .container {
+      padding: 2rem 0;
+    }
+  
+    h2 {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      color: #fff;
+    }
+  
+    .team-card {
+      background-color: #111827;
+      color: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      align-items: center; /* Centers the content horizontally */
+      justify-content: space-between; /* Distributes space vertically */
+      
+      &:hover {
+        transform: translateY(-10px);
+        box-shadow: 3px 5px rgb(94 180 237 / 75%);
+      }
+  
+      .team-photo {
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        margin-bottom: 1rem;
+      }
+  
+      h5 {
+        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+  
+      p {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+  
+        &:last-child {
+          font-style: italic;
+        }
+      }
+  
+      .social-icons {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+  
+        a {
+          color: #fff;
+          margin: 0 10px;
+          font-size: 1.25rem;
+          transition: color 0.3s ease;
+          display: inline-block;
+          &:hover {
+            color: #0dcaf0;
+          }
+        }
+      }
+    }
+  }

@@ -1,0 +1,127 @@
+@import "backgroundAnimation";
+@import "navbar";
+@import "home";
+@import "about";
+@import "feature";
+@import "topic";
+
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Protest+Revolution&family=Quicksand:wght@300..700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+:active,
+:hover,
+:focus {
+  outline: 0 !important;
+  outline-offset: 0;
+}
+//variables
+:root {
+  --primary-background: #0d0d0d;
+  --secondary-background: #1a1a1a;
+  --primary-text: #eaeaea;
+  --secondary-text: #c2c2c2;
+  --tertiary-text: #001772;
+  --light-blue: #afceff;
+  --medium-blue:#34a5f5;
+  --dark-blue: #3b6cb7;
+  --light-yellow: #ffeebb;
+  --dark-yellow: #fcbd00;
+  --light-red: #ff7e7e;
+  --dark-red: #ff4848;
+  --light-green: #B8F9D3;
+  --dark-green: #4fc391;
+  --light-violet:#ceb2fc;
+  --dark-violet:#8b6fc0;
+  --light-orange: #ffd4a9;
+  --dark-orange: #ff9248;
+  --primary-font: "Josefin Sans", sans-serif;
+  --secondary-font: "Montserrat Alternates", serif;
+  // --tertiary-font: "Protest Revolution", sans-serif;
+  --font-h1: 2.8vw;
+  --font-span-h1: 3.2vw;
+  --font-h4: 1.5vw;
+  --font-span-h4: 2.5vw;
+  --font-code: 0.9vw;
+}
+
+html {
+  scroll-behavior: smooth;
+  body {
+    font-size: 100%;
+    background: linear-gradient(135deg, #000000, #0e0d1c, #2d2c31);
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      line-height: 4.3rem;
+      font-family: var(--primary-font);
+    }
+
+    h2 {
+      font-weight: 700;
+      font-size: 2rem;
+      font-family: var(--primary-font);
+      line-height: 3.5rem;
+    }
+
+    h4 {
+      font-size: 1.5rem;
+      font-weight: 400;
+
+      font-family: var(--primary-font);
+      text-align: justify;
+    }
+
+    h5 {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    p {
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 2.5rem;
+      letter-spacing: 1px;
+      text-align: justify;
+      font-family: var(--secondry-font);
+    }
+  }
+}
+
+/* Button properties */
+%button {
+  font-family: var(--secondary-font);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  background: transparent;
+  border: 2px solid var(--dark-yellow);
+  color: var(--dark-yellow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+  border-radius:0 ;
+  &:hover {
+    background: var(--dark-yellow);
+    color: black;
+  }
+}
+
+// Custom Scrollbar
+::-webkit-scrollbar {
+  width: 0.625rem;
+
+  &-track {
+    background: var(--white-color);
+  }
+
+  &-thumb {
+    background: var(--primary-color);
+  }
+}
+

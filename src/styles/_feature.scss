@@ -1,0 +1,89 @@
+#feature {
+    padding: 40px 0;
+  
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+  
+    h1 {
+      color: var(--primary-text);
+      margin-bottom: 30px;
+      border-bottom: 3px solid var(--light-red);
+      padding-bottom: 10px;
+    }
+  
+    .row {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+  
+    .col-lg-4 {
+      flex-basis: calc(33.33333% - 30px);
+      margin: 0 15px 30px;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, rgba(33, 33, 33, 0.9), rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9));
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+  
+    .col-lg-4:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+  
+    .col-lg-4:hover .icon-box {
+      background: var(--primary-text);
+    }
+  
+    .col-lg-4:hover .icon-box i {
+      background: linear-gradient(90deg, #ff7e7e 0%, #ff4848 50%, #a30101 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  
+    .col-lg-4:hover p {
+      background: linear-gradient(90deg, #eaeaea 0%, #ebebeb 50%, #ffffff 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transform: scale(1.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+  
+    .icon-box {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(90deg, #ff7e7e 0%, #ff4848 50%, #a30101 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      transition: background 0.3s ease;
+    }
+  
+    .icon-box i {
+      font-size: 24px;
+      color: var(--primary-text);
+      transition: color 0.3s ease;
+    }
+  
+    p {
+      font-weight: 500;
+      font-size: 1.2rem;
+      color: var(--primary-text);
+      background: linear-gradient(90deg, #ff7e7e 0%, #ff7979 50%, #ffbcbc 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: color 0.3s ease;
+    }
+  }
