@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Topics/_sort.scss";
-import SortingVisualizer from "../components/SortingVisualizer";
+import SortingVisualizer from "./SortingVisualizer";
 
 const sortingAlgorithms = [
   { 
