@@ -1,14 +1,15 @@
+@use 'shared' as *;
+
 #feature {
     padding: 40px 0;
   
     .container {
+      @extend %glass-background;
       max-width: 1140px;
       margin: 0 auto;
-      @extend %glass-background !optional;
     }
   
     h1 {
-
       margin-bottom: 30px;
       padding-bottom: 10px;
     }
@@ -29,34 +30,33 @@
       align-items: center;
       justify-content: center;
       padding: 30px 20px;
-      background: linear-gradient(135deg, rgba(33, 33, 33, 0.9), rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9));
+      background: linear-gradient(135deg, rgba(33, 33, 33, 0.9), rgba(0, 0, 0, 0.9));
       position: relative;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-  
-    .col-lg-4:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-  
-    .col-lg-4:hover .icon-box {
-      background: var(--primary-text);
-    }
-  
-    .col-lg-4:hover .icon-box i {
-      background: linear-gradient(90deg, #3e3e3e 0%, #1f1f1f 50%, #000000 100%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-  
-    .col-lg-4:hover p {
-      background: linear-gradient(90deg, #eaeaea 0%, #ebebeb 50%, #ffffff 100%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      transform: scale(1.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+        .icon-box {
+          background: var(--primary-text);
+        }
+
+        .icon-box i {
+          background: linear-gradient(90deg, #3e3e3e 0%, #1f1f1f 50%, #000000 100%);
+          background-clip: text;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        p {
+          background: linear-gradient(90deg, #eaeaea 0%, #ebebeb 50%, #ffffff 100%);
+          background-clip: text;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          transform: scale(1.05);
+        }
+      }
     }
   
     .icon-box {

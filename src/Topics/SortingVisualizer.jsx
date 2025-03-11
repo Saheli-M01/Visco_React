@@ -707,13 +707,13 @@ void mergeSort(int[] array, int start, int end) {
                 />
               </div>
               <button onClick={(e) => startVisualization(e.target.previousElementSibling.querySelector('input').value)}>
-                Start
+                Start <i className="fa-solid fa-circle-play"></i>
               </button>
-              <button 
-                className="play-pause-btn"
+              <button
+                className="btn btn-outline play-pause-btn"
                 onClick={togglePlay}
               >
-                {isPlaying ? '⏸' : '▶'}
+                <i className={`fa-solid ${isPlaying ? 'fa-pause' : 'fa-play'}`}></i>
               </button>
             </div>
           </div>
@@ -790,10 +790,10 @@ void mergeSort(int[] array, int start, int end) {
           </div>
 
           <div className="controls">
-            <button onClick={() => setCurrentStep(0)}>⏮️ First</button>
-            <button onClick={prevStep}>⏪ Prev</button>
-            <button onClick={nextStep}>Next ⏩</button>
-            <button onClick={lastStep}>Last ⏭️</button>
+            <button onClick={() => setCurrentStep(0)}><i class="fa-solid fa-backward"></i> First</button>
+            <button onClick={prevStep}> <i class="fa-solid fa-caret-left"></i>Prev</button>
+            <button onClick={nextStep}>Next <i class="fa-solid fa-caret-right"></i></button>
+            <button onClick={lastStep}>Last <i class="fa-solid fa-forward"></i></button>
           </div>
 
           <div className="progress-bar">

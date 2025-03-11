@@ -1,14 +1,19 @@
-@import "backgroundAnimation";
-@import "navbar";
-@import "home";
-@import "about";
-@import "feature";
-@import "topic";
-@import "contact";
-@import './Topics/sortingVisualizer';
-@import './Topics/arrayVisualizer';
+// Import all modules using @use
+@use 'shared' as *;
+@use "backgroundAnimation";
+@use "navbar";
+@use "home";
+@use "about";
+@use "feature";
+@use "topic";
+@use "contact";
+@use './Topics/sortingVisualizer';
+@use './Topics/arrayVisualizer';
 
+// Import Google Fonts
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Protest+Revolution&family=Quicksand:wght@300..700&display=swap");
+
+
 
 * {
   box-sizing: border-box;
@@ -17,13 +22,13 @@
 }
 
 body {
-  padding-top: 80px; // Height of your navbar
+  padding-top: 80px;
   min-height: 100vh;
   background: linear-gradient(135deg, #000000, #0e0d1c, #2d2c31);
 }
 
 .app-container {
-  min-height: calc(100vh - 80px); // Subtract navbar height
+  min-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -51,7 +56,7 @@ body {
   --secondary-text: #c2c2c2;
   --tertiary-text: #001772;
   --light-blue: #afceff;
-  --medium-blue:#34a5f5;
+  --medium-blue: #34a5f5;
   --dark-blue: #3b6cb7;
   --light-yellow: #ffeebb;
   --dark-yellow: #fcbd00;
@@ -59,8 +64,8 @@ body {
   --dark-red: #ff4848;
   --light-green: #B8F9D3;
   --dark-green: #4fc391;
-  --light-violet:#ceb2fc;
-  --dark-violet:#8b6fc0;
+  --light-violet: #ceb2fc;
+  --dark-violet: #8b6fc0;
   --light-orange: #ffd4a9;
   --dark-orange: #ff9248;
   --primary-font: "Josefin Sans", sans-serif;
@@ -78,7 +83,6 @@ html {
   
   body {
     font-size: 100%;
-    margin: 0;
     
     h1 {
       font-size: 3rem;
@@ -93,13 +97,13 @@ html {
       font-size: 2rem;
       font-family: var(--primary-font);
       line-height: 3.5rem;
+
     }
 
     h4 {
       font-size: 1.5rem;
       font-weight: 400;
       font-family: var(--primary-font);
-      text-align: justify;
     }
 
     h5 {
@@ -112,79 +116,14 @@ html {
       font-size: 1rem;
       line-height: 2.5rem;
       letter-spacing: 1px;
-      text-align: justify;
-      font-family: var(--secondry-font);
+      font-family: var(--primary-font);
     }
-  }
-}
-
-/* Button properties */
-%button {
-  font-family: var(--secondary-font);
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 0.6rem 1.2rem;
-  background: transparent;
-  border: 2px solid var(--dark-yellow);
-  color: var(--dark-yellow);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
-  border-radius:0 ;
-  &:hover {
-    background: var(--dark-yellow);
-    color: black;
-  }
-}
-
-//glassmorphism
-%glass-background {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 2rem 3rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transform: translateY(20px);
-  opacity: 0;
-  animation: slideUp 0.8s ease-out forwards;
-}
-
-@keyframes slideUp {
-  0% {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-// Section spacing
-
-
-// Custom Scrollbar
-::-webkit-scrollbar {
-  width: 0.625rem;
-
-  &-track {
-    background: var(--white-color);
-  }
-
-  &-thumb {
-    background: var(--primary-color);
   }
 }
 
 .Main {
   section {
     scroll-margin-top: 80px;
-
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -193,16 +132,31 @@ html {
 
     &#home-section {
       margin-top: -80px;
-
     }
-
-  
 
     .container {
       margin: 0 auto;
       width: 100%;
-
+      @extend %glass-background;
     }
+  }
+}
+
+// Add button class
+.btn {
+  @extend %button;
+}
+
+// Custom Scrollbar
+::-webkit-scrollbar {
+  width: 0.625rem;
+  
+  &-track {
+    background: var(--white-color);
+  }
+
+  &-thumb {
+    background: var(--primary-color);
   }
 }
 

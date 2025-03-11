@@ -1,14 +1,18 @@
-#about {
+@use 'shared' as *;
 
+#about {
   margin-top: 3rem;
   padding: 2rem 0;
-  .container{
-    @extend %glass-background !optional;
+  
+  .container {
+    @extend %glass-background;
   }
+  
   h4 {
     color: var(--light-yellow);
     line-height: 2.5rem;
   }
+  
   p {
     color: var(--primary-text);
     line-height: 2.5rem;

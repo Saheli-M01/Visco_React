@@ -1,11 +1,12 @@
+@use 'shared' as *;
+
 #home {
   margin-top: 5rem;
-  background-color: none;
   position: relative;
   overflow: hidden;
 
   .container {
-    @extend %glass-background !optional;
+    @extend %glass-background;
     animation: slideUp 0.8s ease-out forwards;
 
     h1 {
@@ -19,7 +20,6 @@
       sup {
         color: var(--primary-text);
         font-size: var(--font-span-h1);
-  
       }
     }
 
@@ -34,30 +34,28 @@
       span {
         color: var(--dark-yellow);
         font-size: var(--font-span-h4);
-        
       }
     }
 
-    .left button {
-      @extend %button !optional;
-      transform: translateY(20px);
-      opacity: 0;
-      animation: slideUp 0.8s ease-out forwards 0.6s;
+    .left {
+      button {
+        @extend %button;
+        transform: translateY(20px);
+        opacity: 0;
+        animation: slideUp 0.8s ease-out forwards 0.6s;
 
-      i {
-        color: var(--secondary-text);
-        transition: all 0.3s ease;
-      }
-
-      &:hover {
         i {
+          color: var(--secondary-text);
+          transition: all 0.3s ease;
+        }
+
+        &:hover i {
           color: var(--tertiary-text);
           transform: translateX(5px);
         }
       }
     }
 
-    /* Code Container */
     .right {
       position: relative;
 
@@ -74,7 +72,6 @@
         font-size: var(--font-code);
         width: 100%;
         margin-top: 2rem;
-     
         overflow: hidden;
         max-height: 450px;
         position: relative;
@@ -84,7 +81,6 @@
         transition: all 0.3s ease;
         border: 1px solid rgba(255, 255, 255, 0.1);
 
-        // Editor Header
         &::before {
           content: "• • •";
           position: sticky;
@@ -105,20 +101,17 @@
           margin: 0 -30px;
         }
 
-        
-
-        // Main Content Wrapper
         .code-content {
           position: relative;
           padding: 2rem;
           padding-left: 75px;
           padding-top: 3rem;
-          margin-top: 0;
           height: calc(100% - 35px);
           overflow-y: auto;
           white-space: pre;
           tab-size: 2;
           z-index: 1;
+          counter-reset: line;
 
           &::before {
             content: "";
@@ -133,10 +126,6 @@
             pointer-events: none;
           }
 
-          // Line Numbers
-          counter-reset: line;
-
-          // Each Line
           .line {
             display: block;
             position: relative;
@@ -167,45 +156,25 @@
           }
 
           // Syntax Highlighting
-          .keyword {
-            color: #ff7b72;
-          }
-          .string {
-            color: #a5d6ff;
-          }
-          .comment {
+          .keyword { color: #ff7b72; }
+          .string { color: #a5d6ff; }
+          .comment { 
             color: #8b949e;
             font-style: italic;
           }
-          .function {
-            color: #d2a8ff;
-          }
-          .variable {
-            color: #ffa657;
-          }
-          .operator {
-            color: #ff7b72;
-          }
-          .number {
-            color: #79c0ff;
-          }
-          .boolean {
-            color: #ff7b72;
-          }
-          .property {
-            color: #79c0ff;
-          }
-          .punctuation {
-            color: #c9d1d9;
-          }
+          .function { color: #d2a8ff; }
+          .variable { color: #ffa657; }
+          .operator { color: #ff7b72; }
+          .number { color: #79c0ff; }
+          .boolean { color: #ff7b72; }
+          .property { color: #79c0ff; }
+          .punctuation { color: #c9d1d9; }
 
-          // Selection Effect
           ::selection {
             background: rgba(56, 139, 253, 0.4);
           }
         }
 
-        // Scrollbar Styling
         ::-webkit-scrollbar {
           width: 14px;
           height: 14px;
@@ -225,7 +194,6 @@
           }
         }
 
-        // Hover Effects
         &:hover {
           transform: translateY(-5px);
           box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
@@ -248,14 +216,13 @@
         position: absolute;
         border: none;
         padding: 0;
-        opacity: 0;
         z-index: 20;
 
         &:hover {
           background: transparent;
           border: 2px solid var(--light-yellow);
           color: var(--light-yellow) !important;
-          transform: scale(1.1) rotate(180deg);
+          transform: scale(1.1);
         }
 
         &:focus {
@@ -281,42 +248,8 @@
         transition: transform 0.3s ease;
       }
     }
-
-    @keyframes blink {
-      0% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-
-    @keyframes slideUp {
-      0% {
-        transform: translateY(20px);
-        opacity: 0;
-      }
-      100% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
   }
 
-  //responsiveness
-  /* For very large screens (4K+) */
   @media (min-width: 2560px) {
     :root {
       --font-h1: 3vw;
@@ -327,7 +260,6 @@
     }
   }
 
-  /* For large screens (Desktop) */
   @media (max-width: 1920px) {
     :root {
       --font-h1: 3.2vw;
@@ -338,7 +270,6 @@
     }
   }
 
-  /* For medium-sized screens */
   @media (max-width: 1150px) {
     :root {
       --font-h1: 4vw;
@@ -349,7 +280,6 @@
     }
   }
 
-  /* For tablets (Landscape) */
   @media (max-width: 1024px) {
     :root {
       --font-h1: 5vw;
@@ -360,7 +290,6 @@
     }
   }
 
-  /* For tablets (Portrait) */
   @media (max-width: 768px) {
     :root {
       --font-h1: 5.5vw;
@@ -371,7 +300,6 @@
     }
   }
 
-  /* For mobile screens */
   @media (max-width: 600px) {
     :root {
       --font-h1: 6vw;
@@ -382,7 +310,6 @@
     }
   }
 
-  /* For very small mobile screens */
   @media (max-width: 450px) {
     :root {
       --font-h1: 7vw;
