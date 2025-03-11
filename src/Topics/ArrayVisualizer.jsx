@@ -42,13 +42,13 @@ const ArrayVisualizer = ({ operation, onClose }) => {
         arr[i] = value
     return arr`,
       'c++': `void create1DArray(int size, int value = 0) {
-    // Create new array of given size
+  // Create new array of given size
     int* arr = new int[size];
-    // Fill array with specified value
+  // Fill array with specified value
     for(int i = 0; i < size; i++) {
-        arr[i] = value;
-    }
-    return arr;
+    arr[i] = value;
+  }
+  return arr;
 }`
     },
     create2d: {
@@ -286,14 +286,14 @@ const ArrayVisualizer = ({ operation, onClose }) => {
   };
 
   const generateSteps1D = (size, values) => {
-    const steps = [];
+        const steps = [];
     const history = [];
     let finalArray = [];
 
-    steps.push({
-      array: [],
-      highlightIndices: [],
-      action: 'Starting array creation',
+        steps.push({
+          array: [],
+          highlightIndices: [],
+          action: 'Starting array creation',
       lineNumber: 1,
       variables: { size }
     });
@@ -655,7 +655,7 @@ const ArrayVisualizer = ({ operation, onClose }) => {
 
         const oldValue = finalArray[index];
         finalArray[index] = value;
-        steps.push({
+          steps.push({
           array: [...finalArray],
           highlightIndices: [index],
           action: `Updated index ${index} from ${oldValue} to ${value}`,

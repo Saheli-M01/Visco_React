@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import logo from "../Assets/Images/Logo/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../styles/_navbar.scss";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const dropdownRef = useRef(null);
 
+  // Handle Scroll Effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -16,19 +20,41 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isDropdownOpen]);
+
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const closeMenu = () => setIsMenuOpen(false);
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
   const handleNavClick = (section) => {
-    navigate(`/#${section}`);  // 👈 Navigate to Home with hash
+    navigate(`/#${section}`);
     setTimeout(() => {
       const element = document.getElementById(section);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
       }
-    }, 100); // Delay for navigation to complete
+    }, 100);
     closeMenu();
   };
+
+  // List of topic routes
+  const topicRoutes = ["/topic/array", "/topic/graph", "/topic/linkedList", "/topic/sort", "/topic/tree"];
+  const isTopicPage = topicRoutes.includes(location.pathname);
 
   return (
     <header>
@@ -66,10 +92,31 @@ const Navbar = () => {
                 </button>
               </li>
 
-              <li className="nav-item">
+              {/* Topic Button & Conditional Dropdown */}
+              <li className="nav-item topic-group" ref={dropdownRef}>
                 <button className="nav-link" onClick={() => handleNavClick("topic")}>
                   <i className="fa-solid fa-code me-1"></i> Topic
                 </button>
+
+                {/* Only Show Dropdown Button in Topics Pages */}
+                {isTopicPage && (
+                  <>
+                    <button id="dropdown" className="dropdown-toggle-btn ps-0" onClick={toggleDropdown}>
+                      <i className={`fa-solid ${isDropdownOpen ? "fa-chevron-up" : "fa-chevron-down"}`}></i>
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isDropdownOpen && (
+                      <ul className="dropdown-menu show">
+                        <li><Link className="dropdown-item" to="/topic/array" onClick={() => setIsDropdownOpen(false)}>Array</Link></li>
+                        <li><Link className="dropdown-item" to="/topic/graph" onClick={() => setIsDropdownOpen(false)}>Graph</Link></li>
+                        <li><Link className="dropdown-item" to="/topic/linkedList" onClick={() => setIsDropdownOpen(false)}>Linked List</Link></li>
+                        <li><Link className="dropdown-item" to="/topic/sort" onClick={() => setIsDropdownOpen(false)}>Sorting</Link></li>
+                        <li><Link className="dropdown-item" to="/topic/tree" onClick={() => setIsDropdownOpen(false)}>Tree</Link></li>
+                      </ul>
+                    )}
+                  </>
+                )}
               </li>
 
               <li className="nav-item">

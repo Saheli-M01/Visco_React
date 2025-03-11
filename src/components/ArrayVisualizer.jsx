@@ -2,30 +2,31 @@ import React, { useEffect } from 'react';
 import '../styles/Components/_arrayVisualizer.scss';
 
 const ArrayVisualizer = ({
-  array,
-  steps,
-  history,
-  currentStep,
+  array = [],
+  steps = [],
+  history = [],
+  currentStep = 0,
   setCurrentStep,
-  isPlaying,
+  isPlaying = false,
   setIsPlaying,
-  speed,
+  speed = 500,
   setSpeed,
-  code,
-  onClose
+  code = '',
+  onClose,
+  isVisible = false
 }) => {
   useEffect(() => {
     let intervalId;
-    if (isPlaying && currentStep < steps.length - 1) {
+    if (isPlaying && steps.length > 1 && currentStep < steps.length - 1) {
       intervalId = setInterval(() => {
         setCurrentStep(prev => {
-          if (prev === steps.length - 1) {
+          if (prev >= steps.length - 1) {
             setIsPlaying(false);
             return prev;
           }
           return prev + 1;
         });
-      }, speed);
+      }, 1100 - speed); // Invert speed so higher value means faster
     }
     return () => clearInterval(intervalId);
   }, [isPlaying, currentStep, steps.length, speed, setCurrentStep, setIsPlaying]);
@@ -43,8 +44,22 @@ const ArrayVisualizer = ({
   };
 
   const togglePlay = () => {
+    if (steps.length <= 1) return; // Don't allow play if not enough steps
     setIsPlaying(!isPlaying);
   };
+
+  if (!isVisible) return null;
+
+  if (!Array.isArray(array) || array.length === 0) {
+    return (
+      <div className="array-visualizer">
+        <div className="visualizer-overlay" onClick={onClose}></div>
+        <div className="visualizer-content">
+          <div className="error-message">No array data to visualize</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="array-visualizer">
@@ -105,13 +120,15 @@ const ArrayVisualizer = ({
                 step="100"
                 value={speed}
                 onChange={(e) => setSpeed(parseInt(e.target.value))}
+                disabled={steps.length <= 1}
               />
+              <span>{Math.round((speed / 1000) * 100) / 100}x</span>
             </div>
 
             <div className="progress-bar">
               <div
                 className="progress"
-                style={{ width: `${(currentStep / (steps.length - 1)) * 100 || 0}%` }}
+                style={{ width: `${steps.length > 1 ? (currentStep / (steps.length - 1)) * 100 : 0}%` }}
               ></div>
             </div>
           </div>
