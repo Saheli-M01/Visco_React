@@ -9,7 +9,7 @@
 }
 
 .navigation-wrap {
-  position: fixed;
+  position: fixed !important;
   top: 0;
   left: 0;
   right: 0;
@@ -85,6 +85,8 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
+  width: 100%;
+  flex-direction: row-reverse;
 }
 .navigation-wrap .nav-item .nav-link::after,
 .navigation-wrap .nav-item .nav-link i::after {
@@ -138,11 +140,37 @@
   transform: translateY(-2px);
   background: linear-gradient(90deg, var(--light-blue), var(--medium-blue));
 }
+.navigation-wrap .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgb(26, 26, 26);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  width: 160px;
+  display: none;
+}
+.navigation-wrap .dropdown-menu.show {
+  display: block;
+}
+.navigation-wrap .dropdown-menu .dropdown-item {
+  color: var(--primary-text);
+  font-size: 0.9rem;
+  padding: 10px;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+.navigation-wrap .dropdown-menu .dropdown-item:hover {
+  background: var(--dark-blue);
+  border-radius: 6px;
+}
 @media (max-width: 991px) {
   .navigation-wrap .navbar-collapse {
-    background-color: rgba(26, 26, 26, 0.98);
-    backdrop-filter: blur(8px);
+    background-color: rgb(26, 26, 26);
     -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
     padding: 1rem;
     border-radius: 8px;
     margin-top: 1rem;
@@ -165,13 +193,21 @@
   .navigation-wrap .nav-item .nav-link i:hover {
     background: rgba(255, 255, 255, 0.1);
   }
+  .navigation-wrap .dropdown-menu {
+    position: relative;
+    left: 0;
+    transform: none;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .navigation-wrap .dropdown-menu .dropdown-item {
+    text-align: left;
+    padding: 10px 15px;
+  }
 }
 .navigation-wrap html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
-}
-.navigation-wrap nav#stick {
-  position: fixed;
 }
 
 @media (min-width: 992px) {
@@ -1118,7 +1154,7 @@
 }
 
 body {
-  padding-top: 0px;
+  padding-top: 80px;
   min-height: 100vh;
   background: linear-gradient(135deg, #000000, #0e0d1c, #2d2c31);
 }
