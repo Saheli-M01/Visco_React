@@ -1,7 +1,7 @@
 @use '../shared' as *;
 
 #home {
-  margin-top: 1rem;
+
   position: relative;
   overflow: hidden;
 
@@ -73,7 +73,7 @@
         width: 100%;
         margin-top: 2rem;
         overflow: hidden;
-        max-height: 450px;
+        max-height: 550px;
         position: relative;
         transform: translateY(20px);
         opacity: 0;

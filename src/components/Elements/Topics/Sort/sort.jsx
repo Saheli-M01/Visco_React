@@ -83,7 +83,7 @@ const SortingSection = () => {
                   className="btn btn-outline"
                   onClick={() => setSelectedAlgo(algo)}
                 >
-                  Explore <i className="fa-solid fa-play"></i>
+                  Explore <i class="fa-solid fa-magnifying-glass ms-2"></i>
                 </button>
               </div>
             </div>

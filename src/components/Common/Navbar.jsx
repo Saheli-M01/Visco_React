@@ -110,10 +110,11 @@ const Navbar = () => {
                     {isDropdownOpen && (
                       <ul className="dropdown-menu show">
                         <li><Link className="dropdown-item" to="/topic/array" onClick={() => setIsDropdownOpen(false)}>Array</Link></li>
+                        <li><Link className="dropdown-item" to="/topic/tree" onClick={() => setIsDropdownOpen(false)}>Tree</Link></li>
                         <li><Link className="dropdown-item" to="/topic/graph" onClick={() => setIsDropdownOpen(false)}>Graph</Link></li>
                         <li><Link className="dropdown-item" to="/topic/linkedList" onClick={() => setIsDropdownOpen(false)}>Linked List</Link></li>
                         <li><Link className="dropdown-item" to="/topic/sort" onClick={() => setIsDropdownOpen(false)}>Sorting</Link></li>
-                        <li><Link className="dropdown-item" to="/topic/tree" onClick={() => setIsDropdownOpen(false)}>Tree</Link></li>
+                        
                       </ul>
                     )}
                   </>
