@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-const SortingVisualizer = ({ onClose, initialAlgorithm = 'bubble' }) => {
+const SortingVisualizer = ({ onClose, algorithm }) => {
   const [steps, setSteps] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedLanguage, setSelectedLanguage] = useState('python');
   const [history, setHistory] = useState([]);
-  const [selectedAlgorithm, setSelectedAlgorithm] = useState(initialAlgorithm);
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState(algorithm?.name?.toLowerCase().split(' ')[0] || 'bubble');
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(500); // Default speed: 500ms
 
