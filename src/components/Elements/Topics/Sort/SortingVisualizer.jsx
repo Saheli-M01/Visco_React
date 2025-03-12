@@ -675,6 +675,9 @@ void mergeSort(int[] array, int start, int end) {
     <div className="sorting-visualizer">
       <div className="visualizer-overlay" onClick={onClose}></div>
       <div className="visualizer-content">
+        <button className="close-button" onClick={onClose}>
+          <i className="fa-solid fa-xmark"></i>
+        </button>
         <div className="left-section">
           <h2>Sorting Visualization</h2>
           <div className="input-section">
