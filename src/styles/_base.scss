@@ -1,0 +1,46 @@
+@use "./mixins";
+
+// Base styles and resets
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  padding-top: 80px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000000, #0e0d1c, #2d2c31);
+  font-size: 100%;
+}
+
+// Layout containers
+.app-container {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+// Focus states
+:active,
+:hover,
+:focus {
+  outline: 0 !important;
+  outline-offset: 0;
+}
+
+// Custom Scrollbar
+@include mixins.custom-scrollbar; 

@@ -1,0 +1,68 @@
+// Typography mixins
+@mixin heading-1 {
+  font-size: var(--font-h1);
+  font-weight: 900;
+  line-height: 1.5;
+  font-family: var(--primary-font);
+  color: var(--primary-text);
+}
+
+@mixin heading-2 {
+  font-weight: 700;
+  font-size: 2rem;
+  font-family: var(--primary-font);
+  line-height: 1.75;
+}
+
+@mixin heading-4 {
+  font-size: var(--font-h4);
+  font-weight: 400;
+  font-family: var(--primary-font);
+}
+
+@mixin heading-5 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+@mixin paragraph {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 1px;
+  font-family: var(--primary-font);
+}
+
+// Custom scrollbar mixin
+@mixin custom-scrollbar {
+  ::-webkit-scrollbar {
+    width: 0.625rem;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--white-color);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+  }
+}
+
+// Responsive mixins
+@mixin mobile {
+  @media (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 768px) and (max-width: 1023px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 1024px) {
+    @content;
+  }
+} 
