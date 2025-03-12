@@ -1,0 +1,309 @@
+@use '../../../_shared';
+
+// Sorting Visualizer Styles
+.sorting-visualizer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .visualizer-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+  }
+
+  .visualizer-content {
+    position: relative;
+    display: flex;
+    width: 90%;
+    height: 90vh;
+    background: var(--primary-background);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+    .left-section, .right-section {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .left-section {
+      background: linear-gradient(145deg, #111010, #1a1a1a);
+    }
+
+    .right-section {
+      background: linear-gradient(145deg, #1a1a1a, #212121);
+    }
+
+    h2 {
+      color: var(--light-yellow);
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .input-section {
+      margin-bottom: 2rem;
+
+      .select-container {
+        margin-bottom: 1rem;
+
+        label {
+          display: block;
+          color: var(--primary-text);
+          margin-bottom: 0.5rem;
+        }
+
+        select {
+          width: 100%;
+          padding: 0.8rem;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+          color: var(--primary-text);
+          cursor: pointer;
+          font-family: var(--secondary-font);
+          transition: all 0.3s ease;
+
+          &:focus {
+            border-color: var(--light-yellow);
+            outline: none;
+          }
+
+          option {
+            background: var(--secondary-background);
+            color: var(--primary-text);
+            padding: 0.5rem;
+          }
+        }
+      }
+
+      label {
+        display: block;
+        color: var(--primary-text);
+        margin-bottom: 0.5rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.8rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        color: var(--primary-text);
+        margin-bottom: 1rem;
+
+        &:focus {
+          border-color: var(--light-yellow);
+          outline: none;
+        }
+      }
+
+      button {
+        @extend %button;
+        width: 100%;
+      }
+    }
+
+    .array-display {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      min-height: 60px;
+
+      .array-element {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1rem;
+        border-radius: 4px;
+        color: var(--primary-text);
+        min-width: 40px;
+        text-align: center;
+        transition: all 0.3s ease;
+
+        &.highlight {
+          background: var(--light-yellow);
+          color: var(--primary-background);
+          transform: translateY(-5px);
+        }
+      }
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+
+      button {
+        @extend %button;
+        flex: 1;
+      }
+    }
+
+    .variable-display {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 4px;
+
+      h3 {
+        color: var(--light-yellow);
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+      }
+
+      p {
+        color: var(--secondary-text);
+        margin: 0.5rem 0;
+        font-family: monospace;
+        font-size: 0.9rem;
+      }
+    }
+
+    .code-box {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1rem;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+      height: calc(100% - 120px);
+      overflow-y: auto;
+
+      .code-line {
+        color: var(--primary-text);
+        padding: 0.2rem 0.5rem;
+        font-size: 0.9rem;
+        white-space: pre;
+        display: flex;
+        gap: 1rem;
+        transition: all 0.3s ease;
+
+        .line-number {
+          opacity: 0.5;
+          user-select: none;
+          min-width: 2ch;
+          text-align: right;
+        }
+
+        .line-content {
+          flex: 1;
+        }
+
+        &.highlight {
+          background: var(--light-yellow);
+          color: var(--primary-background);
+          transform: translateX(10px);
+          border-radius: 4px;
+
+          .line-number {
+            opacity: 0.7;
+          }
+        }
+      }
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--light-yellow);
+        border-radius: 4px;
+
+        &:hover {
+          background: var(--dark-yellow);
+        }
+      }
+    }
+
+    .step-history {
+      margin-top: 1.5rem;
+      
+      h4 {
+        color: var(--light-yellow);
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .history-list {
+        max-height: 200px;
+        overflow-y: auto;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        padding: 0.5rem;
+
+        .history-item {
+          padding: 0.4rem 0.8rem;
+          font-size: 0.85rem;
+          color: var(--secondary-text);
+          border-radius: 4px;
+          transition: all 0.3s ease;
+
+          &.current {
+            background: var(--light-yellow);
+            color: var(--primary-background);
+            transform: translateX(5px);
+          }
+        }
+
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.2);
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: var(--light-yellow);
+          border-radius: 3px;
+
+          &:hover {
+            background: var(--dark-yellow);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive styles for visualizer
+@media (max-width: 1024px) {
+  .sorting-visualizer .visualizer-content {
+    flex-direction: column;
+    height: 95vh;
+
+    .left-section, .right-section {
+      padding: 1.5rem;
+    }
+
+    .code-box {
+      height: 300px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .sorting-visualizer .visualizer-content {
+    width: 95%;
+
+    .left-section, .right-section {
+      padding: 1rem;
+    }
+
+    .controls {
+      flex-direction: column;
+    }
+  }
+} 
