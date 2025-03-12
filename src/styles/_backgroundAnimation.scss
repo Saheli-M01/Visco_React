@@ -1,7 +1,0 @@
-#networkCanvas {
-    position: fixed;
-    z-index: -1; // Make sure it's behind all content
-    pointer-events: none; // Prevent interaction with canvas
-    display: block;
-    margin-top: 0px;
-  }

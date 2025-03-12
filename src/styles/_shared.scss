@@ -1,36 +1,46 @@
-// Shared Placeholders
+// Shared Placeholders and Animations
 %glass-background {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 2rem 3rem;
+  padding: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transform: translateY(20px);
-  opacity: 0;
-  animation: slideUp 0.8s ease-out forwards;
+  @extend %slide-up-animation;
 }
 
-%button {
+%button-base {
   font-family: var(--secondary-font);
   font-weight: 600;
   font-size: 1rem;
   padding: 0.6rem 1.2rem;
   background: transparent;
-  border: 2px solid var(--dark-yellow);
-  color: var(--dark-yellow);
+  border: 2px solid;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: all 0.3s ease;
   border-radius: 0;
+}
+
+%button {
+  @extend %button-base;
+  border-color: var(--dark-yellow);
+  color: var(--dark-yellow);
+  
   &:hover {
     background: var(--dark-yellow);
     color: black;
   }
+}
+
+%slide-up-animation {
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideUp 0.8s ease-out forwards;
 }
 
 @keyframes slideUp {
