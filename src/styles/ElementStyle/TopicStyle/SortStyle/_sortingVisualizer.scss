@@ -2,8 +2,9 @@
 
 // Sorting Visualizer Styles
 .sorting-visualizer {
+  background: none;
   position: fixed;
-  top: 0;
+  top:5rem;
   left: 0;
   right: 0;
   bottom: 0;
@@ -31,6 +32,11 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+
+    .close-button {
+      @extend %close-button;
+    }
 
     .left-section, .right-section {
       flex: 1;
