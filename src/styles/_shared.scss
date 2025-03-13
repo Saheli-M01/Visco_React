@@ -4,7 +4,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(176, 176, 176, 0.349);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   @extend %slide-up-animation;
 }
@@ -121,7 +121,7 @@
 
     &:hover {
       transform: translateY(-5px);
-      border-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(224, 224, 224, 0.793);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
     }
 

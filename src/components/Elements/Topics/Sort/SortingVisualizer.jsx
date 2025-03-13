@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const SortingVisualizer = ({ onClose, algorithm }) => {
   const [steps, setSteps] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
-  const [selectedLanguage, setSelectedLanguage] = useState('python');
+  const [selectedLanguage, setSelectedLanguage] = useState("python");
   const [history, setHistory] = useState([]);
-  const [selectedAlgorithm, setSelectedAlgorithm] = useState(algorithm?.name?.toLowerCase().split(' ')[0] || 'bubble');
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState(
+    algorithm?.name?.toLowerCase().split(" ")[0] || "bubble"
+  );
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(500); // Default speed: 500ms
 
   const algorithms = {
     bubble: {
-      name: 'Bubble Sort',
+      name: "Bubble Sort",
       python: `def bubbleSort(arr):
     n = len(arr)
     for i in range(n-1):
@@ -19,7 +21,7 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
             if arr[j] > arr[j+1]:
                 arr[j], arr[j+1] = arr[j+1], arr[j]
     return arr`,
-      'c++': `void bubbleSort(int arr[], int n) {
+      "c++": `void bubbleSort(int arr[], int n) {
     for (int i = 0; i < n-1; i++) {
         for (int j = 0; j < n-i-1; j++) {
             if (arr[j] > arr[j+1]) {
@@ -40,7 +42,7 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
         }
     }
 }`,
-  javaScript: `function bubbleSort(arr) {
+      javaScript: `function bubbleSort(arr) {
   let n = arr.length;
   for (let i = 0; i < n - 1; i++) {
       for (let j = 0; j < n - i - 1; j++) {
@@ -51,7 +53,7 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
   }
   return arr;
 }`,
-  c :`void bubbleSort(int arr[], int n) {
+      c: `void bubbleSort(int arr[], int n) {
   for (int i = 0; i < n-1; i++) {
       for (int j = 0; j < n-i-1; j++) {
           if (arr[j] > arr[j+1]) {
@@ -62,9 +64,9 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
       }
   }
 }`,
-  },
+    },
     selection: {
-      name: 'Selection Sort',
+      name: "Selection Sort",
       python: `def selectionSort(arr):
     n = len(arr)
     for i in range(n):
@@ -74,7 +76,7 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
                 min_idx = j
         arr[i], arr[min_idx] = arr[min_idx], arr[i]
     return arr`,
-      'c++': `void selectionSort(int arr[], int n) {
+      "c++": `void selectionSort(int arr[], int n) {
     for (int i = 0; i < n-1; i++) {
         int min_idx = i;
         for (int j = i+1; j < n; j++) {
@@ -97,7 +99,7 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
         arr[i] = temp;
     }
 }`,
-javaScript :`function selectionSort(arr) {
+      javaScript: `function selectionSort(arr) {
   let n = arr.length;
   for (let i = 0; i < n - 1; i++) {
       let min_idx = i;
@@ -113,7 +115,7 @@ javaScript :`function selectionSort(arr) {
   }
   return arr;
 }`,
-c :`void selectionSort(int arr[], int n) {
+      c: `void selectionSort(int arr[], int n) {
   int i, j, min_idx, temp;
   for (i = 0; i < n-1; i++) {
       min_idx = i;
@@ -127,10 +129,9 @@ c :`void selectionSort(int arr[], int n) {
       arr[i] = temp;
   }
 }`,
-
     },
     insertion: {
-      name: 'Insertion Sort',
+      name: "Insertion Sort",
       python: `def insertionSort(arr):
     for i in range(1, len(arr)):
         key = arr[i]
@@ -140,7 +141,7 @@ c :`void selectionSort(int arr[], int n) {
             j -= 1
         arr[j+1] = key
     return arr`,
-      'c++': `void insertionSort(int arr[], int n) {
+      "c++": `void insertionSort(int arr[], int n) {
     for (int i = 1; i < n; i++) {
         int key = arr[i];
         int j = i - 1;
@@ -163,23 +164,8 @@ c :`void selectionSort(int arr[], int n) {
         arr[j + 1] = key;
     }
 }`,
-javaScript :`function selectionSort(arr) {
-  let n = arr.length;
-  for (let i = 0; i < n - 1; i++) {
-      let min_idx = i;
-      for (let j = i + 1; j < n; j++) {
-          if (arr[j] < arr[min_idx]) {
-              min_idx = j;
-          }
-      }
-      // Swap the found minimum element with the first element
-      if (min_idx !== i) {
-          [arr[i], arr[min_idx]] = [arr[min_idx], arr[i]];
-      }
-  }
-  return arr;
-}`,
-c :`void selectionSort(int arr[], int n) {
+
+      c: `void selectionSort(int arr[], int n) {
   int i, j, min_idx, temp;
   for (i = 0; i < n-1; i++) {
       min_idx = i;
@@ -193,20 +179,7 @@ c :`void selectionSort(int arr[], int n) {
       arr[i] = temp;
   }
 }`,
-c :`void insertionSort(int arr[], int n) {
-  for (int i = 1; i < n; i++) {
-      int key = arr[i];
-      int j = i - 1;
-      // Move elements of arr[0..i-1] that are greater than key
-      // to one position ahead of their current position
-      while (j >= 0 && arr[j] > key) {
-          arr[j + 1] = arr[j];
-          j--;
-      }
-      arr[j + 1] = key;
-  }
-}`,
-    javaScript :`function insertionSort(arr) {
+      javaScript: `function insertionSort(arr) {
   for (let i = 1; i < arr.length; i++) {
       let key = arr[i];
       let j = i - 1;
@@ -222,7 +195,7 @@ c :`void insertionSort(int arr[], int n) {
 }`,
     },
     merge: {
-      name: 'Merge Sort',
+      name: "Merge Sort",
       python: `def merge(arr, start, end):
     middle = (start + end) // 2
     
@@ -283,7 +256,7 @@ def mergeSort(arr, start, end):
     
     # Merge the sorted halves
     merge(arr, start, end)`,
-      'c++': `void merge(int *array, int start, int end) {
+      "c++": `void merge(int *array, int start, int end) {
     int middle = (start + end) / 2;
 
     int leftSize = middle - start + 1;
@@ -408,7 +381,7 @@ void mergeSort(int[] array, int start, int end) {
     // Merge the sorted halves
     merge(array, start, end);
 }`,
-c :`// Function to merge two subarrays
+      c: `// Function to merge two subarrays
 void merge(int arr[], int start, int middle, int end) {
     int leftSize = middle - start + 1;
     int rightSize = end - middle;
@@ -459,7 +432,7 @@ void mergeSort(int arr[], int start, int end) {
         merge(arr, start, middle, end);
     }
 }`,
-      javaScript :`function merge(arr, start, middle, end) {
+      javaScript: `function merge(arr, start, middle, end) {
     let leftArray = arr.slice(start, middle + 1);
     let rightArray = arr.slice(middle + 1, end + 1);
 
@@ -500,11 +473,10 @@ function mergeSort(arr, start = 0, end = arr.length - 1) {
     }
     return arr;
 }`,
-
     },
-    name: 'Quick Sort',
-    quick : {
-      python :`def quick_sort(arr, low, high):
+    name: "Quick Sort",
+    quick: {
+      python: `def quick_sort(arr, low, high):
     if low < high:
         pivot_index = partition(arr, low, high)
         quick_sort(arr, low, pivot_index - 1)  # Sort left part
@@ -522,7 +494,7 @@ def partition(arr, low, high):
     arr[i + 1], arr[high] = arr[high], arr[i + 1]  # Place pivot correctly
     return i + 1
 `,
-      'c++':`void quickSort(int arr[], int low, int high) {
+      "c++": `void quickSort(int arr[], int low, int high) {
     if (low < high) {
         int pivotIndex = partition(arr, low, high);
         quickSort(arr, low, pivotIndex - 1);  // Sort left part
@@ -543,7 +515,7 @@ int partition(int arr[], int low, int high) {
     std::swap(arr[i + 1], arr[high]); // Place pivot correctly
     return i + 1;
 }`,
-      java :`public static void quickSort(int[] arr, int low, int high) {
+      java: `public static void quickSort(int[] arr, int low, int high) {
     if (low < high) {
         int pivotIndex = partition(arr, low, high);
         quickSort(arr, low, pivotIndex - 1);  // Sort left part
@@ -570,7 +542,7 @@ private static void swap(int[] arr, int i, int j) {
     arr[i] = arr[j];
     arr[j] = temp;
 }`,
-      javaScript : `function quickSort(arr, low, high) {
+      javaScript: `function quickSort(arr, low, high) {
     if (low < high) {
         let pivotIndex = partition(arr, low, high);
         quickSort(arr, low, pivotIndex - 1);  // Sort left part
@@ -591,7 +563,7 @@ function partition(arr, low, high) {
     [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]]; // Place pivot correctly
     return i + 1;
 }`,
-      c :`void quickSort(int arr[], int low, int high) {
+      c: `void quickSort(int arr[], int low, int high) {
     if (low < high) {
         int pivotIndex = partition(arr, low, high);
         quickSort(arr, low, pivotIndex - 1);  // Sort left part
@@ -618,9 +590,10 @@ int partition(int arr[], int low, int high) {
     return i + 1;
 }`,
     },
-    name: 'Heap Sort',
-    heap :{
-      python :`def heap_sort(arr):
+
+    heap: {
+      name: "Heap Sort",
+      python: `def heap_sort(arr):
     def heapify(arr, n, i):
         largest = i
         left = 2 * i + 1
@@ -643,7 +616,7 @@ int partition(int arr[], int low, int high) {
         arr[i], arr[0] = arr[0], arr[i]
         heapify(arr, i, 0)
 `,
-      'c++' :`void heapSort(int arr[], int n) {
+      "c++": `void heapSort(int arr[], int n) {
     auto heapify = [&](int arr[], int n, int i) {
         int largest = i, left = 2 * i + 1, right = 2 * i + 2;
 
@@ -664,7 +637,7 @@ int partition(int arr[], int low, int high) {
         heapify(arr, i, 0);
     }
 }`,
-      java :`public static void heapSort(int arr[]) {
+      java: `public static void heapSort(int arr[]) {
     int n = arr.length;
 
     for (int i = n / 2 - 1; i >= 0; i--)
@@ -693,7 +666,7 @@ private static void heapify(int arr[], int n, int i) {
         heapify(arr, n, largest);
     }
 }`,
-      javaScript : `function heapSort(arr) {
+      javaScript: `function heapSort(arr) {
     function heapify(arr, n, i) {
         let largest = i, left = 2 * i + 1, right = 2 * i + 2;
 
@@ -715,7 +688,7 @@ private static void heapify(int arr[], int n, int i) {
         heapify(arr, i, 0);
     }
 }`,
-      c :`void heapSort(int arr[], int n) {
+      c: `void heapSort(int arr[], int n) {
     void heapify(int arr[], int n, int i) {
         int largest = i, left = 2 * i + 1, right = 2 * i + 2;
 
@@ -743,9 +716,9 @@ private static void heapify(int arr[], int n, int i) {
     }
 }`,
     },
-    name: 'Heap Sort',
+
     shell: {
-      name: 'Shell Sort',
+      name: "Shell Sort",
       python: `def shellSort(arr):
     n = len(arr)
     gap = n // 2
@@ -759,7 +732,7 @@ private static void heapify(int arr[], int n, int i) {
             arr[j] = temp
         gap //= 2
     return arr`,
-      
+
       "c++": `void shellSort(int arr[], int n) {
     for (int gap = n / 2; gap > 0; gap /= 2) {
         for (int i = gap; i < n; i++) {
@@ -772,7 +745,7 @@ private static void heapify(int arr[], int n, int i) {
         }
     }
 }`,
-      
+
       java: `void shellSort(int[] arr) {
     int n = arr.length;
     for (int gap = n / 2; gap > 0; gap /= 2) {
@@ -786,7 +759,7 @@ private static void heapify(int arr[], int n, int i) {
         }
     }
 }`,
-      
+
       javaScript: `function shellSort(arr) {
     let n = arr.length;
     for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
@@ -802,7 +775,7 @@ private static void heapify(int arr[], int n, int i) {
     }
     return arr;
 }`,
-      
+
       c: `void shellSort(int arr[], int n) {
     for (int gap = n / 2; gap > 0; gap /= 2) {
         for (int i = gap; i < n; i++) {
@@ -814,12 +787,12 @@ private static void heapify(int arr[], int n, int i) {
             arr[j] = temp;
         }
     }
-}`
-  },
-  
-  counting: {
-    name: 'Counting Sort',
-    python: `def countingSort(arr):
+}`,
+    },
+
+    counting: {
+      name: "Counting Sort",
+      python: `def countingSort(arr):
   max_val = max(arr)
   count = [0] * (max_val + 1)
   output = [0] * len(arr)
@@ -835,8 +808,8 @@ private static void heapify(int arr[], int n, int i) {
       count[num] -= 1
 
   return output`,
-    
-    "c++": `void countingSort(int arr[], int n) {
+
+      "c++": `void countingSort(int arr[], int n) {
   int max_val = *max_element(arr, arr + n);
   vector<int> count(max_val + 1, 0);
   vector<int> output(n);
@@ -855,8 +828,8 @@ private static void heapify(int arr[], int n, int i) {
   for (int i = 0; i < n; i++)
       arr[i] = output[i];
 }`,
-    
-    java: `void countingSort(int[] arr) {
+
+      java: `void countingSort(int[] arr) {
   int max_val = Arrays.stream(arr).max().getAsInt();
   int[] count = new int[max_val + 1];
   int[] output = new int[arr.length];
@@ -874,8 +847,8 @@ private static void heapify(int arr[], int n, int i) {
 
   System.arraycopy(output, 0, arr, 0, arr.length);
 }`,
-    
-    javaScript : `function countingSort(arr) {
+
+      javaScript: `function countingSort(arr) {
   let max_val = Math.max(...arr);
   let count = new Array(max_val + 1).fill(0);
   let output = new Array(arr.length);
@@ -892,8 +865,8 @@ private static void heapify(int arr[], int n, int i) {
 
   return output;
 }`,
-    
-    c: `void countingSort(int arr[], int n) {
+
+      c: `void countingSort(int arr[], int n) {
   int max_val = arr[0];
   for (int i = 1; i < n; i++)
       if (arr[i] > max_val)
@@ -915,11 +888,11 @@ private static void heapify(int arr[], int n, int i) {
 
   for (int i = 0; i < n; i++)
       arr[i] = output[i];
-}`
-  },
-  radix: {
-    name: 'Radix Sort',
-    python: `def radixSort(arr):
+}`,
+    },
+    radix: {
+      name: "Radix Sort",
+      python: `def radixSort(arr):
   max_val = max(arr)
   exp = 1
   while max_val // exp > 0:
@@ -943,8 +916,8 @@ private static void heapify(int arr[], int n, int i) {
           arr[i] = output[i]
 
       exp *= 10`,
-    
-    "c++": `void radixSort(int arr[], int n) {
+
+      "c++": `void radixSort(int arr[], int n) {
   int max_val = *max_element(arr, arr + n);
   for (int exp = 1; max_val / exp > 0; exp *= 10) {
       int output[n], count[10] = {0};
@@ -964,8 +937,8 @@ private static void heapify(int arr[], int n, int i) {
           arr[i] = output[i];
   }
 }`,
-    
-    java: `void radixSort(int[] arr) {
+
+      java: `void radixSort(int[] arr) {
   int max_val = Arrays.stream(arr).max().getAsInt();
   for (int exp = 1; max_val / exp > 0; exp *= 10) {
       int n = arr.length;
@@ -986,8 +959,8 @@ private static void heapify(int arr[], int n, int i) {
       System.arraycopy(output, 0, arr, 0, n);
   }
 }`,
-    
-    javaScript: `function radixSort(arr) {
+
+      javaScript: `function radixSort(arr) {
   let max_val = Math.max(...arr);
   for (let exp = 1; Math.floor(max_val / exp) > 0; exp *= 10) {
       let n = arr.length;
@@ -1010,8 +983,8 @@ private static void heapify(int arr[], int n, int i) {
           arr[i] = output[i];
   }
 }`,
-    
-    c: `void radixSort(int arr[], int n) {
+
+      c: `void radixSort(int arr[], int n) {
   int max_val = arr[0];
   for (int i = 1; i < n; i++)
       if (arr[i] > max_val)
@@ -1034,11 +1007,11 @@ private static void heapify(int arr[], int n, int i) {
       for (int i = 0; i < n; i++)
           arr[i] = output[i];
   }
-}`
-},
-bucket: {
-  name: 'Bucket Sort',
-  python: `def bucketSort(arr):
+}`,
+    },
+    bucket: {
+      name: "Bucket Sort",
+      python: `def bucketSort(arr):
 if len(arr) == 0:
     return arr
 
@@ -1057,8 +1030,8 @@ for bucket in buckets:
     bucket.sort()
 
 return [num for bucket in buckets for num in bucket]`,
-  
-  "c++": `void bucketSort(vector<float> &arr) {
+
+      "c++": `void bucketSort(vector<float> &arr) {
 int n = arr.size();
 if (n == 0) return;
 
@@ -1081,8 +1054,8 @@ for (auto &bucket : buckets)
     for (float num : bucket)
         arr[idx++] = num;
 }`,
-  
-  java: `void bucketSort(float[] arr) {
+
+      java: `void bucketSort(float[] arr) {
 if (arr.length == 0) return;
 
 int n = arr.length;
@@ -1107,8 +1080,8 @@ for (List<Float> bucket : buckets)
     for (float num : bucket)
         arr[idx++] = num;
 }`,
-  
-  javaScript: `function bucketSort(arr) {
+
+      javaScript: `function bucketSort(arr) {
 if (arr.length === 0) return arr;
 
 let n = arr.length;
@@ -1127,8 +1100,8 @@ buckets.forEach(bucket => bucket.sort((a, b) => a - b));
 
 return [].concat(...buckets);
 }`,
-  
-  c: `#include <stdio.h>
+
+      c: `#include <stdio.h>
 #include <stdlib.h>
 
 void bucketSort(float arr[], int n) {
@@ -1170,8 +1143,8 @@ for (int i = 0; i < n; i++)
 
 for (int i = 0; i < n; i++)
     free(buckets[i]);
-}`
-},
+}`,
+    },
   };
 
   const generateSteps = (inputArray) => {
@@ -1180,7 +1153,7 @@ for (int i = 0; i < n; i++)
     const n = arr.length;
     const history = [];
 
-    if (selectedAlgorithm === 'merge') {
+    if (selectedAlgorithm === "merge") {
       const mergeSortWithSteps = (array, start, end) => {
         if (start >= end) {
           steps.push({
@@ -1191,26 +1164,44 @@ for (int i = 0; i < n; i++)
             action: `Single element [${array[start]}]`,
             leftSubarray: [],
             rightSubarray: [],
-            dividing: true
+            dividing: true,
           });
-          history.push(`Step ${steps.length}: Single element [${array[start]}]. Current array: [${array.join(', ')}]`);
+          history.push(
+            `Step ${steps.length}: Single element [${
+              array[start]
+            }]. Current array: [${array.join(", ")}]`
+          );
           return;
         }
 
         const middle = Math.floor((start + end) / 2);
-        
+
         // Show division step
         steps.push({
           array: [...array],
           i: start,
           j: end,
           highlightLine: 3,
-          action: `Dividing array [${array.slice(start, end + 1).join(',')}] into left [${array.slice(start, middle + 1).join(',')}] and right [${array.slice(middle + 1, end + 1).join(',')}]`,
+          action: `Dividing array [${array
+            .slice(start, end + 1)
+            .join(",")}] into left [${array
+            .slice(start, middle + 1)
+            .join(",")}] and right [${array
+            .slice(middle + 1, end + 1)
+            .join(",")}]`,
           leftSubarray: array.slice(start, middle + 1),
           rightSubarray: array.slice(middle + 1, end + 1),
-          dividing: true
+          dividing: true,
         });
-        history.push(`Step ${steps.length}: Dividing array [${array.slice(start, end + 1).join(',')}] into left [${array.slice(start, middle + 1).join(',')}] and right [${array.slice(middle + 1, end + 1).join(',')}]. Current array: [${array.join(', ')}]`);
+        history.push(
+          `Step ${steps.length}: Dividing array [${array
+            .slice(start, end + 1)
+            .join(",")}] into left [${array
+            .slice(start, middle + 1)
+            .join(",")}] and right [${array
+            .slice(middle + 1, end + 1)
+            .join(",")}]. Current array: [${array.join(", ")}]`
+        );
 
         // Recursively sort left and right halves
         mergeSortWithSteps(array, start, middle);
@@ -1230,13 +1221,21 @@ for (int i = 0; i < n; i++)
             i: start + i,
             j: null,
             highlightLine: 10,
-            action: `Creating temporary arrays: Copying ${array[start + i]} to left array at position ${i}`,
+            action: `Creating temporary arrays: Copying ${
+              array[start + i]
+            } to left array at position ${i}`,
             leftSubarray: leftArray.slice(0, i + 1),
             rightSubarray: [],
             copying: true,
-            merging: true
+            merging: true,
           });
-          history.push(`Step ${steps.length}: Creating temporary arrays - Copying ${array[start + i]} to left array at position ${i}. Current array: [${array.join(', ')}]`);
+          history.push(
+            `Step ${steps.length}: Creating temporary arrays - Copying ${
+              array[start + i]
+            } to left array at position ${i}. Current array: [${array.join(
+              ", "
+            )}]`
+          );
         }
 
         // Copy to right array
@@ -1247,30 +1246,48 @@ for (int i = 0; i < n; i++)
             i: middle + 1 + i,
             j: null,
             highlightLine: 15,
-            action: `Creating temporary arrays: Copying ${array[middle + 1 + i]} to right array at position ${i}`,
+            action: `Creating temporary arrays: Copying ${
+              array[middle + 1 + i]
+            } to right array at position ${i}`,
             leftSubarray: leftArray,
             rightSubarray: rightArray.slice(0, i + 1),
             copying: true,
-            merging: true
+            merging: true,
           });
-          history.push(`Step ${steps.length}: Creating temporary arrays - Copying ${array[middle + 1 + i]} to right array at position ${i}. Current array: [${array.join(', ')}]`);
+          history.push(
+            `Step ${steps.length}: Creating temporary arrays - Copying ${
+              array[middle + 1 + i]
+            } to right array at position ${i}. Current array: [${array.join(
+              ", "
+            )}]`
+          );
         }
 
         // Merge process
-        let i = 0, j = 0, k = start;
+        let i = 0,
+          j = 0,
+          k = start;
 
         steps.push({
           array: [...array],
           i: start,
           j: end,
           highlightLine: 20,
-          action: `Starting merge of left [${leftArray.join(',')}] and right [${rightArray.join(',')}]`,
+          action: `Starting merge of left [${leftArray.join(
+            ","
+          )}] and right [${rightArray.join(",")}]`,
           leftSubarray: leftArray,
           rightSubarray: rightArray,
           comparing: true,
-          merging: true
+          merging: true,
         });
-        history.push(`Step ${steps.length}: Starting merge of left [${leftArray.join(',')}] and right [${rightArray.join(',')}]. Current array: [${array.join(', ')}]`);
+        history.push(
+          `Step ${steps.length}: Starting merge of left [${leftArray.join(
+            ","
+          )}] and right [${rightArray.join(",")}]. Current array: [${array.join(
+            ", "
+          )}]`
+        );
 
         while (i < leftSize && j < rightSize) {
           steps.push({
@@ -1282,9 +1299,15 @@ for (int i = 0; i < n; i++)
             leftSubarray: leftArray,
             rightSubarray: rightArray,
             comparing: true,
-            merging: true
+            merging: true,
           });
-          history.push(`Step ${steps.length}: Comparing left[${i}]=${leftArray[i]} with right[${j}]=${rightArray[j]}. Current array: [${array.join(', ')}]`);
+          history.push(
+            `Step ${steps.length}: Comparing left[${i}]=${
+              leftArray[i]
+            } with right[${j}]=${rightArray[j]}. Current array: [${array.join(
+              ", "
+            )}]`
+          );
 
           if (leftArray[i] <= rightArray[j]) {
             array[k] = leftArray[i];
@@ -1297,9 +1320,15 @@ for (int i = 0; i < n; i++)
               leftSubarray: leftArray,
               rightSubarray: rightArray,
               copying: true,
-              merging: true
+              merging: true,
             });
-            history.push(`Step ${steps.length}: Copying ${leftArray[i]} from left array to position ${k}. Current array: [${array.join(', ')}]`);
+            history.push(
+              `Step ${steps.length}: Copying ${
+                leftArray[i]
+              } from left array to position ${k}. Current array: [${array.join(
+                ", "
+              )}]`
+            );
             i++;
           } else {
             array[k] = rightArray[j];
@@ -1312,9 +1341,15 @@ for (int i = 0; i < n; i++)
               leftSubarray: leftArray,
               rightSubarray: rightArray,
               copying: true,
-              merging: true
+              merging: true,
             });
-            history.push(`Step ${steps.length}: Copying ${rightArray[j]} from right array to position ${k}. Current array: [${array.join(', ')}]`);
+            history.push(
+              `Step ${steps.length}: Copying ${
+                rightArray[j]
+              } from right array to position ${k}. Current array: [${array.join(
+                ", "
+              )}]`
+            );
             j++;
           }
           k++;
@@ -1332,9 +1367,15 @@ for (int i = 0; i < n; i++)
             leftSubarray: leftArray,
             rightSubarray: rightArray,
             copying: true,
-            merging: true
+            merging: true,
           });
-          history.push(`Step ${steps.length}: Copying remaining element ${leftArray[i]} from left array to position ${k}. Current array: [${array.join(', ')}]`);
+          history.push(
+            `Step ${steps.length}: Copying remaining element ${
+              leftArray[i]
+            } from left array to position ${k}. Current array: [${array.join(
+              ", "
+            )}]`
+          );
           i++;
           k++;
         }
@@ -1351,49 +1392,59 @@ for (int i = 0; i < n; i++)
             leftSubarray: leftArray,
             rightSubarray: rightArray,
             copying: true,
-            merging: true
+            merging: true,
           });
-          history.push(`Step ${steps.length}: Copying remaining element ${rightArray[j]} from right array to position ${k}. Current array: [${array.join(', ')}]`);
+          history.push(
+            `Step ${steps.length}: Copying remaining element ${
+              rightArray[j]
+            } from right array to position ${k}. Current array: [${array.join(
+              ", "
+            )}]`
+          );
           j++;
           k++;
         }
       };
 
       mergeSortWithSteps(arr, 0, n - 1);
-    } else if (selectedAlgorithm === 'bubble') {
+    } else if (selectedAlgorithm === "bubble") {
       for (let i = 0; i < n - 1; i++) {
         for (let j = 0; j < n - i - 1; j++) {
-          steps.push({ 
-            array: [...arr], 
-            i, 
-            j, 
+          steps.push({
+            array: [...arr],
+            i,
+            j,
             highlightLine: 4,
-            action: `Comparing elements at positions ${j} and ${j + 1}`
+            action: `Comparing elements at positions ${j} and ${j + 1}`,
           });
-          history.push(`Step ${steps.length}: Comparing ${arr[j]} and ${arr[j + 1]}`);
+          history.push(
+            `Step ${steps.length}: Comparing ${arr[j]} and ${arr[j + 1]}`
+          );
 
           if (arr[j] > arr[j + 1]) {
             [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-            steps.push({ 
-              array: [...arr], 
-              i, 
-              j, 
+            steps.push({
+              array: [...arr],
+              i,
+              j,
               highlightLine: 5,
-              action: `Swapped elements ${arr[j]} and ${arr[j + 1]}`
+              action: `Swapped elements ${arr[j]} and ${arr[j + 1]}`,
             });
-            history.push(`Step ${steps.length}: Swapped ${arr[j + 1]} and ${arr[j]}`);
+            history.push(
+              `Step ${steps.length}: Swapped ${arr[j + 1]} and ${arr[j]}`
+            );
           }
         }
-        steps.push({ 
-          array: [...arr], 
-          i, 
-          j: null, 
+        steps.push({
+          array: [...arr],
+          i,
+          j: null,
           highlightLine: 3,
-          action: `Completed pass ${i + 1}`
+          action: `Completed pass ${i + 1}`,
         });
         history.push(`Step ${steps.length}: Completed pass ${i + 1}`);
       }
-    } else if (selectedAlgorithm === 'selection') {
+    } else if (selectedAlgorithm === "selection") {
       for (let i = 0; i < n - 1; i++) {
         let minIdx = i;
         steps.push({
@@ -1401,7 +1452,7 @@ for (int i = 0; i < n; i++)
           i,
           j: null,
           highlightLine: 3,
-          action: `Starting new pass from index ${i}`
+          action: `Starting new pass from index ${i}`,
         });
         history.push(`Step ${steps.length}: Starting new pass from index ${i}`);
 
@@ -1411,9 +1462,11 @@ for (int i = 0; i < n; i++)
             i,
             j,
             highlightLine: 4,
-            action: `Comparing ${arr[j]} with current minimum ${arr[minIdx]}`
+            action: `Comparing ${arr[j]} with current minimum ${arr[minIdx]}`,
           });
-          history.push(`Step ${steps.length}: Comparing ${arr[j]} with ${arr[minIdx]}`);
+          history.push(
+            `Step ${steps.length}: Comparing ${arr[j]} with ${arr[minIdx]}`
+          );
 
           if (arr[j] < arr[minIdx]) {
             minIdx = j;
@@ -1422,7 +1475,7 @@ for (int i = 0; i < n; i++)
               i,
               j,
               highlightLine: 5,
-              action: `Found new minimum ${arr[minIdx]} at index ${minIdx}`
+              action: `Found new minimum ${arr[minIdx]} at index ${minIdx}`,
             });
             history.push(`Step ${steps.length}: New minimum is ${arr[minIdx]}`);
           }
@@ -1435,22 +1488,24 @@ for (int i = 0; i < n; i++)
             i,
             j: minIdx,
             highlightLine: 6,
-            action: `Swapped ${arr[i]} to position ${i}`
+            action: `Swapped ${arr[i]} to position ${i}`,
           });
-          history.push(`Step ${steps.length}: Swapped ${arr[i]} to position ${i}`);
+          history.push(
+            `Step ${steps.length}: Swapped ${arr[i]} to position ${i}`
+          );
         }
       }
-    } else if (selectedAlgorithm === 'insertion') {
+    } else if (selectedAlgorithm === "insertion") {
       for (let i = 1; i < n; i++) {
         let key = arr[i];
         let j = i - 1;
-        
+
         steps.push({
           array: [...arr],
           i,
           j: i,
           highlightLine: 2,
-          action: `Selected ${key} as key`
+          action: `Selected ${key} as key`,
         });
         history.push(`Step ${steps.length}: Selected ${key} as key`);
 
@@ -1460,9 +1515,11 @@ for (int i = 0; i < n; i++)
             i,
             j,
             highlightLine: 4,
-            action: `Comparing ${arr[j]} with key ${key}`
+            action: `Comparing ${arr[j]} with key ${key}`,
           });
-          history.push(`Step ${steps.length}: Comparing ${arr[j]} with key ${key}`);
+          history.push(
+            `Step ${steps.length}: Comparing ${arr[j]} with key ${key}`
+          );
 
           arr[j + 1] = arr[j];
           steps.push({
@@ -1470,9 +1527,11 @@ for (int i = 0; i < n; i++)
             i,
             j,
             highlightLine: 5,
-            action: `Moved ${arr[j]} one position ahead`
+            action: `Moved ${arr[j]} one position ahead`,
           });
-          history.push(`Step ${steps.length}: Moved ${arr[j]} one position ahead`);
+          history.push(
+            `Step ${steps.length}: Moved ${arr[j]} one position ahead`
+          );
           j--;
         }
 
@@ -1482,20 +1541,24 @@ for (int i = 0; i < n; i++)
           i,
           j: j + 1,
           highlightLine: 7,
-          action: `Inserted ${key} at position ${j + 1}`
+          action: `Inserted ${key} at position ${j + 1}`,
         });
-        history.push(`Step ${steps.length}: Inserted ${key} at position ${j + 1}`);
+        history.push(
+          `Step ${steps.length}: Inserted ${key} at position ${j + 1}`
+        );
       }
     }
 
-    steps.push({ 
-      array: [...arr], 
-      i: null, 
-      j: null, 
+    steps.push({
+      array: [...arr],
+      i: null,
+      j: null,
       highlightLine: null,
-      action: "Sorting completed"
+      action: "Sorting completed",
     });
-    history.push(`Step ${steps.length}: Sorting completed. Final array: ${arr.join(',')}`);
+    history.push(
+      `Step ${steps.length}: Sorting completed. Final array: ${arr.join(",")}`
+    );
 
     return { steps, history };
   };
@@ -1514,13 +1577,13 @@ for (int i = 0; i < n; i++)
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep((prev) => prev + 1);
     }
   };
 
   const prevStep = () => {
     if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
+      setCurrentStep((prev) => prev - 1);
     }
   };
 
@@ -1536,7 +1599,7 @@ for (int i = 0; i < n; i++)
     let timer;
     if (isPlaying && currentStep < steps.length - 1) {
       timer = setTimeout(() => {
-        setCurrentStep(prev => prev + 1);
+        setCurrentStep((prev) => prev + 1);
       }, speed);
     } else if (currentStep >= steps.length - 1) {
       setIsPlaying(false);
@@ -1556,7 +1619,7 @@ for (int i = 0; i < n; i++)
           <div className="input-section">
             <div className="select-container">
               <label htmlFor="algorithmSelect">Select Algorithm: </label>
-              <select 
+              <select
                 id="algorithmSelect"
                 value={selectedAlgorithm}
                 onChange={(e) => setSelectedAlgorithm(e.target.value)}
@@ -1577,43 +1640,51 @@ for (int i = 0; i < n; i++)
             <div className="input-controls">
               <div>
                 <label htmlFor="arrayInput">Enter Array: </label>
-                <input 
-                  type="text" 
-                  id="arrayInput" 
+                <input
+                  type="text"
+                  id="arrayInput"
                   placeholder="e.g., 64,34,25,12,22,11,90"
                   onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === "Enter") {
                       startVisualization(e.target.value);
                     }
                   }}
                 />
               </div>
-              <button onClick={(e) => startVisualization(e.target.previousElementSibling.querySelector('input').value)}>
+              <button
+                onClick={(e) =>
+                  startVisualization(
+                    e.target.previousElementSibling.querySelector("input").value
+                  )
+                }
+              >
                 Start <i className="fa-solid fa-circle-play"></i>
               </button>
               <button
                 className="btn btn-outline play-pause-btn"
                 onClick={togglePlay}
               >
-                <i className={`fa-solid ${isPlaying ? 'fa-pause' : 'fa-play'}`}></i>
+                <i
+                  className={`fa-solid ${isPlaying ? "fa-pause" : "fa-play"}`}
+                ></i>
               </button>
             </div>
           </div>
-          
+
           <div className="array-display">
             <div className="main-array">
               <div className="phase-label">Main Array</div>
               <div className="array-content">
                 {steps[currentStep]?.array.map((value, index) => (
-                  <div 
+                  <div
                     key={index}
                     className={`array-element ${
-                      (index === steps[currentStep]?.i || 
-                       index === steps[currentStep]?.j) ? 'highlight' : ''
-                    } ${
-                      steps[currentStep]?.comparing ? 'comparing' : ''
-                    } ${
-                      steps[currentStep]?.copying ? 'copying' : ''
+                      index === steps[currentStep]?.i ||
+                      index === steps[currentStep]?.j
+                        ? "highlight"
+                        : ""
+                    } ${steps[currentStep]?.comparing ? "comparing" : ""} ${
+                      steps[currentStep]?.copying ? "copying" : ""
                     }`}
                   >
                     {value}
@@ -1622,67 +1693,90 @@ for (int i = 0; i < n; i++)
               </div>
             </div>
 
-            {steps[currentStep]?.leftSubarray && steps[currentStep]?.dividing && (
-              <div className="dividing-phase">
-                <div className="phase-label">Division Step</div>
-                <div className="subarrays">
-                  <div className="subarray left">
-                    <div className="subarray-label">Left:</div>
-                    {steps[currentStep].leftSubarray.map((value, index) => (
-                      <div key={`left-${index}`} className="array-element dividing">
-                        {value}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="subarray right">
-                    <div className="subarray-label">Right:</div>
-                    {steps[currentStep].rightSubarray.map((value, index) => (
-                      <div key={`right-${index}`} className="array-element dividing">
-                        {value}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            {steps[currentStep]?.leftSubarray && steps[currentStep]?.merging && (
-              <div className="merging-phase">
-                <div className="phase-label">Merging Step</div>
-                <div className="subarrays">
-                  <div className="subarray left">
-                    <div className="subarray-label">Left:</div>
-                    {steps[currentStep].leftSubarray.map((value, index) => (
-                      <div key={`left-${index}`} className="array-element merging">
-                        {value}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="subarray right">
-                    <div className="subarray-label">Right:</div>
-                    {steps[currentStep].rightSubarray.map((value, index) => (
-                      <div key={`right-${index}`} className="array-element merging">
-                        {value}
-                      </div>
-                    ))}
+            {steps[currentStep]?.leftSubarray &&
+              steps[currentStep]?.dividing && (
+                <div className="dividing-phase">
+                  <div className="phase-label">Division Step</div>
+                  <div className="subarrays">
+                    <div className="subarray left">
+                      <div className="subarray-label">Left:</div>
+                      {steps[currentStep].leftSubarray.map((value, index) => (
+                        <div
+                          key={`left-${index}`}
+                          className="array-element dividing"
+                        >
+                          {value}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="subarray right">
+                      <div className="subarray-label">Right:</div>
+                      {steps[currentStep].rightSubarray.map((value, index) => (
+                        <div
+                          key={`right-${index}`}
+                          className="array-element dividing"
+                        >
+                          {value}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+
+            {steps[currentStep]?.leftSubarray &&
+              steps[currentStep]?.merging && (
+                <div className="merging-phase">
+                  <div className="phase-label">Merging Step</div>
+                  <div className="subarrays">
+                    <div className="subarray left">
+                      <div className="subarray-label">Left:</div>
+                      {steps[currentStep].leftSubarray.map((value, index) => (
+                        <div
+                          key={`left-${index}`}
+                          className="array-element merging"
+                        >
+                          {value}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="subarray right">
+                      <div className="subarray-label">Right:</div>
+                      {steps[currentStep].rightSubarray.map((value, index) => (
+                        <div
+                          key={`right-${index}`}
+                          className="array-element merging"
+                        >
+                          {value}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
           </div>
 
           <div className="controls">
-            <button onClick={() => setCurrentStep(0)}><i class="fa-solid fa-backward"></i> First</button>
-            <button onClick={prevStep}> <i class="fa-solid fa-caret-left"></i>Prev</button>
-            <button onClick={nextStep}>Next <i class="fa-solid fa-caret-right"></i></button>
-            <button onClick={lastStep}>Last <i class="fa-solid fa-forward"></i></button>
+            <button onClick={() => setCurrentStep(0)}>
+              <i class="fa-solid fa-backward"></i> First
+            </button>
+            <button onClick={prevStep}>
+              {" "}
+              <i class="fa-solid fa-caret-left"></i>Prev
+            </button>
+            <button onClick={nextStep}>
+              Next <i class="fa-solid fa-caret-right"></i>
+            </button>
+            <button onClick={lastStep}>
+              Last <i class="fa-solid fa-forward"></i>
+            </button>
           </div>
 
           <div className="progress-bar">
-            <div 
-              className="progress" 
-              style={{ 
-                width: `${(currentStep / (steps.length - 1)) * 100}%` 
+            <div
+              className="progress"
+              style={{
+                width: `${(currentStep / (steps.length - 1)) * 100}%`,
               }}
             />
           </div>
@@ -1702,16 +1796,18 @@ for (int i = 0; i < n; i++)
 
           <div className="variable-display">
             <h3>Current Variables:</h3>
-            <p>i: {steps[currentStep]?.i ?? 'N/A'}</p>
-            <p>j: {steps[currentStep]?.j ?? 'N/A'}</p>
-            <p>Current Action: {steps[currentStep]?.action ?? 'N/A'}</p>
+            <p>i: {steps[currentStep]?.i ?? "N/A"}</p>
+            <p>j: {steps[currentStep]?.j ?? "N/A"}</p>
+            <p>Current Action: {steps[currentStep]?.action ?? "N/A"}</p>
             <div className="step-history">
               <h4>Step History:</h4>
               <div className="history-list">
                 {history.slice(0, currentStep + 1).map((step, index) => (
-                  <div 
-                    key={index} 
-                    className={`history-item ${index === currentStep ? 'current' : ''}`}
+                  <div
+                    key={index}
+                    className={`history-item ${
+                      index === currentStep ? "current" : ""
+                    }`}
                   >
                     {step}
                   </div>
@@ -1724,7 +1820,7 @@ for (int i = 0; i < n; i++)
         <div className="right-section">
           <h2>Code Display</h2>
           <div className="select-container">
-            <select 
+            <select
               value={selectedLanguage}
               onChange={(e) => setSelectedLanguage(e.target.value)}
               className="language-select"
@@ -1737,17 +1833,21 @@ for (int i = 0; i < n; i++)
             </select>
           </div>
           <div className="code-box">
-            {algorithms[selectedAlgorithm][selectedLanguage].split('\n').map((line, index) => (
-              <div 
-                key={index}
-                className={`code-line ${
-                  steps[currentStep]?.highlightLine === index + 1 ? 'highlight' : ''
-                }`}
-              >
-                <span className="line-number">{index + 1}</span>
-                <span className="line-content">{line}</span>
-              </div>
-            ))}
+            {algorithms[selectedAlgorithm][selectedLanguage]
+              .split("\n")
+              .map((line, index) => (
+                <div
+                  key={index}
+                  className={`code-line ${
+                    steps[currentStep]?.highlightLine === index + 1
+                      ? "highlight"
+                      : ""
+                  }`}
+                >
+                  <span className="line-number">{index + 1}</span>
+                  <span className="line-content">{line}</span>
+                </div>
+              ))}
           </div>
         </div>
       </div>
@@ -1755,4 +1855,4 @@ for (int i = 0; i < n; i++)
   );
 };
 
-export default SortingVisualizer; 
+export default SortingVisualizer;

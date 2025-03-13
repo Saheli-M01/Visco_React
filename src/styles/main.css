@@ -89,7 +89,7 @@ body {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(176, 176, 176, 0.349);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
@@ -107,6 +107,30 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 0;
+}
+
+.sorting-visualizer .visualizer-content .close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--secondary-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+.sorting-visualizer .visualizer-content .close-button:hover {
+  color: var(--primary-text);
+  transform: scale(1.1);
+}
+.sorting-visualizer .visualizer-content .close-button:active {
+  transform: scale(0.95);
 }
 
 .btn, .sorting-visualizer .visualizer-content .input-section button, .sorting-visualizer .visualizer-content .controls button, #home .container .left button {
@@ -826,9 +850,9 @@ body {
   background: linear-gradient(135deg, rgba(33, 33, 33, 0.9), rgba(0, 0, 0, 0.9));
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(204, 204, 204, 0.289);
 }
 #feature .col-lg-4:hover {
-  transform: scale(1.05);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 #feature .col-lg-4:hover .icon-box {
@@ -2156,8 +2180,9 @@ body {
 }
 
 .sorting-visualizer {
+  background: none;
   position: fixed;
-  top: 0;
+  top: 5rem;
   left: 0;
   right: 0;
   bottom: 0;
@@ -2413,9 +2438,6 @@ body {
     flex-direction: column;
   }
 }
-#sorting {
-  padding: 40px 0;
-}
 #sorting .container {
   padding: 2rem;
   max-width: 95%;
@@ -2423,7 +2445,7 @@ body {
 }
 #sorting h1 {
   color: var(--primary-text);
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 #sorting .row {
@@ -2455,13 +2477,13 @@ body {
 }
 #sorting .topic-card .card-content:hover {
   transform: translateY(-5px);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(224, 224, 224, 0.793);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 #sorting .topic-card .card-content .card-name {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--light-yellow);
+  color: var(--light-orange);
   margin: 0;
 }
 #sorting .topic-card .card-content .complexity {
@@ -2509,66 +2531,6 @@ body {
 #sorting .topic-card .card-content .btn:hover i {
   transform: translateX(2px);
 }
-#sorting .topic-card .algorithm-details {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 800px;
-  max-height: 90vh;
-  overflow-y: auto;
-  background: linear-gradient(145deg, #111010, #212121);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 2rem;
-  z-index: 1000;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-#sorting .topic-card .algorithm-details h3 {
-  color: var(--light-yellow);
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-#sorting .topic-card .algorithm-details .description {
-  margin-bottom: 2rem;
-}
-#sorting .topic-card .algorithm-details .description p {
-  color: var(--secondary-text);
-  font-size: 0.9rem;
-  line-height: 1.6;
-}
-#sorting .topic-card .algorithm-details .implementation pre {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  padding: 1rem;
-  margin: 0;
-  overflow-x: auto;
-}
-#sorting .topic-card .algorithm-details .implementation pre code {
-  color: var(--primary-text);
-  font-family: "Fira Code", monospace;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  white-space: pre;
-}
-#sorting .topic-card .algorithm-details::-webkit-scrollbar {
-  width: 8px;
-}
-#sorting .topic-card .algorithm-details::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-}
-#sorting .topic-card .algorithm-details::-webkit-scrollbar-thumb {
-  background: var(--light-yellow);
-  border-radius: 4px;
-}
-#sorting .topic-card .algorithm-details::-webkit-scrollbar-thumb:hover {
-  background: var(--dark-yellow);
-}
 #sorting::after {
   content: "";
   position: fixed;
@@ -2611,16 +2573,16 @@ body {
     padding: 1.5rem;
   }
 }
-@media (max-width: 768px) {
-  #sorting .container {
-    padding: 2rem 1rem;
-  }
+@media (max-width: 900px) {
   #sorting .row {
     grid-template-columns: repeat(2, 1fr);
-    padding: 0 1rem;
+    gap: 1rem;
   }
-  #sorting .algorithm-details {
-    padding: 1rem;
+}
+@media (max-width: 600px) {
+  #sorting .row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 @media (max-width: 480px) {
