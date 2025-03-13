@@ -93,7 +93,7 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-.btn, .sorting-visualizer .visualizer-content .input-section button, .sorting-visualizer .visualizer-content .controls button, #home .container .left button {
+.btn, #home .container .left button {
   font-family: var(--secondary-font);
   font-weight: 600;
   font-size: 1rem;
@@ -109,35 +109,11 @@ body {
   border-radius: 0;
 }
 
-.sorting-visualizer .visualizer-content .close-button {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: transparent;
-  border: none;
-  color: var(--secondary-text);
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  z-index: 10;
-}
-.sorting-visualizer .visualizer-content .close-button:hover {
-  color: var(--primary-text);
-  transform: scale(1.1);
-}
-.sorting-visualizer .visualizer-content .close-button:active {
-  transform: scale(0.95);
-}
-
-.btn, .sorting-visualizer .visualizer-content .input-section button, .sorting-visualizer .visualizer-content .controls button, #home .container .left button {
+.btn, #home .container .left button {
   border-color: var(--dark-yellow);
   color: var(--dark-yellow);
 }
-.btn:hover, .sorting-visualizer .visualizer-content .input-section button:hover, .sorting-visualizer .visualizer-content .controls button:hover, #home .container .left button:hover {
+.btn:hover, #home .container .left button:hover {
   background: var(--dark-yellow);
   color: var(--primary-background);
 }
@@ -721,7 +697,12 @@ body {
 #home .container .right #toggleAnimation:focus,
 #home .container .right #skip:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(252, 189, 0, 0.3);
+  box-shadow: 0 0 0 3px rgba(var(--light-yellow), 0.3);
+}
+#home .container .right #toggleAnimation i,
+#home .container .right #skip i {
+  font-size: 14px;
+  transition: transform 0.3s ease;
 }
 #home .container .right #toggleAnimation {
   right: 4rem;
@@ -2211,7 +2192,34 @@ body {
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
-.sorting-visualizer .visualizer-content .left-section, .sorting-visualizer .visualizer-content .right-section {
+.sorting-visualizer .visualizer-content .close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--light-orange);
+  color: var(--light-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+.sorting-visualizer .visualizer-content .close-button:hover {
+  background: var(--light-orange);
+  color: var(--primary-background);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(var(--light-orange), 0.3);
+}
+.sorting-visualizer .visualizer-content .close-button i {
+  font-size: 1rem;
+}
+.sorting-visualizer .visualizer-content .left-section,
+.sorting-visualizer .visualizer-content .right-section {
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
@@ -2222,8 +2230,52 @@ body {
 .sorting-visualizer .visualizer-content .right-section {
   background: linear-gradient(145deg, #1a1a1a, #212121);
 }
+.sorting-visualizer .visualizer-content .right-section .select-container {
+  margin-bottom: 1rem;
+}
+.sorting-visualizer .visualizer-content .right-section .select-container label {
+  display: block;
+  color: var(--light-orange);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.sorting-visualizer .visualizer-content .right-section .select-container select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: var(--primary-text);
+  cursor: pointer;
+  font-family: var(--secondary-font);
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.763L10.825 4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px;
+}
+.sorting-visualizer .visualizer-content .right-section .select-container select:focus {
+  outline: none;
+  border-color: var(--light-orange);
+  background-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 3px rgba(var(--light-orange), 0.1);
+}
+.sorting-visualizer .visualizer-content .right-section .select-container select:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.sorting-visualizer .visualizer-content .right-section .select-container select option {
+  background: var(--secondary-background);
+  color: var(--primary-text);
+  padding: 0.5rem;
+}
+.sorting-visualizer .visualizer-content .right-section .select-container.language-select {
+  max-width: 200px;
+}
 .sorting-visualizer .visualizer-content h2 {
-  color: var(--light-yellow);
+  color: var(--light-orange);
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
 }
@@ -2235,56 +2287,86 @@ body {
 }
 .sorting-visualizer .visualizer-content .input-section .select-container label {
   display: block;
-  color: var(--primary-text);
+  color: var(--light-orange);
+  font-weight: 500;
   margin-bottom: 0.5rem;
 }
 .sorting-visualizer .visualizer-content .input-section .select-container select {
   width: 100%;
-  padding: 0.8rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
   color: var(--primary-text);
   cursor: pointer;
   font-family: var(--secondary-font);
   transition: all 0.3s ease;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.763L10.825 4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px;
 }
 .sorting-visualizer .visualizer-content .input-section .select-container select:focus {
-  border-color: var(--light-yellow);
   outline: none;
+  border-color: var(--light-orange);
+  background-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 3px rgba(var(--light-orange), 0.1);
+}
+.sorting-visualizer .visualizer-content .input-section .select-container select:hover {
+  border-color: rgba(255, 255, 255, 0.2);
 }
 .sorting-visualizer .visualizer-content .input-section .select-container select option {
   background: var(--secondary-background);
   color: var(--primary-text);
   padding: 0.5rem;
 }
-.sorting-visualizer .visualizer-content .input-section label {
-  display: block;
-  color: var(--primary-text);
-  margin-bottom: 0.5rem;
-}
-.sorting-visualizer .visualizer-content .input-section input {
-  width: 100%;
-  padding: 0.8rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  color: var(--primary-text);
-  margin-bottom: 1rem;
-}
-.sorting-visualizer .visualizer-content .input-section input:focus {
-  border-color: var(--light-yellow);
-  outline: none;
-}
-.sorting-visualizer .visualizer-content .input-section button {
-  width: 100%;
+.sorting-visualizer .visualizer-content .input-section .select-container.language-select {
+  max-width: 200px;
 }
 .sorting-visualizer .visualizer-content .array-display {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
   gap: 0.5rem;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
+  min-height: 80px;
+  overflow-x: auto;
+  padding: 1rem;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(var(--light-orange), 0.2);
+  animation: fadeIn 0.5s ease;
+  position: relative;
+  z-index: 1;
+  display: flex !important;
+  visibility: visible !important;
+}
+.sorting-visualizer .visualizer-content .array-display .array-content {
+  display: flex !important;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
+}
+.sorting-visualizer .visualizer-content .array-display .array-content .array-elements {
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 0;
   min-height: 60px;
+  visibility: visible !important;
+}
+.sorting-visualizer .visualizer-content .array-display .phase-label {
+  color: var(--light-orange);
+  font-weight: 600;
+  margin-right: 1rem;
+  white-space: nowrap;
 }
 .sorting-visualizer .visualizer-content .array-display .array-element {
   background: rgba(255, 255, 255, 0.05);
@@ -2294,19 +2376,51 @@ body {
   min-width: 40px;
   text-align: center;
   transition: all 0.3s ease;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 1.5rem;
+}
+.sorting-visualizer .visualizer-content .array-display .array-element .element-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.sorting-visualizer .visualizer-content .array-display .array-element .element-index {
+  font-size: 0.8rem;
+  color: var(--secondary-text);
+  opacity: 0.7;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  margin-top: 0.2rem;
+}
+.sorting-visualizer .visualizer-content .array-display .array-element .variable-label {
+  position: absolute;
+  top: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: var(--light-orange);
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--primary-text);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  z-index: 2;
+  white-space: nowrap;
 }
 .sorting-visualizer .visualizer-content .array-display .array-element.highlight {
-  background: var(--light-yellow);
+  background: var(--light-orange);
   color: var(--primary-background);
   transform: translateY(-5px);
 }
-.sorting-visualizer .visualizer-content .controls {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-.sorting-visualizer .visualizer-content .controls button {
-  flex: 1;
+.sorting-visualizer .visualizer-content .array-display .array-element.highlight .element-index {
+  color: var(--primary-background);
+  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.2);
 }
 .sorting-visualizer .visualizer-content .variable-display {
   background: rgba(255, 255, 255, 0.05);
@@ -2314,7 +2428,7 @@ body {
   border-radius: 4px;
 }
 .sorting-visualizer .visualizer-content .variable-display h3 {
-  color: var(--light-yellow);
+  color: var(--light-orange);
   margin-bottom: 1rem;
   font-size: 1.1rem;
 }
@@ -2326,19 +2440,21 @@ body {
 }
 .sorting-visualizer .visualizer-content .code-box {
   background: rgba(0, 0, 0, 0.3);
-  padding: 1rem;
+  padding: 0.8rem;
   border-radius: 4px;
   font-family: "Fira Code", monospace;
   height: calc(100% - 120px);
   overflow-y: auto;
+  max-width: 600px;
+  margin: 0 auto;
 }
 .sorting-visualizer .visualizer-content .code-box .code-line {
   color: var(--primary-text);
-  padding: 0.2rem 0.5rem;
-  font-size: 0.9rem;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.8rem;
   white-space: pre;
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
   transition: all 0.3s ease;
 }
 .sorting-visualizer .visualizer-content .code-box .code-line .line-number {
@@ -2348,37 +2464,39 @@ body {
           user-select: none;
   min-width: 2ch;
   text-align: right;
+  font-size: 0.75rem;
 }
 .sorting-visualizer .visualizer-content .code-box .code-line .line-content {
   flex: 1;
+  font-size: 0.8rem;
 }
 .sorting-visualizer .visualizer-content .code-box .code-line.highlight {
-  background: var(--light-yellow);
+  background: var(--light-orange);
   color: var(--primary-background);
-  transform: translateX(10px);
+  transform: translateX(8px);
   border-radius: 4px;
 }
 .sorting-visualizer .visualizer-content .code-box .code-line.highlight .line-number {
   opacity: 0.7;
 }
 .sorting-visualizer .visualizer-content .code-box::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
 }
 .sorting-visualizer .visualizer-content .code-box::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.2);
 }
 .sorting-visualizer .visualizer-content .code-box::-webkit-scrollbar-thumb {
-  background: var(--light-yellow);
-  border-radius: 4px;
+  background: var(--light-orange);
+  border-radius: 2px;
 }
 .sorting-visualizer .visualizer-content .code-box::-webkit-scrollbar-thumb:hover {
-  background: var(--dark-yellow);
+  opacity: 0.8;
 }
 .sorting-visualizer .visualizer-content .step-history {
   margin-top: 1.5rem;
 }
 .sorting-visualizer .visualizer-content .step-history h4 {
-  color: var(--light-yellow);
+  color: var(--light-orange);
   font-size: 1rem;
   margin-bottom: 0.8rem;
 }
@@ -2397,7 +2515,7 @@ body {
   transition: all 0.3s ease;
 }
 .sorting-visualizer .visualizer-content .step-history .history-list .history-item.current {
-  background: var(--light-yellow);
+  background: var(--light-orange);
   color: var(--primary-background);
   transform: translateX(5px);
 }
@@ -2408,13 +2526,174 @@ body {
   background: rgba(0, 0, 0, 0.2);
 }
 .sorting-visualizer .visualizer-content .step-history .history-list::-webkit-scrollbar-thumb {
-  background: var(--light-yellow);
+  background: var(--light-orange);
   border-radius: 3px;
 }
 .sorting-visualizer .visualizer-content .step-history .history-list::-webkit-scrollbar-thumb:hover {
-  background: var(--dark-yellow);
+  opacity: 0.8;
+}
+.sorting-visualizer .visualizer-content .input-controls {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+.sorting-visualizer .visualizer-content .input-controls .array-input-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.sorting-visualizer .visualizer-content .input-controls .array-input-section label {
+  font-size: 0.9rem;
+  color: var(--light-orange);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.sorting-visualizer .visualizer-content .input-controls .array-input-section input {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  color: var(--primary-text);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: var(--secondary-font);
+  transition: all 0.3s ease;
+}
+.sorting-visualizer .visualizer-content .input-controls .array-input-section input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+.sorting-visualizer .visualizer-content .input-controls .array-input-section input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+.sorting-visualizer .visualizer-content .input-controls .array-input-section input:focus {
+  outline: none;
+  border-color: var(--light-orange);
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 3px rgba(var(--light-orange), 0.1);
+}
+.sorting-visualizer .visualizer-content .input-controls .array-input-section input:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.sorting-visualizer .visualizer-content .input-controls .playback-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.sorting-visualizer .visualizer-content .input-controls .playback-controls .speed-control {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--light-orange);
+}
+.sorting-visualizer .visualizer-content .input-controls .playback-controls .speed-control label {
+  font-size: 0.9rem;
+  color: var(--light-orange);
+  white-space: nowrap;
+}
+.sorting-visualizer .visualizer-content .input-controls .playback-controls .speed-control input[type=range] {
+  width: 120px;
+  direction: rtl;
+  accent-color: var(--light-orange);
+}
+.sorting-visualizer .visualizer-content .input-controls .playback-controls .speed-control span {
+  font-size: 0.9rem;
+  color: var(--light-orange);
+  min-width: 40px;
+}
+.sorting-visualizer .visualizer-content .input-controls .playback-controls .play-pause {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--button-background);
+  border: 1px solid var(--light-orange);
+  color: var(--light-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.sorting-visualizer .visualizer-content .input-controls .playback-controls .play-pause:hover:not(:disabled) {
+  background: var(--light-orange);
+  color: var(--primary-background);
+}
+.sorting-visualizer .visualizer-content .input-controls .playback-controls .play-pause:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.sorting-visualizer .visualizer-content .input-controls .playback-controls .play-pause i {
+  font-size: 1.2rem;
+}
+.sorting-visualizer .visualizer-content .navigation-buttons {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+.sorting-visualizer .visualizer-content .navigation-buttons button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: var(--button-background);
+  border: 1px solid var(--light-orange);
+  color: var(--light-orange);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  min-width: 100px;
+  justify-content: center;
+}
+.sorting-visualizer .visualizer-content .navigation-buttons button:hover:not(:disabled) {
+  background: var(--light-orange);
+  color: var(--primary-background);
+}
+.sorting-visualizer .visualizer-content .navigation-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.sorting-visualizer .visualizer-content .navigation-buttons button i {
+  font-size: 0.8rem;
+}
+.sorting-visualizer .visualizer-content .progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.sorting-visualizer .visualizer-content .progress-bar .progress {
+  height: 100%;
+  background: var(--light-orange);
+  transition: width 0.3s ease;
 }
 
+@media (max-width: 1024px) {
+  .sorting-visualizer .visualizer-content {
+    flex-direction: column;
+    height: 95vh;
+  }
+  .sorting-visualizer .visualizer-content .left-section,
+  .sorting-visualizer .visualizer-content .right-section {
+    padding: 1.5rem;
+  }
+  .sorting-visualizer .visualizer-content .code-box {
+    height: 300px;
+  }
+}
+@media (max-width: 768px) {
+  .sorting-visualizer .visualizer-content {
+    width: 95%;
+  }
+  .sorting-visualizer .visualizer-content .left-section,
+  .sorting-visualizer .visualizer-content .right-section {
+    padding: 1rem;
+  }
+}
 @media (max-width: 1024px) {
   .sorting-visualizer .visualizer-content {
     flex-direction: column;

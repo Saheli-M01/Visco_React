@@ -975,7 +975,7 @@ private static void heapify(int arr[], int n, int i) {
           count[i] += count[i - 1];
 
       for (let i = n - 1; i >= 0; i--) {
-          let index = Math.floor(arr[i] / exp) % 10;
+          let index = Math.floor(arr[i] / exp) % 10];
           output[count[index] - 1] = arr[i];
           count[index]--;
       }
@@ -1620,7 +1620,7 @@ void bucketSort(float arr[], int n) {
               </select>
             </div>
             <div className="input-controls">
-              <div>
+              <div className="array-input-section">
                 <label htmlFor="arrayInput">Enter Array: </label>
                 <input
                   type="text"
@@ -1633,22 +1633,63 @@ void bucketSort(float arr[], int n) {
                   }}
                 />
               </div>
-              <button
+              <div className="playback-controls">
+              <button 
+                  className="play-pause" 
+                  onClick={togglePlay}
+                  disabled={steps.length === 0}
+                >
+                  <i className={`fa-solid ${isPlaying ? "fa-pause" : "fa-play"}`}></i>
+                </button>
+                <div className="speed-control">
+                  <label>Speed:</label>
+                  <input 
+                    type="range" 
+                    min="100" 
+                    max="1000" 
+                    step="100"
+                    value={speed} 
+                    onChange={(e) => setSpeed(parseInt(e.target.value))}
+                  />
+                  <span>{Math.round(10000 / speed) / 10}x</span>
+                </div>
+                
+              </div>
+            </div>
+            <div className="navigation-buttons">
+              <button 
                 onClick={(e) =>
                   startVisualization(
-                    e.target.previousElementSibling.querySelector("input").value
+                    e.target.closest('.input-controls').querySelector("input").value
                   )
                 }
+                disabled={isPlaying || currentStep === steps.length - 1}
               >
-                Start <i className="fa-solid fa-circle-play"></i>
+                <i className="fa-solid fa-circle-play"></i> Start
               </button>
-              <button
-                className="btn btn-outline play-pause-btn"
-                onClick={togglePlay}
+              <button 
+                onClick={() => setCurrentStep(0)} 
+                disabled={isPlaying || currentStep === 0}
               >
-                <i
-                  className={`fa-solid ${isPlaying ? "fa-pause" : "fa-play"}`}
-                ></i>
+                <i className="fa-solid fa-backward"></i> First
+              </button>
+              <button 
+                onClick={prevStep} 
+                disabled={isPlaying || currentStep === 0}
+              >
+                <i className="fa-solid fa-caret-left"></i> Prev
+              </button>
+              <button 
+                onClick={nextStep} 
+                disabled={isPlaying || currentStep === steps.length - 1}
+              >
+                Next <i className="fa-solid fa-caret-right"></i>
+              </button>
+              <button 
+                onClick={lastStep} 
+                disabled={isPlaying || currentStep === steps.length - 1}
+              >
+                Last <i className="fa-solid fa-forward"></i>
               </button>
             </div>
           </div>
@@ -1657,21 +1698,30 @@ void bucketSort(float arr[], int n) {
             <div className="main-array">
               <div className="phase-label">Main Array</div>
               <div className="array-content">
-                {steps[currentStep]?.array.map((value, index) => (
-                  <div
-                    key={index}
-                    className={`array-element ${
-                      index === steps[currentStep]?.i ||
-                      index === steps[currentStep]?.j
-                        ? "highlight"
-                        : ""
-                    } ${steps[currentStep]?.comparing ? "comparing" : ""} ${
-                      steps[currentStep]?.copying ? "copying" : ""
-                    }`}
-                  >
-                    {value}
-                  </div>
-                ))}
+                
+                <div className="array-elements">
+                  {steps[currentStep]?.array.map((value, index) => (
+                    <div
+                      key={index}
+                      className={`array-element ${
+                        index === steps[currentStep]?.i ||
+                        index === steps[currentStep]?.j
+                          ? "highlight"
+                          : ""
+                      } ${steps[currentStep]?.comparing ? "comparing" : ""} ${
+                        steps[currentStep]?.copying ? "copying" : ""
+                      }`}
+                    >
+                      {(index === steps[currentStep]?.i || index === steps[currentStep]?.j) && (
+                        <div className="variable-label">
+                          {index === steps[currentStep]?.i ? "i" : "j"}
+                        </div>
+                      )}
+                      <div className="element-value">{value}</div>
+                      <div className="element-index">{index}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -1738,22 +1788,6 @@ void bucketSort(float arr[], int n) {
               )}
           </div>
 
-          <div className="controls">
-            <button onClick={() => setCurrentStep(0)}>
-              <i class="fa-solid fa-backward"></i> First
-            </button>
-            <button onClick={prevStep}>
-              {" "}
-              <i class="fa-solid fa-caret-left"></i>Prev
-            </button>
-            <button onClick={nextStep}>
-              Next <i class="fa-solid fa-caret-right"></i>
-            </button>
-            <button onClick={lastStep}>
-              Last <i class="fa-solid fa-forward"></i>
-            </button>
-          </div>
-
           <div className="progress-bar">
             <div
               className="progress"
@@ -1761,19 +1795,6 @@ void bucketSort(float arr[], int n) {
                 width: `${(currentStep / (steps.length - 1)) * 100}%`,
               }}
             />
-          </div>
-
-          <div className="speed-control">
-            <span>Speed:</span>
-            <input
-              type="range"
-              min="50"
-              max="1000"
-              value={1050 - speed}
-              onChange={(e) => setSpeed(1050 - parseInt(e.target.value))}
-              className="speed-slider"
-            />
-            <span>{Math.round(10000 / speed) / 10}x</span>
           </div>
 
           <div className="variable-display">
