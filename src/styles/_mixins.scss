@@ -65,4 +65,40 @@
   @media (min-width: 1024px) {
     @content;
   }
+}
+
+// Control button mixin (play/pause, skip)
+@mixin control-button($bg-color, $hover-color, $size: 35px) {
+  width: $size;
+  height: $size;
+  background-color: $bg-color;
+  color: var(--secondary-background) !important;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: var(--secondary-font);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  border: none;
+  padding: 0;
+  z-index: 20;
+
+  &:hover {
+    background: transparent;
+    border: 2px solid $hover-color;
+    color: $hover-color !important;
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($hover-color, 0.3);
+  }
+
+  i {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+  }
 } 

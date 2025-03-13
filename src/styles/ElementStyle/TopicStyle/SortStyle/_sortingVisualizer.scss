@@ -1,4 +1,5 @@
 @use '../../../_shared';
+@use '../../../mixins' as *;
 
 // Sorting Visualizer Styles
 .sorting-visualizer {
@@ -278,6 +279,20 @@
           &:hover {
             background: var(--dark-yellow);
           }
+        }
+      }
+    }
+
+    .input-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-end;
+
+      button {
+        &.play-pause-btn {
+          @include control-button(var(--dark-yellow), var(--light-yellow), 30px);
+          position: relative;
+          margin-bottom: 1rem;
         }
       }
     }

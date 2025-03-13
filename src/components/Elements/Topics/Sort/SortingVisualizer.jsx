@@ -165,19 +165,20 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
     }
 }`,
 
-      c: `void selectionSort(int arr[], int n) {
-  int i, j, min_idx, temp;
-  for (i = 0; i < n-1; i++) {
-      min_idx = i;
-      for (j = i+1; j < n; j++) {
-          if (arr[j] < arr[min_idx])
-              min_idx = j;
-      }
-      // Swap the found minimum element with the first element
-      temp = arr[min_idx];
-      arr[min_idx] = arr[i];
-      arr[i] = temp;
-  }
+      c: `void insertionSort(int arr[], int n) {
+    int i, key, j;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+
+        // Move elements of arr[0..i-1] that are greater than key
+        // to one position ahead of their current position
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
 }`,
       javaScript: `function insertionSort(arr) {
   for (let i = 1; i < arr.length; i++) {
@@ -1101,49 +1102,30 @@ buckets.forEach(bucket => bucket.sort((a, b) => a - b));
 return [].concat(...buckets);
 }`,
 
-      c: `#include <stdio.h>
-#include <stdlib.h>
+      c: `int compare(const void* a, const void* b) {
+    return (*(float*)a > *(float*)b) - (*(float*)a < *(float*)b);
+}
 
 void bucketSort(float arr[], int n) {
-if (n == 0) return;
+    if (n == 0) return;
 
-float max_val = arr[0], min_val = arr[0];
-for (int i = 1; i < n; i++) {
-    if (arr[i] > max_val) max_val = arr[i];
-    if (arr[i] < min_val) min_val = arr[i];
-}
+    float min_val = arr[0], max_val = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] < min_val) min_val = arr[i];
+        if (arr[i] > max_val) max_val = arr[i];
+    }
 
-float range = (max_val - min_val) / n;
-float *buckets[n];
-int bucket_sizes[n];
-for (int i = 0; i < n; i++) {
-    buckets[i] = (float *)malloc(n * sizeof(float));
-    bucket_sizes[i] = 0;
-}
+    float range = (max_val - min_val) / n;
+    float buckets[n][n];  
+    int bucket_sizes[n];  
 
-for (int i = 0; i < n; i++) {
-    int index = (arr[i] - min_val) / range;
-    if (index == n) index--;
-    buckets[index][bucket_sizes[index]++] = arr[i];
-}
+    for (int i = 0; i < n; i++) bucket_sizes[i] = 0;
 
-for (int i = 0; i < n; i++)
-    for (int j = 0; j < bucket_sizes[i] - 1; j++)
-        for (int k = 0; k < bucket_sizes[i] - j - 1; k++)
-            if (buckets[i][k] > buckets[i][k + 1]) {
-                float temp = buckets[i][k];
-                buckets[i][k] = buckets[i][k + 1];
-                buckets[i][k + 1] = temp;
-            }
-
-int idx = 0;
-for (int i = 0; i < n; i++)
-    for (int j = 0; j < bucket_sizes[i]; j++)
-        arr[idx++] = buckets[i][j];
-
-for (int i = 0; i < n; i++)
-    free(buckets[i]);
-}`,
+    for (int i = 0; i < n; i++) {
+        int index = (arr[i] - min_val) / range;
+        if (index == n) index--;
+        buckets[index][bucket_sizes[index]++] = arr[i];
+    }`,
     },
   };
 

@@ -1,4 +1,5 @@
 @use '../shared' as *;
+@use '../mixins' as *;
 
 #home {
 
@@ -202,33 +203,7 @@
 
       #toggleAnimation,
       #skip {
-        width: 35px;
-        height: 35px;
-        background-color: var(--dark-yellow);
-        color: var(--secondary-background) !important;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-family: var(--secondary-font);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: absolute;
-        border: none;
-        padding: 0;
-        z-index: 20;
-
-        &:hover {
-          background: transparent;
-          border: 2px solid var(--light-yellow);
-          color: var(--light-yellow) !important;
-          transform: scale(1.1);
-        }
-
-        &:focus {
-          outline: none;
-          box-shadow: 0 0 0 3px rgba(252, 189, 0, 0.3);
-        }
+        @include control-button(var(--dark-yellow), var(--light-yellow));
       }
 
       #toggleAnimation {
