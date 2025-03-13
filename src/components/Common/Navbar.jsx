@@ -102,7 +102,11 @@ const Navbar = () => {
                 {/* Only Show Dropdown Button in Topics Pages */}
                 {isTopicPage && (
                   <>
-                    <button id="dropdown" className="dropdown-toggle-btn ps-0" onClick={toggleDropdown}>
+                    <button 
+                      id="dropdown" 
+                      className={`dropdown-toggle-btn ps-0 ${isDropdownOpen ? 'active' : ''}`} 
+                      onClick={toggleDropdown}
+                    >
                       <i className={`fa-solid ${isDropdownOpen ? "fa-chevron-up" : "fa-chevron-down"}`}></i>
                     </button>
 

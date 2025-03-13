@@ -126,21 +126,45 @@
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    padding: 1rem 0 ;
+    padding: 0.5rem;
     transition: all 0.3s ease;
     cursor: pointer;
     justify-content: center;
+    position: relative;
+    margin-left: 0.5rem;
 
     i {
       padding: 6px;
       border-radius: 50px;
-      transition: inherit;
+      transition: all 0.3s ease;
       color: inherit;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      font-size: 0.8rem;
     }
 
     &:hover {
       color: var(--light-blue);
       transform: translateY(-2px);
+
+      i {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--light-blue);
+        transform: translateY(1px);
+      }
+    }
+
+    &.active {
+      i {
+    
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--light-blue);
+      }
     }
   }
 

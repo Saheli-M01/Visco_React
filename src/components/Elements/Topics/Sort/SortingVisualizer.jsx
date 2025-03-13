@@ -10,6 +10,7 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
   );
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(500); // Default speed: 500ms
+  const [inputValue, setInputValue] = useState("");
 
   const algorithms = {
     bubble: {
@@ -1546,15 +1547,30 @@ void bucketSort(float arr[], int n) {
   };
 
   const startVisualization = (input) => {
-    const newArray = input.split(",").map(Number);
+    if (!input) {
+      alert("Please enter an array of numbers");
+      return;
+    }
+    
+    console.log("Input received:", input);
+    setInputValue(input);
+    
+    const newArray = input.split(",").map(num => parseInt(num.trim()));
+    console.log("Parsed array:", newArray);
+    
     if (newArray.some(isNaN)) {
       alert("Please enter valid numbers separated by commas");
       return;
     }
+
+    console.log("Selected algorithm:", selectedAlgorithm);
     const { steps: newSteps, history: newHistory } = generateSteps(newArray);
+    console.log("Generated steps:", newSteps);
+    
     setSteps(newSteps);
     setHistory(newHistory);
     setCurrentStep(0);
+    setIsPlaying(false);
   };
 
   const nextStep = () => {
@@ -1625,16 +1641,19 @@ void bucketSort(float arr[], int n) {
                 <input
                   type="text"
                   id="arrayInput"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
                   placeholder="e.g., 64,34,25,12,22,11,90"
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
+                      console.log("Enter pressed, value:", e.target.value);
                       startVisualization(e.target.value);
                     }
                   }}
                 />
               </div>
               <div className="playback-controls">
-              <button 
+                <button 
                   className="play-pause" 
                   onClick={togglePlay}
                   disabled={steps.length === 0}
@@ -1653,16 +1672,15 @@ void bucketSort(float arr[], int n) {
                   />
                   <span>{Math.round(10000 / speed) / 10}x</span>
                 </div>
-                
               </div>
             </div>
             <div className="navigation-buttons">
               <button 
-                onClick={(e) =>
-                  startVisualization(
-                    e.target.closest('.input-controls').querySelector("input").value
-                  )
-                }
+                onClick={() => {
+                  const inputValue = document.getElementById("arrayInput").value;
+                  console.log("Start button clicked, value:", inputValue);
+                  startVisualization(inputValue);
+                }}
                 disabled={isPlaying || currentStep === steps.length - 1}
               >
                 <i className="fa-solid fa-circle-play"></i> Start
@@ -1695,12 +1713,15 @@ void bucketSort(float arr[], int n) {
           </div>
 
           <div className="array-display">
-            <div className="main-array">
-              <div className="phase-label">Main Array</div>
-              <div className="array-content">
-                
-                <div className="array-elements">
-                  {steps[currentStep]?.array.map((value, index) => (
+            <div className="phase-label">Array Elements</div>
+            <div className="array-content">
+              <div className="array-elements">
+                {console.log("Current step:", currentStep)}
+                {console.log("Steps:", steps)}
+                {console.log("Current array:", steps[currentStep]?.array)}
+                {steps[currentStep]?.array?.map((value, index) => {
+                  console.log("Rendering element:", value, "at index:", index);
+                  return (
                     <div
                       key={index}
                       className={`array-element ${
@@ -1708,8 +1729,6 @@ void bucketSort(float arr[], int n) {
                         index === steps[currentStep]?.j
                           ? "highlight"
                           : ""
-                      } ${steps[currentStep]?.comparing ? "comparing" : ""} ${
-                        steps[currentStep]?.copying ? "copying" : ""
                       }`}
                     >
                       {(index === steps[currentStep]?.i || index === steps[currentStep]?.j) && (
@@ -1720,72 +1739,10 @@ void bucketSort(float arr[], int n) {
                       <div className="element-value">{value}</div>
                       <div className="element-index">{index}</div>
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             </div>
-
-            {steps[currentStep]?.leftSubarray &&
-              steps[currentStep]?.dividing && (
-                <div className="dividing-phase">
-                  <div className="phase-label">Division Step</div>
-                  <div className="subarrays">
-                    <div className="subarray left">
-                      <div className="subarray-label">Left:</div>
-                      {steps[currentStep].leftSubarray.map((value, index) => (
-                        <div
-                          key={`left-${index}`}
-                          className="array-element dividing"
-                        >
-                          {value}
-                        </div>
-                      ))}
-                    </div>
-                    <div className="subarray right">
-                      <div className="subarray-label">Right:</div>
-                      {steps[currentStep].rightSubarray.map((value, index) => (
-                        <div
-                          key={`right-${index}`}
-                          className="array-element dividing"
-                        >
-                          {value}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-            {steps[currentStep]?.leftSubarray &&
-              steps[currentStep]?.merging && (
-                <div className="merging-phase">
-                  <div className="phase-label">Merging Step</div>
-                  <div className="subarrays">
-                    <div className="subarray left">
-                      <div className="subarray-label">Left:</div>
-                      {steps[currentStep].leftSubarray.map((value, index) => (
-                        <div
-                          key={`left-${index}`}
-                          className="array-element merging"
-                        >
-                          {value}
-                        </div>
-                      ))}
-                    </div>
-                    <div className="subarray right">
-                      <div className="subarray-label">Right:</div>
-                      {steps[currentStep].rightSubarray.map((value, index) => (
-                        <div
-                          key={`right-${index}`}
-                          className="array-element merging"
-                        >
-                          {value}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
           </div>
 
           <div className="progress-bar">
