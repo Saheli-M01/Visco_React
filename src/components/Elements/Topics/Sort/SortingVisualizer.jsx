@@ -39,8 +39,30 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
             }
         }
     }
-}`
-    },
+}`,
+  javaScript: `function bubbleSort(arr) {
+  let n = arr.length;
+  for (let i = 0; i < n - 1; i++) {
+      for (let j = 0; j < n - i - 1; j++) {
+          if (arr[j] > arr[j + 1]) {
+              [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]; // Swap
+          }
+      }
+  }
+  return arr;
+}`,
+  c :`void bubbleSort(int arr[], int n) {
+  for (int i = 0; i < n-1; i++) {
+      for (int j = 0; j < n-i-1; j++) {
+          if (arr[j] > arr[j+1]) {
+              int temp = arr[j];
+              arr[j] = arr[j+1];
+              arr[j+1] = temp;
+          }
+      }
+  }
+}`,
+  },
     selection: {
       name: 'Selection Sort',
       python: `def selectionSort(arr):
@@ -74,7 +96,38 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
         arr[min_idx] = arr[i];
         arr[i] = temp;
     }
-}`
+}`,
+javaScript :`function selectionSort(arr) {
+  let n = arr.length;
+  for (let i = 0; i < n - 1; i++) {
+      let min_idx = i;
+      for (let j = i + 1; j < n; j++) {
+          if (arr[j] < arr[min_idx]) {
+              min_idx = j;
+          }
+      }
+      // Swap the found minimum element with the first element
+      if (min_idx !== i) {
+          [arr[i], arr[min_idx]] = [arr[min_idx], arr[i]];
+      }
+  }
+  return arr;
+}`,
+c :`void selectionSort(int arr[], int n) {
+  int i, j, min_idx, temp;
+  for (i = 0; i < n-1; i++) {
+      min_idx = i;
+      for (j = i+1; j < n; j++) {
+          if (arr[j] < arr[min_idx])
+              min_idx = j;
+      }
+      // Swap the found minimum element with the first element
+      temp = arr[min_idx];
+      arr[min_idx] = arr[i];
+      arr[i] = temp;
+  }
+}`,
+
     },
     insertion: {
       name: 'Insertion Sort',
@@ -109,7 +162,64 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
         }
         arr[j + 1] = key;
     }
-}`
+}`,
+javaScript :`function selectionSort(arr) {
+  let n = arr.length;
+  for (let i = 0; i < n - 1; i++) {
+      let min_idx = i;
+      for (let j = i + 1; j < n; j++) {
+          if (arr[j] < arr[min_idx]) {
+              min_idx = j;
+          }
+      }
+      // Swap the found minimum element with the first element
+      if (min_idx !== i) {
+          [arr[i], arr[min_idx]] = [arr[min_idx], arr[i]];
+      }
+  }
+  return arr;
+}`,
+c :`void selectionSort(int arr[], int n) {
+  int i, j, min_idx, temp;
+  for (i = 0; i < n-1; i++) {
+      min_idx = i;
+      for (j = i+1; j < n; j++) {
+          if (arr[j] < arr[min_idx])
+              min_idx = j;
+      }
+      // Swap the found minimum element with the first element
+      temp = arr[min_idx];
+      arr[min_idx] = arr[i];
+      arr[i] = temp;
+  }
+}`,
+c :`void insertionSort(int arr[], int n) {
+  for (int i = 1; i < n; i++) {
+      int key = arr[i];
+      int j = i - 1;
+      // Move elements of arr[0..i-1] that are greater than key
+      // to one position ahead of their current position
+      while (j >= 0 && arr[j] > key) {
+          arr[j + 1] = arr[j];
+          j--;
+      }
+      arr[j + 1] = key;
+  }
+}`,
+    javaScript :`function insertionSort(arr) {
+  for (let i = 1; i < arr.length; i++) {
+      let key = arr[i];
+      let j = i - 1;
+      // Move elements of arr[0..i-1] that are greater than key
+      // to one position ahead of their current position
+      while (j >= 0 && arr[j] > key) {
+          arr[j + 1] = arr[j];
+          j--;
+      }
+      arr[j + 1] = key;
+  }
+  return arr;
+}`,
     },
     merge: {
       name: 'Merge Sort',
@@ -297,8 +407,771 @@ void mergeSort(int[] array, int start, int end) {
     
     // Merge the sorted halves
     merge(array, start, end);
-}`
+}`,
+c :`// Function to merge two subarrays
+void merge(int arr[], int start, int middle, int end) {
+    int leftSize = middle - start + 1;
+    int rightSize = end - middle;
+    
+    int leftArray[leftSize], rightArray[rightSize];
+
+    // Copy data to temp arrays
+    for (int i = 0; i < leftSize; i++)
+        leftArray[i] = arr[start + i];
+    for (int i = 0; i < rightSize; i++)
+        rightArray[i] = arr[middle + 1 + i];
+
+    int i = 0, j = 0, k = start;
+
+    // Merge the temporary arrays
+    while (i < leftSize && j < rightSize) {
+        if (leftArray[i] <= rightArray[j]) {
+            arr[k] = leftArray[i];
+            i++;
+        } else {
+            arr[k] = rightArray[j];
+            j++;
+        }
+        k++;
     }
+
+    // Copy remaining elements
+    while (i < leftSize) {
+        arr[k] = leftArray[i];
+        i++;
+        k++;
+    }
+    while (j < rightSize) {
+        arr[k] = rightArray[j];
+        j++;
+        k++;
+    }
+}
+
+// Function to implement Merge Sort
+void mergeSort(int arr[], int start, int end) {
+    if (start < end) {
+        int middle = start + (end - start) / 2;
+
+        mergeSort(arr, start, middle);
+        mergeSort(arr, middle + 1, end);
+
+        merge(arr, start, middle, end);
+    }
+}`,
+      javaScript :`function merge(arr, start, middle, end) {
+    let leftArray = arr.slice(start, middle + 1);
+    let rightArray = arr.slice(middle + 1, end + 1);
+
+    let i = 0, j = 0, k = start;
+
+    while (i < leftArray.length && j < rightArray.length) {
+        if (leftArray[i] <= rightArray[j]) {
+            arr[k] = leftArray[i];
+            i++;
+        } else {
+            arr[k] = rightArray[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < leftArray.length) {
+        arr[k] = leftArray[i];
+        i++;
+        k++;
+    }
+
+    while (j < rightArray.length) {
+        arr[k] = rightArray[j];
+        j++;
+        k++;
+    }
+}
+
+function mergeSort(arr, start = 0, end = arr.length - 1) {
+    if (start < end) {
+        let middle = Math.floor((start + end) / 2);
+
+        mergeSort(arr, start, middle);
+        mergeSort(arr, middle + 1, end);
+
+        merge(arr, start, middle, end);
+    }
+    return arr;
+}`,
+
+    },
+    name: 'Quick Sort',
+    quick : {
+      python :`def quick_sort(arr, low, high):
+    if low < high:
+        pivot_index = partition(arr, low, high)
+        quick_sort(arr, low, pivot_index - 1)  # Sort left part
+        quick_sort(arr, pivot_index + 1, high) # Sort right part
+
+def partition(arr, low, high):
+    pivot = arr[high]  # Choosing the last element as pivot
+    i = low - 1
+
+    for j in range(low, high):
+        if arr[j] < pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]  # Swap elements
+
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]  # Place pivot correctly
+    return i + 1
+`,
+      'c++':`void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pivotIndex = partition(arr, low, high);
+        quickSort(arr, low, pivotIndex - 1);  // Sort left part
+        quickSort(arr, pivotIndex + 1, high); // Sort right part
+    }
+}
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high]; // Choosing the last element as pivot
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            std::swap(arr[i], arr[j]); // Swap elements
+        }
+    }
+    std::swap(arr[i + 1], arr[high]); // Place pivot correctly
+    return i + 1;
+}`,
+      java :`public static void quickSort(int[] arr, int low, int high) {
+    if (low < high) {
+        int pivotIndex = partition(arr, low, high);
+        quickSort(arr, low, pivotIndex - 1);  // Sort left part
+        quickSort(arr, pivotIndex + 1, high); // Sort right part
+    }
+}
+
+private static int partition(int[] arr, int low, int high) {
+    int pivot = arr[high]; // Choosing the last element as pivot
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr, i, j);
+        }
+    }
+    swap(arr, i + 1, high);
+    return i + 1;
+}
+
+private static void swap(int[] arr, int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}`,
+      javaScript : `function quickSort(arr, low, high) {
+    if (low < high) {
+        let pivotIndex = partition(arr, low, high);
+        quickSort(arr, low, pivotIndex - 1);  // Sort left part
+        quickSort(arr, pivotIndex + 1, high); // Sort right part
+    }
+}
+
+function partition(arr, low, high) {
+    let pivot = arr[high]; // Choosing the last element as pivot
+    let i = low - 1;
+
+    for (let j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            [arr[i], arr[j]] = [arr[j], arr[i]]; // Swap elements
+        }
+    }
+    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]]; // Place pivot correctly
+    return i + 1;
+}`,
+      c :`void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pivotIndex = partition(arr, low, high);
+        quickSort(arr, low, pivotIndex - 1);  // Sort left part
+        quickSort(arr, pivotIndex + 1, high); // Sort right part
+    }
+}
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high]; // Choosing the last element as pivot
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            int temp = arr[i];  // Swap elements
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+    int temp = arr[i + 1];  // Place pivot correctly
+    arr[i + 1] = arr[high];
+    arr[high] = temp;
+
+    return i + 1;
+}`,
+    },
+    name: 'Heap Sort',
+    heap :{
+      python :`def heap_sort(arr):
+    def heapify(arr, n, i):
+        largest = i
+        left = 2 * i + 1
+        right = 2 * i + 2
+
+        if left < n and arr[left] > arr[largest]:
+            largest = left
+        if right < n and arr[right] > arr[largest]:
+            largest = right
+
+        if largest != i:
+            arr[i], arr[largest] = arr[largest], arr[i]
+            heapify(arr, n, largest)
+
+    n = len(arr)
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i)
+
+    for i in range(n - 1, 0, -1):
+        arr[i], arr[0] = arr[0], arr[i]
+        heapify(arr, i, 0)
+`,
+      'c++' :`void heapSort(int arr[], int n) {
+    auto heapify = [&](int arr[], int n, int i) {
+        int largest = i, left = 2 * i + 1, right = 2 * i + 2;
+
+        if (left < n && arr[left] > arr[largest]) largest = left;
+        if (right < n && arr[right] > arr[largest]) largest = right;
+
+        if (largest != i) {
+            swap(arr[i], arr[largest]);
+            heapify(arr, n, largest);
+        }
+    };
+
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+
+    for (int i = n - 1; i > 0; i--) {
+        swap(arr[0], arr[i]);
+        heapify(arr, i, 0);
+    }
+}`,
+      java :`public static void heapSort(int arr[]) {
+    int n = arr.length;
+
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+
+    for (int i = n - 1; i > 0; i--) {
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
+        heapify(arr, i, 0);
+    }
+}
+
+private static void heapify(int arr[], int n, int i) {
+    int largest = i, left = 2 * i + 1, right = 2 * i + 2;
+
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
+    if (largest != i) {
+        int temp = arr[i];
+        arr[i] = arr[largest];
+        arr[largest] = temp;
+        heapify(arr, n, largest);
+    }
+}`,
+      javaScript : `function heapSort(arr) {
+    function heapify(arr, n, i) {
+        let largest = i, left = 2 * i + 1, right = 2 * i + 2;
+
+        if (left < n && arr[left] > arr[largest]) largest = left;
+        if (right < n && arr[right] > arr[largest]) largest = right;
+
+        if (largest !== i) {
+            [arr[i], arr[largest]] = [arr[largest], arr[i]];
+            heapify(arr, n, largest);
+        }
+    }
+
+    let n = arr.length;
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--)
+        heapify(arr, n, i);
+
+    for (let i = n - 1; i > 0; i--) {
+        [arr[0], arr[i]] = [arr[i], arr[0]];
+        heapify(arr, i, 0);
+    }
+}`,
+      c :`void heapSort(int arr[], int n) {
+    void heapify(int arr[], int n, int i) {
+        int largest = i, left = 2 * i + 1, right = 2 * i + 2;
+
+        if (left < n && arr[left] > arr[largest])
+            largest = left;
+        if (right < n && arr[right] > arr[largest])
+            largest = right;
+
+        if (largest != i) {
+            int temp = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = temp;
+            heapify(arr, n, largest);
+        }
+    }
+
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+
+    for (int i = n - 1; i > 0; i--) {
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
+        heapify(arr, i, 0);
+    }
+}`,
+    },
+    name: 'Heap Sort',
+    shell: {
+      name: 'Shell Sort',
+      python: `def shellSort(arr):
+    n = len(arr)
+    gap = n // 2
+    while gap > 0:
+        for i in range(gap, n):
+            temp = arr[i]
+            j = i
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j -= gap
+            arr[j] = temp
+        gap //= 2
+    return arr`,
+      
+      "c++": `void shellSort(int arr[], int n) {
+    for (int gap = n / 2; gap > 0; gap /= 2) {
+        for (int i = gap; i < n; i++) {
+            int temp = arr[i];
+            int j;
+            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                arr[j] = arr[j - gap];
+            }
+            arr[j] = temp;
+        }
+    }
+}`,
+      
+      java: `void shellSort(int[] arr) {
+    int n = arr.length;
+    for (int gap = n / 2; gap > 0; gap /= 2) {
+        for (int i = gap; i < n; i++) {
+            int temp = arr[i];
+            int j;
+            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                arr[j] = arr[j - gap];
+            }
+            arr[j] = temp;
+        }
+    }
+}`,
+      
+      javaScript: `function shellSort(arr) {
+    let n = arr.length;
+    for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
+        for (let i = gap; i < n; i++) {
+            let temp = arr[i];
+            let j = i;
+            while (j >= gap && arr[j - gap] > temp) {
+                arr[j] = arr[j - gap];
+                j -= gap;
+            }
+            arr[j] = temp;
+        }
+    }
+    return arr;
+}`,
+      
+      c: `void shellSort(int arr[], int n) {
+    for (int gap = n / 2; gap > 0; gap /= 2) {
+        for (int i = gap; i < n; i++) {
+            int temp = arr[i];
+            int j;
+            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                arr[j] = arr[j - gap];
+            }
+            arr[j] = temp;
+        }
+    }
+}`
+  },
+  
+  counting: {
+    name: 'Counting Sort',
+    python: `def countingSort(arr):
+  max_val = max(arr)
+  count = [0] * (max_val + 1)
+  output = [0] * len(arr)
+
+  for num in arr:
+      count[num] += 1
+
+  for i in range(1, len(count)):
+      count[i] += count[i - 1]
+
+  for num in reversed(arr):
+      output[count[num] - 1] = num
+      count[num] -= 1
+
+  return output`,
+    
+    "c++": `void countingSort(int arr[], int n) {
+  int max_val = *max_element(arr, arr + n);
+  vector<int> count(max_val + 1, 0);
+  vector<int> output(n);
+
+  for (int i = 0; i < n; i++)
+      count[arr[i]]++;
+
+  for (int i = 1; i <= max_val; i++)
+      count[i] += count[i - 1];
+
+  for (int i = n - 1; i >= 0; i--) {
+      output[count[arr[i]] - 1] = arr[i];
+      count[arr[i]]--;
+  }
+
+  for (int i = 0; i < n; i++)
+      arr[i] = output[i];
+}`,
+    
+    java: `void countingSort(int[] arr) {
+  int max_val = Arrays.stream(arr).max().getAsInt();
+  int[] count = new int[max_val + 1];
+  int[] output = new int[arr.length];
+
+  for (int num : arr)
+      count[num]++;
+
+  for (int i = 1; i < count.length; i++)
+      count[i] += count[i - 1];
+
+  for (int i = arr.length - 1; i >= 0; i--) {
+      output[count[arr[i]] - 1] = arr[i];
+      count[arr[i]]--;
+  }
+
+  System.arraycopy(output, 0, arr, 0, arr.length);
+}`,
+    
+    javaScript : `function countingSort(arr) {
+  let max_val = Math.max(...arr);
+  let count = new Array(max_val + 1).fill(0);
+  let output = new Array(arr.length);
+
+  arr.forEach(num => count[num]++);
+  
+  for (let i = 1; i < count.length; i++)
+      count[i] += count[i - 1];
+
+  for (let i = arr.length - 1; i >= 0; i--) {
+      output[count[arr[i]] - 1] = arr[i];
+      count[arr[i]]--;
+  }
+
+  return output;
+}`,
+    
+    c: `void countingSort(int arr[], int n) {
+  int max_val = arr[0];
+  for (int i = 1; i < n; i++)
+      if (arr[i] > max_val)
+          max_val = arr[i];
+
+  int count[max_val + 1], output[n];
+  memset(count, 0, sizeof(count));
+
+  for (int i = 0; i < n; i++)
+      count[arr[i]]++;
+
+  for (int i = 1; i <= max_val; i++)
+      count[i] += count[i - 1];
+
+  for (int i = n - 1; i >= 0; i--) {
+      output[count[arr[i]] - 1] = arr[i];
+      count[arr[i]]--;
+  }
+
+  for (int i = 0; i < n; i++)
+      arr[i] = output[i];
+}`
+  },
+  radix: {
+    name: 'Radix Sort',
+    python: `def radixSort(arr):
+  max_val = max(arr)
+  exp = 1
+  while max_val // exp > 0:
+      n = len(arr)
+      output = [0] * n
+      count = [0] * 10
+
+      for i in range(n):
+          index = (arr[i] // exp) % 10
+          count[index] += 1
+
+      for i in range(1, 10):
+          count[i] += count[i - 1]
+
+      for i in range(n - 1, -1, -1):
+          index = (arr[i] // exp) % 10
+          output[count[index] - 1] = arr[i]
+          count[index] -= 1
+
+      for i in range(n):
+          arr[i] = output[i]
+
+      exp *= 10`,
+    
+    "c++": `void radixSort(int arr[], int n) {
+  int max_val = *max_element(arr, arr + n);
+  for (int exp = 1; max_val / exp > 0; exp *= 10) {
+      int output[n], count[10] = {0};
+
+      for (int i = 0; i < n; i++)
+          count[(arr[i] / exp) % 10]++;
+
+      for (int i = 1; i < 10; i++)
+          count[i] += count[i - 1];
+
+      for (int i = n - 1; i >= 0; i--) {
+          output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+          count[(arr[i] / exp) % 10]--;
+      }
+
+      for (int i = 0; i < n; i++)
+          arr[i] = output[i];
+  }
+}`,
+    
+    java: `void radixSort(int[] arr) {
+  int max_val = Arrays.stream(arr).max().getAsInt();
+  for (int exp = 1; max_val / exp > 0; exp *= 10) {
+      int n = arr.length;
+      int[] output = new int[n];
+      int[] count = new int[10];
+
+      for (int i = 0; i < n; i++)
+          count[(arr[i] / exp) % 10]++;
+
+      for (int i = 1; i < 10; i++)
+          count[i] += count[i - 1];
+
+      for (int i = n - 1; i >= 0; i--) {
+          output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+          count[(arr[i] / exp) % 10]--;
+      }
+
+      System.arraycopy(output, 0, arr, 0, n);
+  }
+}`,
+    
+    javaScript: `function radixSort(arr) {
+  let max_val = Math.max(...arr);
+  for (let exp = 1; Math.floor(max_val / exp) > 0; exp *= 10) {
+      let n = arr.length;
+      let output = new Array(n).fill(0);
+      let count = new Array(10).fill(0);
+
+      for (let i = 0; i < n; i++)
+          count[Math.floor(arr[i] / exp) % 10]++;
+
+      for (let i = 1; i < 10; i++)
+          count[i] += count[i - 1];
+
+      for (let i = n - 1; i >= 0; i--) {
+          let index = Math.floor(arr[i] / exp) % 10;
+          output[count[index] - 1] = arr[i];
+          count[index]--;
+      }
+
+      for (let i = 0; i < n; i++)
+          arr[i] = output[i];
+  }
+}`,
+    
+    c: `void radixSort(int arr[], int n) {
+  int max_val = arr[0];
+  for (int i = 1; i < n; i++)
+      if (arr[i] > max_val)
+          max_val = arr[i];
+
+  for (int exp = 1; max_val / exp > 0; exp *= 10) {
+      int output[n], count[10] = {0};
+
+      for (int i = 0; i < n; i++)
+          count[(arr[i] / exp) % 10]++;
+
+      for (int i = 1; i < 10; i++)
+          count[i] += count[i - 1];
+
+      for (int i = n - 1; i >= 0; i--) {
+          output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+          count[(arr[i] / exp) % 10]--;
+      }
+
+      for (int i = 0; i < n; i++)
+          arr[i] = output[i];
+  }
+}`
+},
+bucket: {
+  name: 'Bucket Sort',
+  python: `def bucketSort(arr):
+if len(arr) == 0:
+    return arr
+
+bucket_count = len(arr)
+max_val, min_val = max(arr), min(arr)
+bucket_range = (max_val - min_val) / bucket_count
+buckets = [[] for _ in range(bucket_count)]
+
+for num in arr:
+    index = int((num - min_val) / bucket_range)
+    if index == bucket_count:
+        index -= 1
+    buckets[index].append(num)
+
+for bucket in buckets:
+    bucket.sort()
+
+return [num for bucket in buckets for num in bucket]`,
+  
+  "c++": `void bucketSort(vector<float> &arr) {
+int n = arr.size();
+if (n == 0) return;
+
+vector<vector<float>> buckets(n);
+float max_val = *max_element(arr.begin(), arr.end());
+float min_val = *min_element(arr.begin(), arr.end());
+float range = (max_val - min_val) / n;
+
+for (float num : arr) {
+    int index = (num - min_val) / range;
+    if (index == n) index--;
+    buckets[index].push_back(num);
+}
+
+for (auto &bucket : buckets)
+    sort(bucket.begin(), bucket.end());
+
+int idx = 0;
+for (auto &bucket : buckets)
+    for (float num : bucket)
+        arr[idx++] = num;
+}`,
+  
+  java: `void bucketSort(float[] arr) {
+if (arr.length == 0) return;
+
+int n = arr.length;
+List<List<Float>> buckets = new ArrayList<>(n);
+for (int i = 0; i < n; i++) buckets.add(new ArrayList<>());
+
+float max_val = Arrays.stream(arr).max().getAsFloat();
+float min_val = Arrays.stream(arr).min().getAsFloat();
+float range = (max_val - min_val) / n;
+
+for (float num : arr) {
+    int index = (int) ((num - min_val) / range);
+    if (index == n) index--;
+    buckets.get(index).add(num);
+}
+
+for (List<Float> bucket : buckets)
+    Collections.sort(bucket);
+
+int idx = 0;
+for (List<Float> bucket : buckets)
+    for (float num : bucket)
+        arr[idx++] = num;
+}`,
+  
+  javaScript: `function bucketSort(arr) {
+if (arr.length === 0) return arr;
+
+let n = arr.length;
+let max_val = Math.max(...arr);
+let min_val = Math.min(...arr);
+let range = (max_val - min_val) / n;
+let buckets = Array.from({ length: n }, () => []);
+
+arr.forEach(num => {
+    let index = Math.floor((num - min_val) / range);
+    if (index === n) index--;
+    buckets[index].push(num);
+});
+
+buckets.forEach(bucket => bucket.sort((a, b) => a - b));
+
+return [].concat(...buckets);
+}`,
+  
+  c: `#include <stdio.h>
+#include <stdlib.h>
+
+void bucketSort(float arr[], int n) {
+if (n == 0) return;
+
+float max_val = arr[0], min_val = arr[0];
+for (int i = 1; i < n; i++) {
+    if (arr[i] > max_val) max_val = arr[i];
+    if (arr[i] < min_val) min_val = arr[i];
+}
+
+float range = (max_val - min_val) / n;
+float *buckets[n];
+int bucket_sizes[n];
+for (int i = 0; i < n; i++) {
+    buckets[i] = (float *)malloc(n * sizeof(float));
+    bucket_sizes[i] = 0;
+}
+
+for (int i = 0; i < n; i++) {
+    int index = (arr[i] - min_val) / range;
+    if (index == n) index--;
+    buckets[index][bucket_sizes[index]++] = arr[i];
+}
+
+for (int i = 0; i < n; i++)
+    for (int j = 0; j < bucket_sizes[i] - 1; j++)
+        for (int k = 0; k < bucket_sizes[i] - j - 1; k++)
+            if (buckets[i][k] > buckets[i][k + 1]) {
+                float temp = buckets[i][k];
+                buckets[i][k] = buckets[i][k + 1];
+                buckets[i][k + 1] = temp;
+            }
+
+int idx = 0;
+for (int i = 0; i < n; i++)
+    for (int j = 0; j < bucket_sizes[i]; j++)
+        arr[idx++] = buckets[i][j];
+
+for (int i = 0; i < n; i++)
+    free(buckets[i]);
+}`
+},
   };
 
   const generateSteps = (inputArray) => {
@@ -693,6 +1566,12 @@ void mergeSort(int[] array, int start, int end) {
                 <option value="selection">Selection Sort</option>
                 <option value="insertion">Insertion Sort</option>
                 <option value="merge">Merge Sort</option>
+                <option value="quick">Quick Sort</option>
+                <option value="heap">Heap Sort</option>
+                <option value="shell">Shell Sort</option>
+                <option value="counting">Counting Sort</option>
+                <option value="radix">Radix Sort</option>
+                <option value="bucket">Bucket Sort</option>
               </select>
             </div>
             <div className="input-controls">
@@ -853,6 +1732,8 @@ void mergeSort(int[] array, int start, int end) {
               <option value="python">Python</option>
               <option value="c++">C++</option>
               <option value="java">Java</option>
+              <option value="javaScript">JavaScript</option>
+              <option value="c">C</option>
             </select>
           </div>
           <div className="code-box">
