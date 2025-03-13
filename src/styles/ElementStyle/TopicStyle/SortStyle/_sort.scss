@@ -1,4 +1,5 @@
 @use '../../../_shared';
+@use '../../../mixins';
 @use '../ArrayStyle/arrayVisualizer';
 @use './sortingVisualizer';
 
@@ -25,7 +26,7 @@
   }
 
   .topic-card {
-    @include shared.topic-card(var(--light-orange));
+    @include mixins.topic-card(var(--light-orange));
   }
 
   // Add overlay when algorithm details are shown
