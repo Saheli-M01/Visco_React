@@ -241,6 +241,13 @@
             gap: 0.5rem;
             flex-wrap: wrap;
             justify-content: center;
+            padding: 1.5rem 0.5rem;
+            width: 100%;
+            
+            @media (max-width: 768px) {
+              gap: 0.35rem;
+              padding: 1rem 0.25rem;
+            }
           }
 
           .subarrays {
@@ -294,38 +301,60 @@
 
         .array-element {
           position: relative;
-          width: 40px;
-          height: 40px;
+          min-width: 40px;
+          width: auto;
+          height: auto;
+          min-height: 40px;
+          padding: 0.5rem;
           display: flex;
           align-items: center;
           justify-content: center;
           background: var(--secondary-background);
           border-radius: 4px;
           transition: all 0.3s ease;
+          flex: 0 1 auto;
 
           &.highlight {
             background: $theme-color;
             transform: scale(1.1);
             color: var(--primary-background);
+            z-index: 2;
           }
 
           .element-value {
-            font-size: 1rem;
+            font-size: clamp(0.75rem, 1vw, 1rem);
             font-weight: bold;
+            padding: 0.25rem;
+            text-align: center;
+            word-break: break-all;
           }
 
           .element-index {
             position: absolute;
             bottom: -20px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--secondary-text);
+            width: 100%;
+            text-align: center;
           }
 
           .variable-label {
             position: absolute;
             top: -20px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--light-yellow);
+            width: 100%;
+            text-align: center;
+          }
+
+          @media (max-width: 768px) {
+            min-width: 35px;
+            min-height: 35px;
+            padding: 0.35rem;
+
+            .element-value {
+              font-size: clamp(0.7rem, 0.9vw, 0.9rem);
+            }
           }
         }
       }
