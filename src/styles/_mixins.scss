@@ -84,15 +84,14 @@
       overflow: hidden;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 
-      .close-button {
+      .close-button, .refresh-button {
         position: absolute;
         top: 1rem;
-        right: 1rem;
-        width: 32px;
-        height: 32px;
+        width: 20px;
+        height: 20px;
         border-radius: 50%;
         background: rgba(0, 0, 0, 0.3);
-        border: 2px solid $theme-color;
+        
         color: $theme-color;
         display: flex;
         align-items: center;
@@ -109,8 +108,16 @@
         }
 
         i {
-          font-size: 1rem;
+          font-size: 0.8rem;
         }
+      }
+
+      .close-button {
+        right: 1rem;
+      }
+
+      .refresh-button {
+        left: 1rem;
       }
 
       .left-section,
@@ -127,11 +134,65 @@
       .right-section {
         background: linear-gradient(145deg, #1a1a1a, #212121);
         @include select-styles($theme-color);
+
+        .step-history {
+          margin-top: 0.51rem;
+          padding: 1rem;
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: 8px;
+          border: 1px solid rgba($theme-color, 0.2);
+
+          h4 {
+            color: $theme-color;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+          }
+
+          .history-list {
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            scroll-behavior: smooth;
+
+            &::-webkit-scrollbar {
+              width: 8px;
+            }
+
+            &::-webkit-scrollbar-track {
+              background: rgba(0, 0, 0, 0.1);
+              border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              background: rgba($theme-color, 0.3);
+              border-radius: 4px;
+
+              &:hover {
+                background: rgba($theme-color, 0.5);
+              }
+            }
+
+            .history-item {
+              padding: 0.5rem;
+              border-radius: 4px;
+              margin-bottom: 0.5rem;
+              background: rgba(0, 0, 0, 0.2);
+              color: var(--primary-text);
+              font-size: 0.9rem;
+              transition: all 0.3s ease;
+
+              &.current {
+                background: rgba($theme-color, 0.2);
+                border-left: 3px solid $theme-color;
+              }
+            }
+          }
+        }
       }
 
       h2 {
         color: $theme-color;
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.1rem;
         font-size: 1.5rem;
       }
 
@@ -141,39 +202,81 @@
       }
 
       .array-display {
-        display: flex !important;
-        flex-direction: row;
+        display: flex;
+        flex-direction: column;
         flex-wrap: nowrap;
         gap: 0.5rem;
         margin: 2rem 0;
         min-height: 80px;
+        height: auto;
         overflow-x: auto;
         padding: 1rem;
         width: 100%;
         background: rgba(0, 0, 0, 0.2);
         border-radius: 8px;
-        border: 1px solid rgba($theme-color, 0.2);
+        border: 1px solid $theme-color;
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
         animation: fadeIn 0.5s ease;
         position: relative;
         z-index: 10;
-        visibility: visible !important;
-
+        visibility: visible;
+        color: var(--secondary-text);
+        
         .array-content {
-          display: flex !important;
+          display: flex;
           flex-direction: column;
-          gap: 0.5rem;
+          gap: 1rem;
+          padding: 1rem;
           width: 100%;
-          padding: 0.5rem;
-
+          
           .array-elements {
-            display: flex !important;
-            flex-direction: row;
-            flex-wrap: nowrap;
+            display: flex;
             gap: 0.5rem;
-            overflow-x: auto;
-            padding: 0.5rem 0;
-            min-height: 60px;
-            visibility: visible !important;
+            flex-wrap: wrap;
+            justify-content: center;
+          }
+
+          .subarrays {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+
+            .subarray {
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
+
+              &-label {
+                font-weight: bold;
+                color: $theme-color;
+                margin-bottom: 0.5rem;
+              }
+
+              &-elements {
+                display: flex;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+              }
+
+              &.left .array-element {
+                background: var(--secondary-background);
+                border: 1px dotted $theme-color;
+                color: var(--secondary-text);
+              }
+
+              &.right .array-element {
+                background: var(--secondary-background);
+                border: 1px dotted $theme-color;
+                color: var(--secondary-text);
+              }
+            }
           }
         }
 
@@ -186,86 +289,41 @@
         }
 
         .array-element {
-          background: rgba(255, 255, 255, 0.05);
-          padding: 1rem;
-          border-radius: 4px;
-          color: var(--primary-text);
-          min-width: 40px;
-          text-align: center;
-          transition: all 0.3s ease;
-          flex-shrink: 0;
           position: relative;
+          width: 40px;
+          height: 40px;
           display: flex;
-          flex-direction: column;
           align-items: center;
-          gap: 0.25rem;
-          margin-top: 1.5rem;
-          visibility: visible !important;
+          justify-content: center;
+          background: var(--secondary-background);
+          border-radius: 4px;
+          transition: all 0.3s ease;
+
+          &.highlight {
+            background: $theme-color;
+            color: var(--dark);
+            transform: scale(1.1);
+            color: var(--primary-background);
+          }
 
           .element-value {
-            font-size: 1.1rem;
-            font-weight: 500;
-            visibility: visible !important;
+            font-size: 1rem;
+            font-weight: bold;
           }
 
           .element-index {
+            position: absolute;
+            bottom: -20px;
             font-size: 0.8rem;
             color: var(--secondary-text);
-            opacity: 0.7;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 0.2rem 0.4rem;
-            border-radius: 3px;
-            margin-top: 0.2rem;
-            visibility: visible !important;
           }
 
           .variable-label {
             position: absolute;
-            top: -1.5rem;
-            left: 50%;
-            transform: translateX(-50%);
+            top: -20px;
             font-size: 0.8rem;
-            color: $theme-color;
-            font-weight: 600;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--primary-text);
-            padding: 0.2rem 0.4rem;
-            border-radius: 3px;
-            z-index: 2;
-            white-space: nowrap;
-            visibility: visible !important;
+            color: var(--light-yellow);
           }
-
-          &.highlight {
-            background: $theme-color;
-            color: var(--primary-background);
-            transform: translateY(-5px);
-
-            .element-index {
-              color: var(--primary-background);
-              opacity: 0.8;
-              background: rgba(0, 0, 0, 0.2);
-            }
-          }
-        }
-      }
-
-      .variable-display {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 1rem;
-        border-radius: 4px;
-
-        h3 {
-          color: $theme-color;
-          margin-bottom: 1rem;
-          font-size: 1.1rem;
-        }
-
-        p {
-          color: var(--secondary-text);
-          margin: 0.5rem 0;
-          font-family: monospace;
-          font-size: 0.9rem;
         }
       }
 
@@ -276,8 +334,9 @@
         font-family: "Fira Code", monospace;
         height: calc(100% - 120px);
         overflow-y: auto;
-        max-width: 600px;
-        margin: 0 auto;
+
+        max-height: 350px;
+        margin: 0 ;
 
         .code-line {
           color: var(--primary-text);
@@ -331,55 +390,6 @@
         }
       }
 
-      .step-history {
-        margin-top: 1.5rem;
-
-        h4 {
-          color: $theme-color;
-          font-size: 1rem;
-          margin-bottom: 0.8rem;
-        }
-
-        .history-list {
-          max-height: 200px;
-          overflow-y: auto;
-          background: rgba(0, 0, 0, 0.2);
-          border-radius: 4px;
-          padding: 0.5rem;
-
-          .history-item {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.85rem;
-            color: var(--secondary-text);
-            border-radius: 4px;
-            transition: all 0.3s ease;
-
-            &.current {
-              background: $theme-color;
-              color: var(--primary-background);
-              transform: translateX(5px);
-            }
-          }
-
-          &::-webkit-scrollbar {
-            width: 6px;
-          }
-
-          &::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-          }
-
-          &::-webkit-scrollbar-thumb {
-            background: $theme-color;
-            border-radius: 3px;
-
-            &:hover {
-              opacity: 0.8;
-            }
-          }
-        }
-      }
-
       .input-controls {
         display: flex;
         align-items: center;
@@ -410,6 +420,17 @@
             font-family: var(--secondary-font);
             transition: all 0.3s ease;
 
+            // Handle autofill styles
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active {
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: var(--primary-text);
+              transition: background-color 5000s ease-in-out 0s;
+              box-shadow: inset 0 0 20px 20px rgba(0, 0, 0, 0.2);
+            }
+
             &::placeholder {
               color: rgba(255, 255, 255, 0.3);
             }
@@ -436,10 +457,10 @@
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            color: $theme-color;
+            color: var(--primary-text);
             label {
               font-size: 0.9rem;
-              color: $theme-color;
+              color: var(--primary-text);
               white-space: nowrap;
             }
 
