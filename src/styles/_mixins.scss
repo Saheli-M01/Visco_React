@@ -289,7 +289,7 @@
           font-weight: 600;
           margin-right: 1rem;
           white-space: nowrap;
-          visibility: visible !important;
+          visibility: visible;
         }
 
         .array-element {
@@ -305,7 +305,6 @@
 
           &.highlight {
             background: $theme-color;
-            color: var(--dark);
             transform: scale(1.1);
             color: var(--primary-background);
           }
@@ -338,9 +337,8 @@
         font-family: "Fira Code", monospace;
         height: calc(100% - 120px);
         overflow-y: auto;
-
         max-height: 350px;
-        margin: 0 ;
+        margin: 0;
 
         .code-line {
           color: var(--primary-text);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../../../styles/ElementStyle/TopicStyle/SortStyle/_sort.scss";
 import SortingVisualizer from "./SortingVisualizer";
 
@@ -58,17 +58,22 @@ const sortingAlgorithms = [
 const SortingSection = () => {
   const [selectedAlgo, setSelectedAlgo] = useState(null);
 
+  useEffect(() => {
+    // Force scroll to top on mount
+    window.scrollTo(0, 0);
+  }, []);
+
   const closeVisualizer = () => {
     setSelectedAlgo(null);
   };
 
   return (
-    <section id="sorting">
-      <div className="container">
-        <h1 className="text-center">Sorting Algorithms</h1>
-        <div className="row">
+    <section id="sorting" className="topic-section">
+      <div className="container py-5">
+        <h1 className="text-center mb-5">Sorting Algorithms</h1>
+        <div className="row g-4">
           {sortingAlgorithms.map((algo, index) => (
-            <div key={index} className="col-lg-3 col-md-6 col-sm-12 topic-card mt-2">
+            <div key={index} className="col-lg-3 col-md-6 col-sm-12 topic-card">
               <div className="card-content">
                 <p className="card-name">{algo.name}</p>
                 <div className="complexity">
@@ -83,7 +88,7 @@ const SortingSection = () => {
                   className="btn btn-outline"
                   onClick={() => setSelectedAlgo(algo)}
                 >
-                  Explore <i class="fa-solid fa-magnifying-glass ms-2"></i>
+                  Explore <i className="fa-solid fa-magnifying-glass ms-2"></i>
                 </button>
               </div>
             </div>
