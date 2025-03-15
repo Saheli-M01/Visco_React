@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const SortingVisualizer = ({ onClose, algorithm }) => {
   const [steps, setSteps] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedLanguage, setSelectedLanguage] = useState("python");
   const [history, setHistory] = useState([]);
+  const historyListRef = useRef(null);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(
     algorithm?.name?.toLowerCase().split(" ")[0] || "bubble"
   );
@@ -29,8 +30,7 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
                 swap(arr[j], arr[j+1]);
             }
         }
-    }
-}`,
+    }`,
       java: `void bubbleSort(int[] arr) {
     int n = arr.length;
     for (int i = 0; i < n-1; i++) {
@@ -761,7 +761,6 @@ private static void heapify(int arr[], int n, int i) {
         }
     }
 }`,
-
       javaScript: `function shellSort(arr) {
     let n = arr.length;
     for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
@@ -1150,9 +1149,7 @@ void bucketSort(float arr[], int n) {
             dividing: true,
           });
           history.push(
-            `Step ${steps.length}: Single element [${
-              array[start]
-            }]. Current array: [${array.join(", ")}]`
+            `Step ${steps.length}: Single element [${array[start]}] - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
           );
           return;
         }
@@ -1165,25 +1162,13 @@ void bucketSort(float arr[], int n) {
           i: start,
           j: end,
           highlightLine: 3,
-          action: `Dividing array [${array
-            .slice(start, end + 1)
-            .join(",")}] into left [${array
-            .slice(start, middle + 1)
-            .join(",")}] and right [${array
-            .slice(middle + 1, end + 1)
-            .join(",")}]`,
+          action: `Dividing array [${array.slice(start, end + 1).join(",")}] into left [${array.slice(start, middle + 1).join(",")}] and right [${array.slice(middle + 1, end + 1).join(",")}]`,
           leftSubarray: array.slice(start, middle + 1),
           rightSubarray: array.slice(middle + 1, end + 1),
           dividing: true,
         });
         history.push(
-          `Step ${steps.length}: Dividing array [${array
-            .slice(start, end + 1)
-            .join(",")}] into left [${array
-            .slice(start, middle + 1)
-            .join(",")}] and right [${array
-            .slice(middle + 1, end + 1)
-            .join(",")}]. Current array: [${array.join(", ")}]`
+          `Step ${steps.length}: Dividing array [${array.slice(start, end + 1).join(",")}] into left [${array.slice(start, middle + 1).join(",")}] and right [${array.slice(middle + 1, end + 1).join(",")}] - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
         );
 
         // Recursively sort left and right halves
@@ -1204,20 +1189,14 @@ void bucketSort(float arr[], int n) {
             i: start + i,
             j: null,
             highlightLine: 10,
-            action: `Creating temporary arrays: Copying ${
-              array[start + i]
-            } to left array at position ${i}`,
+            action: `Creating temporary arrays: Copying ${array[start + i]} to left array at position ${i}`,
             leftSubarray: leftArray.slice(0, i + 1),
             rightSubarray: [],
             copying: true,
             merging: true,
           });
           history.push(
-            `Step ${steps.length}: Creating temporary arrays - Copying ${
-              array[start + i]
-            } to left array at position ${i}. Current array: [${array.join(
-              ", "
-            )}]`
+            `Step ${steps.length}: Creating temporary arrays - Copying ${array[start + i]} to left array at position ${i} - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
           );
         }
 
@@ -1229,20 +1208,14 @@ void bucketSort(float arr[], int n) {
             i: middle + 1 + i,
             j: null,
             highlightLine: 15,
-            action: `Creating temporary arrays: Copying ${
-              array[middle + 1 + i]
-            } to right array at position ${i}`,
+            action: `Creating temporary arrays: Copying ${array[middle + 1 + i]} to right array at position ${i}`,
             leftSubarray: leftArray,
             rightSubarray: rightArray.slice(0, i + 1),
             copying: true,
             merging: true,
           });
           history.push(
-            `Step ${steps.length}: Creating temporary arrays - Copying ${
-              array[middle + 1 + i]
-            } to right array at position ${i}. Current array: [${array.join(
-              ", "
-            )}]`
+            `Step ${steps.length}: Creating temporary arrays - Copying ${array[middle + 1 + i]} to right array at position ${i} - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
           );
         }
 
@@ -1256,20 +1229,14 @@ void bucketSort(float arr[], int n) {
           i: start,
           j: end,
           highlightLine: 20,
-          action: `Starting merge of left [${leftArray.join(
-            ","
-          )}] and right [${rightArray.join(",")}]`,
+          action: `Starting merge of left [${leftArray.join(",")}] and right [${rightArray.join(",")}]`,
           leftSubarray: leftArray,
           rightSubarray: rightArray,
           comparing: true,
           merging: true,
         });
         history.push(
-          `Step ${steps.length}: Starting merge of left [${leftArray.join(
-            ","
-          )}] and right [${rightArray.join(",")}]. Current array: [${array.join(
-            ", "
-          )}]`
+          `Step ${steps.length}: Starting merge of left [${leftArray.join(",")}] and right [${rightArray.join(",")}] - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
         );
 
         while (i < leftSize && j < rightSize) {
@@ -1285,11 +1252,7 @@ void bucketSort(float arr[], int n) {
             merging: true,
           });
           history.push(
-            `Step ${steps.length}: Comparing left[${i}]=${
-              leftArray[i]
-            } with right[${j}]=${rightArray[j]}. Current array: [${array.join(
-              ", "
-            )}]`
+            `Step ${steps.length}: Comparing left[${i}]=${leftArray[i]} with right[${j}]=${rightArray[j]} - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
           );
 
           if (leftArray[i] <= rightArray[j]) {
@@ -1306,11 +1269,7 @@ void bucketSort(float arr[], int n) {
               merging: true,
             });
             history.push(
-              `Step ${steps.length}: Copying ${
-                leftArray[i]
-              } from left array to position ${k}. Current array: [${array.join(
-                ", "
-              )}]`
+              `Step ${steps.length}: Copying ${leftArray[i]} from left array to position ${k} - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
             );
             i++;
           } else {
@@ -1327,11 +1286,7 @@ void bucketSort(float arr[], int n) {
               merging: true,
             });
             history.push(
-              `Step ${steps.length}: Copying ${
-                rightArray[j]
-              } from right array to position ${k}. Current array: [${array.join(
-                ", "
-              )}]`
+              `Step ${steps.length}: Copying ${rightArray[j]} from right array to position ${k} - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
             );
             j++;
           }
@@ -1353,11 +1308,7 @@ void bucketSort(float arr[], int n) {
             merging: true,
           });
           history.push(
-            `Step ${steps.length}: Copying remaining element ${
-              leftArray[i]
-            } from left array to position ${k}. Current array: [${array.join(
-              ", "
-            )}]`
+            `Step ${steps.length}: Copying remaining element ${leftArray[i]} from left array to position ${k} - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
           );
           i++;
           k++;
@@ -1378,11 +1329,7 @@ void bucketSort(float arr[], int n) {
             merging: true,
           });
           history.push(
-            `Step ${steps.length}: Copying remaining element ${
-              rightArray[j]
-            } from right array to position ${k}. Current array: [${array.join(
-              ", "
-            )}]`
+            `Step ${steps.length}: Copying remaining element ${rightArray[j]} from right array to position ${k} - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
           );
           j++;
           k++;
@@ -1401,7 +1348,7 @@ void bucketSort(float arr[], int n) {
             action: `Comparing elements at positions ${j} and ${j + 1}`,
           });
           history.push(
-            `Step ${steps.length}: Comparing ${arr[j]} and ${arr[j + 1]}`
+            `Step ${steps.length}: Comparing arr[${j}]=${arr[j]} and arr[${j + 1}]=${arr[j + 1]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
           );
 
           if (arr[j] > arr[j + 1]) {
@@ -1414,7 +1361,7 @@ void bucketSort(float arr[], int n) {
               action: `Swapped elements ${arr[j]} and ${arr[j + 1]}`,
             });
             history.push(
-              `Step ${steps.length}: Swapped ${arr[j + 1]} and ${arr[j]}`
+              `Step ${steps.length}: Swapped arr[${j}]=${arr[j]} and arr[${j + 1}]=${arr[j + 1]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
             );
           }
         }
@@ -1425,7 +1372,9 @@ void bucketSort(float arr[], int n) {
           highlightLine: 3,
           action: `Completed pass ${i + 1}`,
         });
-        history.push(`Step ${steps.length}: Completed pass ${i + 1}`);
+        history.push(
+          `Step ${steps.length}: Completed pass ${i + 1} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+        );
       }
     } else if (selectedAlgorithm === "selection") {
       for (let i = 0; i < n - 1; i++) {
@@ -1437,18 +1386,20 @@ void bucketSort(float arr[], int n) {
           highlightLine: 3,
           action: `Starting new pass from index ${i}`,
         });
-        history.push(`Step ${steps.length}: Starting new pass from index ${i}`);
+        history.push(
+          `Step ${steps.length}: Starting new pass from index i=${i}, arr[${i}]=${arr[i]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+        );
 
         for (let j = i + 1; j < n; j++) {
           steps.push({
             array: [...arr],
-            i,
+            i: minIdx,
             j,
             highlightLine: 4,
             action: `Comparing ${arr[j]} with current minimum ${arr[minIdx]}`,
           });
           history.push(
-            `Step ${steps.length}: Comparing ${arr[j]} with ${arr[minIdx]}`
+            `Step ${steps.length}: Comparing arr[${j}]=${arr[j]} with current minimum arr[${minIdx}]=${arr[minIdx]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
           );
 
           if (arr[j] < arr[minIdx]) {
@@ -1460,7 +1411,9 @@ void bucketSort(float arr[], int n) {
               highlightLine: 5,
               action: `Found new minimum ${arr[minIdx]} at index ${minIdx}`,
             });
-            history.push(`Step ${steps.length}: New minimum is ${arr[minIdx]}`);
+            history.push(
+              `Step ${steps.length}: Found new minimum arr[${minIdx}]=${arr[minIdx]} at index ${minIdx} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+            );
           }
         }
 
@@ -1474,7 +1427,7 @@ void bucketSort(float arr[], int n) {
             action: `Swapped ${arr[i]} to position ${i}`,
           });
           history.push(
-            `Step ${steps.length}: Swapped ${arr[i]} to position ${i}`
+            `Step ${steps.length}: Swapped arr[${i}]=${arr[i]} with arr[${minIdx}]=${arr[minIdx]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
           );
         }
       }
@@ -1490,7 +1443,9 @@ void bucketSort(float arr[], int n) {
           highlightLine: 2,
           action: `Selected ${key} as key`,
         });
-        history.push(`Step ${steps.length}: Selected ${key} as key`);
+        history.push(
+          `Step ${steps.length}: Selected arr[${i}]=${key} as key - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+        );
 
         while (j >= 0 && arr[j] > key) {
           steps.push({
@@ -1501,7 +1456,7 @@ void bucketSort(float arr[], int n) {
             action: `Comparing ${arr[j]} with key ${key}`,
           });
           history.push(
-            `Step ${steps.length}: Comparing ${arr[j]} with key ${key}`
+            `Step ${steps.length}: Comparing arr[${j}]=${arr[j]} with key=${key} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
           );
 
           arr[j + 1] = arr[j];
@@ -1513,7 +1468,7 @@ void bucketSort(float arr[], int n) {
             action: `Moved ${arr[j]} one position ahead`,
           });
           history.push(
-            `Step ${steps.length}: Moved ${arr[j]} one position ahead`
+            `Step ${steps.length}: Moved arr[${j}]=${arr[j]} one position ahead to index ${j + 1} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
           );
           j--;
         }
@@ -1527,7 +1482,7 @@ void bucketSort(float arr[], int n) {
           action: `Inserted ${key} at position ${j + 1}`,
         });
         history.push(
-          `Step ${steps.length}: Inserted ${key} at position ${j + 1}`
+          `Step ${steps.length}: Inserted key=${key} at position ${j + 1} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
         );
       }
     }
@@ -1540,7 +1495,7 @@ void bucketSort(float arr[], int n) {
       action: "Sorting completed",
     });
     history.push(
-      `Step ${steps.length}: Sorting completed. Final array: ${arr.join(",")}`
+      `Step ${steps.length}: Sorting completed - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
     );
 
     return { steps, history };
@@ -1551,13 +1506,13 @@ void bucketSort(float arr[], int n) {
       alert("Please enter an array of numbers");
       return;
     }
-    
+
     console.log("Input received:", input);
     setInputValue(input);
-    
-    const newArray = input.split(",").map(num => parseInt(num.trim()));
+
+    const newArray = input.split(",").map((num) => parseInt(num.trim()));
     console.log("Parsed array:", newArray);
-    
+
     if (newArray.some(isNaN)) {
       alert("Please enter valid numbers separated by commas");
       return;
@@ -1566,7 +1521,7 @@ void bucketSort(float arr[], int n) {
     console.log("Selected algorithm:", selectedAlgorithm);
     const { steps: newSteps, history: newHistory } = generateSteps(newArray);
     console.log("Generated steps:", newSteps);
-    
+
     setSteps(newSteps);
     setHistory(newHistory);
     setCurrentStep(0);
@@ -1590,7 +1545,27 @@ void bucketSort(float arr[], int n) {
   };
 
   const togglePlay = () => {
-    setIsPlaying(!isPlaying);
+    if (steps.length === 0) {
+      // If no visualization is running, start a new one
+      const inputValue = document.getElementById("arrayInput").value;
+      if (!inputValue) {
+        alert("Please enter an array of numbers");
+        return;
+      }
+      startVisualization(inputValue);
+      setIsPlaying(true);
+    } else {
+      // If visualization exists, toggle play/pause
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const refreshVisualization = () => {
+    setSteps([]);
+    setHistory([]);
+    setCurrentStep(0);
+    setIsPlaying(false);
+    setInputValue("");
   };
 
   useEffect(() => {
@@ -1605,10 +1580,24 @@ void bucketSort(float arr[], int n) {
     return () => clearTimeout(timer);
   }, [isPlaying, currentStep, steps.length, speed]);
 
+  // Add useEffect for auto-scrolling
+  useEffect(() => {
+    if (historyListRef.current) {
+      historyListRef.current.scrollTop = historyListRef.current.scrollHeight;
+    }
+  }, [currentStep]);
+
   return (
     <div className="sorting-visualizer">
       <div className="visualizer-overlay" onClick={onClose}></div>
       <div className="visualizer-content">
+        <button
+          className="refresh-button"
+          onClick={refreshVisualization}
+          title="Reset Visualization"
+        >
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
         <button className="close-button" onClick={onClose}>
           <i className="fa-solid fa-xmark"></i>
         </button>
@@ -1646,28 +1635,26 @@ void bucketSort(float arr[], int n) {
                   placeholder="e.g., 64,34,25,12,22,11,90"
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
-                      console.log("Enter pressed, value:", e.target.value);
-                      startVisualization(e.target.value);
+                      togglePlay();
                     }
                   }}
                 />
               </div>
               <div className="playback-controls">
-                <button 
-                  className="play-pause" 
-                  onClick={togglePlay}
-                  disabled={steps.length === 0}
-                >
-                  <i className={`fa-solid ${isPlaying ? "fa-pause" : "fa-play"}`}></i>
+                <button className="play-pause" onClick={togglePlay}>
+                  <i
+                    className={`fa-solid ${isPlaying ? "fa-pause" : "fa-play"}`}
+                  ></i>
                 </button>
+
                 <div className="speed-control">
                   <label>Speed:</label>
-                  <input 
-                    type="range" 
-                    min="100" 
-                    max="1000" 
+                  <input
+                    type="range"
+                    min="100"
+                    max="1000"
                     step="100"
-                    value={speed} 
+                    value={speed}
                     onChange={(e) => setSpeed(parseInt(e.target.value))}
                   />
                   <span>{Math.round(10000 / speed) / 10}x</span>
@@ -1675,76 +1662,42 @@ void bucketSort(float arr[], int n) {
               </div>
             </div>
             <div className="navigation-buttons">
-              <button 
+              <button
                 onClick={() => {
-                  const inputValue = document.getElementById("arrayInput").value;
-                  console.log("Start button clicked, value:", inputValue);
+                  const inputValue =
+                    document.getElementById("arrayInput").value;
                   startVisualization(inputValue);
                 }}
-                disabled={isPlaying || currentStep === steps.length - 1}
+                disabled={isPlaying}
               >
-                <i className="fa-solid fa-circle-play"></i> Start
+                Start
               </button>
-              <button 
-                onClick={() => setCurrentStep(0)} 
+              <button
+                onClick={() => setCurrentStep(0)}
                 disabled={isPlaying || currentStep === 0}
               >
                 <i className="fa-solid fa-backward"></i> First
               </button>
-              <button 
-                onClick={prevStep} 
+              <button
+                onClick={prevStep}
                 disabled={isPlaying || currentStep === 0}
               >
                 <i className="fa-solid fa-caret-left"></i> Prev
               </button>
-              <button 
-                onClick={nextStep} 
+              <button
+                onClick={nextStep}
                 disabled={isPlaying || currentStep === steps.length - 1}
               >
                 Next <i className="fa-solid fa-caret-right"></i>
               </button>
-              <button 
-                onClick={lastStep} 
+              <button
+                onClick={lastStep}
                 disabled={isPlaying || currentStep === steps.length - 1}
               >
                 Last <i className="fa-solid fa-forward"></i>
               </button>
             </div>
           </div>
-
-          <div className="array-display">
-            <div className="phase-label">Array Elements</div>
-            <div className="array-content">
-              <div className="array-elements">
-                {console.log("Current step:", currentStep)}
-                {console.log("Steps:", steps)}
-                {console.log("Current array:", steps[currentStep]?.array)}
-                {steps[currentStep]?.array?.map((value, index) => {
-                  console.log("Rendering element:", value, "at index:", index);
-                  return (
-                    <div
-                      key={index}
-                      className={`array-element ${
-                        index === steps[currentStep]?.i ||
-                        index === steps[currentStep]?.j
-                          ? "highlight"
-                          : ""
-                      }`}
-                    >
-                      {(index === steps[currentStep]?.i || index === steps[currentStep]?.j) && (
-                        <div className="variable-label">
-                          {index === steps[currentStep]?.i ? "i" : "j"}
-                        </div>
-                      )}
-                      <div className="element-value">{value}</div>
-                      <div className="element-index">{index}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
           <div className="progress-bar">
             <div
               className="progress"
@@ -1753,26 +1706,86 @@ void bucketSort(float arr[], int n) {
               }}
             />
           </div>
-
-          <div className="variable-display">
-            <h3>Current Variables:</h3>
-            <p>i: {steps[currentStep]?.i ?? "N/A"}</p>
-            <p>j: {steps[currentStep]?.j ?? "N/A"}</p>
-            <p>Current Action: {steps[currentStep]?.action ?? "N/A"}</p>
-            <div className="step-history">
-              <h4>Step History:</h4>
-              <div className="history-list">
-                {history.slice(0, currentStep + 1).map((step, index) => (
+          <div className="array-display">
+            <div className="phase-label">Array Elements</div>
+            <div className="array-content">
+              <div className="array-elements">
+                {steps[currentStep]?.array?.map((value, index) => (
                   <div
                     key={index}
-                    className={`history-item ${
-                      index === currentStep ? "current" : ""
+                    className={`array-element ${
+                      index === steps[currentStep]?.i ||
+                      index === steps[currentStep]?.j
+                        ? "highlight"
+                        : ""
                     }`}
                   >
-                    {step}
+                    {selectedAlgorithm !== "merge" &&
+                      (index === steps[currentStep]?.i ||
+                        index === steps[currentStep]?.j) && (
+                          <div className="variable-label">
+                            {index === steps[currentStep]?.i ? "i" : "j"}
+                          </div>
+                        )}
+                      <div className="element-value">{value}</div>
+                      <div className="element-index">{index}</div>
                   </div>
                 ))}
               </div>
+              {selectedAlgorithm === "merge" && steps[currentStep]?.merging && (
+                <div className="subarrays">
+                  {steps[currentStep]?.leftSubarray?.length > 0 && (
+                    <div className="subarray left">
+                      <div className="subarray-label">Merging Step</div>
+                      <div className="subarray-label">Left Subarray</div>
+                      <div className="subarray-elements">
+                        {steps[currentStep]?.leftSubarray?.map((value, index) => (
+                          <div key={index} className="array-element">
+                            <div className="element-value">{value}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {steps[currentStep]?.rightSubarray?.length > 0 && (
+                    <div className="subarray right">
+                      <div className="subarray-label">Right Subarray</div>
+                      <div className="subarray-elements">
+                        {steps[currentStep]?.rightSubarray?.map((value, index) => (
+                          <div key={index} className="array-element">
+                            <div className="element-value">{value}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              {selectedAlgorithm === "merge" && steps[currentStep]?.dividing && (
+                <div className="subarrays">
+                  <div className="subarray-label">Dividing Step</div>
+                  <div className="subarray left">
+                    <div className="subarray-label">Left Part</div>
+                    <div className="subarray-elements">
+                      {steps[currentStep]?.leftSubarray?.map((value, index) => (
+                        <div key={index} className="array-element">
+                          <div className="element-value">{value}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="subarray right">
+                    <div className="subarray-label">Right Part</div>
+                    <div className="subarray-elements">
+                      {steps[currentStep]?.rightSubarray?.map((value, index) => (
+                        <div key={index} className="array-element">
+                          <div className="element-value">{value}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1809,6 +1822,20 @@ void bucketSort(float arr[], int n) {
                 </div>
               ))}
           </div>
+          <div className="step-history">
+            <h4>Step History:</h4>
+            <div className="history-list" ref={historyListRef}>
+              {history.slice(0, currentStep + 1).map((step, index) => (
+                <div
+                  key={index}
+                  className={`history-item ${
+                    index === currentStep ? "current" : ""
+                  }`}
+                  dangerouslySetInnerHTML={{ __html: step }}
+                ></div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1816,3 +1843,4 @@ void bucketSort(float arr[], int n) {
 };
 
 export default SortingVisualizer;
+
