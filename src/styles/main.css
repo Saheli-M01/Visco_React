@@ -2191,6 +2191,9 @@ body {
   justify-content: center;
   align-items: center;
 }
+.sorting-visualizer #arrayInput {
+  font-size: 0.75rem;
+}
 .sorting-visualizer .visualizer-overlay {
   position: absolute;
   top: 0;

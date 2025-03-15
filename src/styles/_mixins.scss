@@ -64,6 +64,10 @@
     justify-content: center;
     align-items: center;
 
+    #arrayInput{
+      font-size: .75rem;
+    }
+
     .visualizer-overlay {
       position: absolute;
       top: 0;
@@ -843,6 +847,7 @@
 
         input[type="range"] {
           width: 150px;
+          
         }
       }
 
