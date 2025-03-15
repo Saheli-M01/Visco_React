@@ -5,6 +5,7 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedLanguage, setSelectedLanguage] = useState("python");
   const [history, setHistory] = useState([]);
+  const [warning, setWarning] = useState("");
   const historyListRef = useRef(null);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(
     algorithm?.name?.toLowerCase().split(" ")[0] || "bubble"
@@ -12,6 +13,7 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(500); // Default speed: 500ms
   const [inputValue, setInputValue] = useState("");
+  const [pivotIndex, setPivotIndex] = useState(0);
 
   const algorithms = {
     bubble: {
@@ -1135,7 +1137,107 @@ void bucketSort(float arr[], int n) {
     const n = arr.length;
     const history = [];
 
-    if (selectedAlgorithm === "merge") {
+    if (selectedAlgorithm === "quick") {
+      const quickSortWithSteps = (array, low, high) => {
+        if (low < high) {
+          // Show the current subarray being processed
+          steps.push({
+            array: [...array],
+            i: low,
+            j: high,
+            highlightLine: 2,
+            action: `Processing subarray [${array.slice(low, high + 1).join(", ")}]`,
+            pivotIndex: pivotIndex,
+          });
+          history.push(
+            `Step ${steps.length}: Processing subarray [${array.slice(low, high + 1).join(", ")}] - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
+          );
+
+          // Validate and adjust pivot index if needed
+          let actualPivotIndex = Math.min(Math.max(low + pivotIndex, low), high);
+          
+          // Swap the selected pivot with the last element
+          if (actualPivotIndex !== high) {
+            [array[actualPivotIndex], array[high]] = [array[high], array[actualPivotIndex]];
+            steps.push({
+              array: [...array],
+              i: actualPivotIndex,
+              j: high,
+              highlightLine: 3,
+              action: `Swapped pivot ${array[high]} to the end`,
+              pivotIndex: high,
+            });
+            history.push(
+              `Step ${steps.length}: Swapped pivot ${array[high]} to the end - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
+            );
+          }
+
+          let pivot = array[high];
+          let i = low - 1;
+
+          steps.push({
+            array: [...array],
+            i: high,
+            j: null,
+            highlightLine: 4,
+            action: `Selected ${pivot} as pivot`,
+            pivotIndex: high,
+          });
+          history.push(
+            `Step ${steps.length}: Selected ${pivot} as pivot - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
+          );
+
+          for (let j = low; j < high; j++) {
+            steps.push({
+              array: [...array],
+              i: i,
+              j: j,
+              highlightLine: 5,
+              action: `Comparing ${array[j]} with pivot ${pivot}`,
+              pivotIndex: high,
+            });
+            history.push(
+              `Step ${steps.length}: Comparing ${array[j]} with pivot ${pivot} - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
+            );
+
+            if (array[j] < pivot) {
+              i++;
+              [array[i], array[j]] = [array[j], array[i]];
+              steps.push({
+                array: [...array],
+                i: i,
+                j: j,
+                highlightLine: 6,
+                action: `Swapped ${array[i]} and ${array[j]}`,
+                pivotIndex: high,
+              });
+              history.push(
+                `Step ${steps.length}: Swapped ${array[i]} and ${array[j]} - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
+              );
+            }
+          }
+
+          [array[i + 1], array[high]] = [array[high], array[i + 1]];
+          steps.push({
+            array: [...array],
+            i: i + 1,
+            j: high,
+            highlightLine: 7,
+            action: `Placed pivot ${pivot} in its correct position`,
+            pivotIndex: i + 1,
+          });
+          history.push(
+            `Step ${steps.length}: Placed pivot ${pivot} in its correct position - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
+          );
+
+          const partitionIndex = i + 1;
+          quickSortWithSteps(array, low, partitionIndex - 1);
+          quickSortWithSteps(array, partitionIndex + 1, high);
+        }
+      };
+
+      quickSortWithSteps(arr, 0, n - 1);
+    } else if (selectedAlgorithm === "merge") {
       const mergeSortWithSteps = (array, start, end) => {
         if (start >= end) {
           steps.push({
@@ -1502,8 +1604,9 @@ void bucketSort(float arr[], int n) {
   };
 
   const startVisualization = (input) => {
+    setWarning(""); // Clear any existing warnings
     if (!input) {
-      alert("Please enter an array of numbers");
+      setWarning("Please enter an array of numbers");
       return;
     }
 
@@ -1514,7 +1617,18 @@ void bucketSort(float arr[], int n) {
     console.log("Parsed array:", newArray);
 
     if (newArray.some(isNaN)) {
-      alert("Please enter valid numbers separated by commas");
+      setWarning("Please enter valid numbers separated by commas");
+      return;
+    }
+
+    if (newArray.length > 10) {
+      setWarning("Maximum 10 elements are allowed for visualization");
+      return;
+    }
+
+    if (selectedAlgorithm === "quick" && pivotIndex >= newArray.length) {
+      setWarning(`Pivot index cannot be larger than array length - 1 (${newArray.length - 1})`);
+      setPivotIndex(newArray.length - 1);
       return;
     }
 
@@ -1591,6 +1705,40 @@ void bucketSort(float arr[], int n) {
     <div className="sorting-visualizer">
       <div className="visualizer-overlay" onClick={onClose}></div>
       <div className="visualizer-content">
+        {warning && (
+          <div className="warning-message" style={{
+            position: 'absolute',
+            top: '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            backgroundColor: '#ff6b6b',
+            color: 'white',
+            padding: '10px 20px',
+            borderRadius: '5px',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+            zIndex: 1000,
+            animation: 'fadeIn 0.3s ease-in-out',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px'
+          }}>
+            <i className="fa-solid fa-triangle-exclamation"></i>
+            {warning}
+            <button 
+              onClick={() => setWarning("")}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'white',
+                cursor: 'pointer',
+                marginLeft: '10px',
+                padding: '0 5px'
+              }}
+            >
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        )}
         <button
           className="refresh-button"
           onClick={refreshVisualization}
@@ -1632,13 +1780,40 @@ void bucketSort(float arr[], int n) {
                   id="arrayInput"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="e.g., 64,34,25,12,22,11,90"
+                  placeholder="Enter up to 10 numbers (e.g., 64,34,25,12,22)"
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       togglePlay();
                     }
                   }}
                 />
+                {selectedAlgorithm === "quick" && (
+                  <div className="pivot-input-section">
+                    <label htmlFor="pivotInput">Pivot Index: </label>
+                    <input
+                      type="number"
+                      id="pivotInput"
+                      min="0"
+                      max={inputValue ? inputValue.split(",").length - 1 : 9}
+                      value={pivotIndex}
+                      onChange={(e) => {
+                        const newValue = parseInt(e.target.value) || 0;
+                        const maxIndex = inputValue ? inputValue.split(",").length - 1 : 9;
+                        if (newValue > maxIndex) {
+                          setWarning(`Pivot index cannot be larger than array length - 1 (${maxIndex})`);
+                          setPivotIndex(maxIndex);
+                        } else {
+                          setPivotIndex(newValue);
+                          setWarning(""); // Clear warning when valid input is provided
+                        }
+                      }}
+                      style={{ width: '60px', marginLeft: '8px' }}
+                    />
+                    <span className="pivot-warning" style={{ fontSize: '0.8em', color: '#ff6b6b', marginLeft: '8px' }}>
+                      Max index: {inputValue ? inputValue.split(",").length - 1 : 9}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="playback-controls">
                 <button className="play-pause" onClick={togglePlay}>
