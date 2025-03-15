@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import Navbar from './components/Common/Navbar';
 import Footer from './components/Common/Footer';
@@ -11,11 +11,28 @@ import Graph from "./components/Elements/Topics/Graph/graph";
 import Background from './components/Common/BackgroundAnimation';
 
 const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+  }, [pathname]);
 
   return null;
+};
+
+const PageWrapper = ({ children }) => {
+  return (
+    <div className="app-container">
+      <main className="main-content">
+        {children}
+      </main>
+      <Footer />
+    </div>
+  );
 };
 
 function App() {
@@ -24,19 +41,14 @@ function App() {
       <ScrollToTop />
       <Navbar />
       <Background />
-      <div className="app-container">
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Layout />} />
-            <Route path="/topic/array" element={<Array />} />
-            <Route path="/topic/sort" element={<Sort />} />
-            <Route path="/topic/linkedlist" element={<LinkedList />} />
-            <Route path="/topic/tree" element={<Tree />} />
-            <Route path="/topic/graph" element={<Graph />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <Routes>
+        <Route path="/" element={<PageWrapper><Layout /></PageWrapper>} />
+        <Route path="/topic/array" element={<PageWrapper><Array /></PageWrapper>} />
+        <Route path="/topic/sort" element={<PageWrapper><Sort /></PageWrapper>} />
+        <Route path="/topic/linkedlist" element={<PageWrapper><LinkedList /></PageWrapper>} />
+        <Route path="/topic/tree" element={<PageWrapper><Tree /></PageWrapper>} />
+        <Route path="/topic/graph" element={<PageWrapper><Graph /></PageWrapper>} />
+      </Routes>
     </Router>
   );
 }

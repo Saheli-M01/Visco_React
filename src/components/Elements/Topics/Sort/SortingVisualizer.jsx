@@ -1587,6 +1587,440 @@ void bucketSort(float arr[], int n) {
           `Step ${steps.length}: Inserted key=${key} at position ${j + 1} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
         );
       }
+    } else if (selectedAlgorithm === "heap") {
+      const heapifyWithSteps = (arr, n, i) => {
+        let largest = i;
+        let left = 2 * i + 1;
+        let right = 2 * i + 2;
+
+        steps.push({
+          array: [...arr],
+          i: i,
+          j: null,
+          highlightLine: 3,
+          action: `Heapifying subtree rooted at index ${i}`,
+          heapNodes: { root: i, left: left < n ? left : null, right: right < n ? right : null }
+        });
+        history.push(
+          `Step ${steps.length}: Heapifying subtree rooted at index ${i} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+        );
+
+        // Check if left child is larger than root
+        if (left < n) {
+          steps.push({
+            array: [...arr],
+            i: i,
+            j: left,
+            highlightLine: 4,
+            action: `Comparing left child ${arr[left]} with root ${arr[largest]}`,
+            heapNodes: { root: i, left: left, right: right < n ? right : null }
+          });
+          history.push(
+            `Step ${steps.length}: Comparing left child arr[${left}]=${arr[left]} with root arr[${largest}]=${arr[largest]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+          );
+
+          if (arr[left] > arr[largest]) {
+            largest = left;
+            steps.push({
+              array: [...arr],
+              i: i,
+              j: left,
+              highlightLine: 5,
+              action: `Left child ${arr[left]} is larger than root`,
+              heapNodes: { root: largest, left: left, right: right < n ? right : null }
+            });
+            history.push(
+              `Step ${steps.length}: Left child ${arr[left]} is larger than root - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+            );
+          }
+        }
+
+        // Check if right child is larger than largest so far
+        if (right < n) {
+          steps.push({
+            array: [...arr],
+            i: largest,
+            j: right,
+            highlightLine: 6,
+            action: `Comparing right child ${arr[right]} with largest ${arr[largest]}`,
+            heapNodes: { root: i, left: left < n ? left : null, right: right }
+          });
+          history.push(
+            `Step ${steps.length}: Comparing right child arr[${right}]=${arr[right]} with largest arr[${largest}]=${arr[largest]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+          );
+
+          if (arr[right] > arr[largest]) {
+            largest = right;
+            steps.push({
+              array: [...arr],
+              i: i,
+              j: right,
+              highlightLine: 7,
+              action: `Right child ${arr[right]} is the largest`,
+              heapNodes: { root: largest, left: left < n ? left : null, right: right }
+            });
+            history.push(
+              `Step ${steps.length}: Right child ${arr[right]} is the largest - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+            );
+          }
+        }
+
+        // If largest is not root
+        if (largest !== i) {
+          [arr[i], arr[largest]] = [arr[largest], arr[i]];
+          steps.push({
+            array: [...arr],
+            i: i,
+            j: largest,
+            highlightLine: 8,
+            action: `Swapped ${arr[i]} and ${arr[largest]}`,
+            heapNodes: { root: i, left: left < n ? left : null, right: right < n ? right : null }
+          });
+          history.push(
+            `Step ${steps.length}: Swapped arr[${i}]=${arr[i]} and arr[${largest}]=${arr[largest]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+          );
+
+          // Recursively heapify the affected sub-tree
+          heapifyWithSteps(arr, n, largest);
+        }
+      };
+
+      // Build max heap
+      for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+        steps.push({
+          array: [...arr],
+          i: i,
+          j: null,
+          highlightLine: 2,
+          action: `Building max heap: processing index ${i}`,
+          phase: "build"
+        });
+        history.push(
+          `Step ${steps.length}: Building max heap - processing index ${i} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+        );
+        heapifyWithSteps(arr, n, i);
+      }
+
+      // Extract elements from heap one by one
+      for (let i = n - 1; i > 0; i--) {
+        steps.push({
+          array: [...arr],
+          i: 0,
+          j: i,
+          highlightLine: 9,
+          action: `Moving root ${arr[0]} to end`,
+          phase: "extract"
+        });
+        history.push(
+          `Step ${steps.length}: Moving root ${arr[0]} to end - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+        );
+
+        [arr[0], arr[i]] = [arr[i], arr[0]];
+        steps.push({
+          array: [...arr],
+          i: 0,
+          j: i,
+          highlightLine: 10,
+          action: `Swapped root with last element`,
+          phase: "extract"
+        });
+        history.push(
+          `Step ${steps.length}: Swapped root with last element - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+        );
+
+        heapifyWithSteps(arr, i, 0);
+      }
+    } else if (selectedAlgorithm === "shell") {
+      let gap = Math.floor(n / 2);
+
+      while (gap > 0) {
+        steps.push({
+          array: [...arr],
+          i: null,
+          j: null,
+          highlightLine: 2,
+          action: `Setting gap size to ${gap}`,
+          gap: gap
+        });
+        history.push(
+          `Step ${steps.length}: Setting gap size to ${gap} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+        );
+
+        for (let i = gap; i < n; i++) {
+          let temp = arr[i];
+          let j = i;
+
+          steps.push({
+            array: [...arr],
+            i: i,
+            j: null,
+            highlightLine: 3,
+            action: `Selecting element ${temp} at position ${i}`,
+            gap: gap,
+            temp: temp
+          });
+          history.push(
+            `Step ${steps.length}: Selecting element ${temp} at position ${i} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+          );
+
+          while (j >= gap && arr[j - gap] > temp) {
+            steps.push({
+              array: [...arr],
+              i: j,
+              j: j - gap,
+              highlightLine: 4,
+              action: `Comparing elements at positions ${j - gap} and ${j}`,
+              gap: gap,
+              temp: temp
+            });
+            history.push(
+              `Step ${steps.length}: Comparing elements ${arr[j - gap]} and ${temp} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+            );
+
+            arr[j] = arr[j - gap];
+            steps.push({
+              array: [...arr],
+              i: j,
+              j: j - gap,
+              highlightLine: 5,
+              action: `Moving element ${arr[j]} to position ${j}`,
+              gap: gap,
+              temp: temp
+            });
+            history.push(
+              `Step ${steps.length}: Moving element ${arr[j]} to position ${j} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+            );
+
+            j -= gap;
+          }
+
+          arr[j] = temp;
+          steps.push({
+            array: [...arr],
+            i: j,
+            j: null,
+            highlightLine: 6,
+            action: `Placing ${temp} at position ${j}`,
+            gap: gap
+          });
+          history.push(
+            `Step ${steps.length}: Placing ${temp} at position ${j} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+          );
+        }
+
+        gap = Math.floor(gap / 2);
+      }
+    } else if (selectedAlgorithm === "counting") {
+      // Find max value for counting array size
+      const max = Math.max(...arr);
+      const count = new Array(max + 1).fill(0);
+      const output = new Array(n).fill(0);
+
+      // Count occurrences
+      for (let i = 0; i < n; i++) {
+        steps.push({
+          array: [...arr],
+          i: i,
+          j: null,
+          highlightLine: 4,
+          action: `Counting occurrence of element ${arr[i]}`,
+          count: [...count],
+          phase: "counting"
+        });
+        history.push(`Step ${steps.length}: Counting occurrence of ${arr[i]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
+        
+        count[arr[i]]++;
+      }
+
+      // Calculate cumulative count
+      for (let i = 1; i <= max; i++) {
+        steps.push({
+          array: [...arr],
+          i: i,
+          j: null,
+          highlightLine: 7,
+          action: `Calculating cumulative count at index ${i}`,
+          count: [...count],
+          phase: "cumulative"
+        });
+        history.push(`Step ${steps.length}: Calculating cumulative count at index ${i} - <span style="color: var(--light-yellow)">Count array: [${count.join(", ")}]</span>`);
+        
+        count[i] += count[i - 1];
+      }
+
+      // Build output array
+      for (let i = n - 1; i >= 0; i--) {
+        const currentElement = arr[i];
+        const position = count[currentElement] - 1;
+        output[position] = currentElement;
+        count[currentElement]--;
+
+        steps.push({
+          array: [...output],
+          i: position,
+          j: i,
+          highlightLine: 11,
+          action: `Placing ${currentElement} at position ${position}`,
+          count: [...count],
+          phase: "placing",
+          original: [...arr]
+        });
+        history.push(`Step ${steps.length}: Placing ${currentElement} at position ${position} - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
+      }
+
+      // Copy output array back to original array
+      for (let i = 0; i < n; i++) {
+        arr[i] = output[i];
+      }
+    } else if (selectedAlgorithm === "radix") {
+      const getMax = (arr) => {
+        let max = arr[0];
+        for (let i = 1; i < arr.length; i++) {
+          if (arr[i] > max) max = arr[i];
+        }
+        return max;
+      };
+
+      const countingSortForRadix = (arr, exp) => {
+        const output = new Array(n).fill(0);
+        const count = new Array(10).fill(0);
+
+        // Count occurrences
+        for (let i = 0; i < n; i++) {
+          const digit = Math.floor(arr[i] / exp) % 10;
+          count[digit]++;
+          steps.push({
+            array: [...arr],
+            i: i,
+            j: null,
+            highlightLine: 4,
+            action: `Counting occurrence of digit ${digit} from ${arr[i]}`,
+            count: [...count],
+            digit,
+            exp,
+            phase: "counting"
+          });
+          history.push(`Step ${steps.length}: Counting digit ${digit} from ${arr[i]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
+        }
+
+        // Calculate cumulative count
+        for (let i = 1; i < 10; i++) {
+          count[i] += count[i - 1];
+          steps.push({
+            array: [...arr],
+            i: i,
+            j: null,
+            highlightLine: 7,
+            action: `Calculating cumulative count for digit ${i}`,
+            count: [...count],
+            exp,
+            phase: "cumulative"
+          });
+          history.push(`Step ${steps.length}: Calculating cumulative count for digit ${i} - <span style="color: var(--light-yellow)">Count array: [${count.join(", ")}]</span>`);
+        }
+
+        // Build output array
+        for (let i = n - 1; i >= 0; i--) {
+          const digit = Math.floor(arr[i] / exp) % 10;
+          const position = count[digit] - 1;
+          output[position] = arr[i];
+          count[digit]--;
+
+          steps.push({
+            array: [...output],
+            i: position,
+            j: i,
+            highlightLine: 11,
+            action: `Placing ${arr[i]} (digit ${digit}) at position ${position}`,
+            count: [...count],
+            digit,
+            exp,
+            phase: "placing",
+            original: [...arr]
+          });
+          history.push(`Step ${steps.length}: Placing ${arr[i]} at position ${position} - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
+        }
+
+        // Copy output array back to original array
+        for (let i = 0; i < n; i++) {
+          arr[i] = output[i];
+        }
+      };
+
+      const max = getMax(arr);
+      for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {
+        steps.push({
+          array: [...arr],
+          i: null,
+          j: null,
+          highlightLine: 2,
+          action: `Sorting by digit at position ${Math.log10(exp) + 1}`,
+          exp,
+          phase: "start"
+        });
+        history.push(`Step ${steps.length}: Starting to sort by digit at position ${Math.log10(exp) + 1} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
+
+        countingSortForRadix(arr, exp);
+      }
+    } else if (selectedAlgorithm === "bucket") {
+      const max = Math.max(...arr);
+      const min = Math.min(...arr);
+      const bucketCount = Math.min(n, 5); // Use at most 5 buckets
+      const bucketRange = (max - min) / bucketCount + 1;
+      const buckets = Array.from({ length: bucketCount }, () => []);
+
+      // Distribute elements into buckets
+      for (let i = 0; i < n; i++) {
+        const bucketIndex = Math.min(
+          Math.floor((arr[i] - min) / bucketRange),
+          bucketCount - 1
+        );
+        buckets[bucketIndex].push(arr[i]);
+
+        steps.push({
+          array: [...arr],
+          i: i,
+          j: bucketIndex,
+          highlightLine: 4,
+          action: `Placing ${arr[i]} in bucket ${bucketIndex}`,
+          buckets: buckets.map(bucket => [...bucket]),
+          phase: "distribution"
+        });
+        history.push(`Step ${steps.length}: Placing ${arr[i]} in bucket ${bucketIndex} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
+      }
+
+      // Sort individual buckets
+      let currentIndex = 0;
+      for (let i = 0; i < bucketCount; i++) {
+        buckets[i].sort((a, b) => a - b);
+        
+        steps.push({
+          array: [...arr],
+          i: i,
+          j: null,
+          highlightLine: 7,
+          action: `Sorted bucket ${i}: [${buckets[i].join(", ")}]`,
+          buckets: buckets.map(bucket => [...bucket]),
+          phase: "sorting"
+        });
+        history.push(`Step ${steps.length}: Sorted bucket ${i} - <span style="color: var(--light-yellow)">Bucket contents: [${buckets[i].join(", ")}]</span>`);
+
+        // Concatenate sorted buckets
+        for (const element of buckets[i]) {
+          arr[currentIndex] = element;
+          steps.push({
+            array: [...arr],
+            i: currentIndex,
+            j: i,
+            highlightLine: 8,
+            action: `Placing ${element} from bucket ${i} back into array`,
+            buckets: buckets.map(bucket => [...bucket]),
+            phase: "concatenation"
+          });
+          history.push(`Step ${steps.length}: Placing ${element} from bucket ${i} back into array - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
+          currentIndex++;
+        }
+      }
     }
 
     steps.push({
@@ -1594,11 +2028,9 @@ void bucketSort(float arr[], int n) {
       i: null,
       j: null,
       highlightLine: null,
-      action: "Sorting completed",
+      action: "Sorting completed"
     });
-    history.push(
-      `Step ${steps.length}: Sorting completed - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
-    );
+    history.push(`Step ${steps.length}: Sorting completed - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
 
     return { steps, history };
   };
@@ -1881,7 +2313,7 @@ void bucketSort(float arr[], int n) {
               }}
             />
           </div>
-          <div className="array-display">
+          <div className="display">
             <div className="phase-label">Array Elements</div>
             <div className="array-content">
               <div className="array-elements">
@@ -1893,20 +2325,174 @@ void bucketSort(float arr[], int n) {
                       index === steps[currentStep]?.j
                         ? "highlight"
                         : ""
+                    } ${
+                      selectedAlgorithm === "heap" && steps[currentStep]?.heapNodes
+                        ? index === steps[currentStep]?.heapNodes.root
+                          ? "heap-root"
+                          : index === steps[currentStep]?.heapNodes.left
+                          ? "heap-left"
+                          : index === steps[currentStep]?.heapNodes.right
+                          ? "heap-right"
+                          : ""
+                        : ""
+                    } ${
+                      selectedAlgorithm === "shell" && steps[currentStep]?.gap
+                        ? index % steps[currentStep]?.gap === 0
+                          ? "gap-start"
+                          : ""
+                        : ""
+                    } ${
+                      selectedAlgorithm === "shell" && steps[currentStep]?.temp !== undefined
+                        ? value === steps[currentStep]?.temp
+                          ? "temp-element"
+                          : ""
+                        : ""
+                    } ${
+                      selectedAlgorithm === "counting" && steps[currentStep]?.phase === "placing" && index === steps[currentStep]?.i
+                        ? "counting-active"
+                        : ""
+                    } ${
+                      selectedAlgorithm === "radix" && steps[currentStep]?.phase === "placing" && index === steps[currentStep]?.i
+                        ? "digit-active"
+                        : ""
+                    } ${
+                      selectedAlgorithm === "bucket" && steps[currentStep]?.phase === "concatenation" && index === steps[currentStep]?.i
+                        ? "bucket-active"
+                        : ""
                     }`}
                   >
+                    {/* For non-heap algorithms that use i and j */}
                     {selectedAlgorithm !== "merge" &&
-                      (index === steps[currentStep]?.i ||
-                        index === steps[currentStep]?.j) && (
+                     selectedAlgorithm !== "heap" &&
+                     (index === steps[currentStep]?.i ||
+                      index === steps[currentStep]?.j) && (
+                      <div className="variable-label">
+                        {index === steps[currentStep]?.i ? "i" : "j"}
+                      </div>
+                    )}
+                    
+                    {/* For heap sort algorithm */}
+                    {selectedAlgorithm === "heap" && steps[currentStep]?.heapNodes && (
+                      <>
+                        {/* Combine labels if multiple variables point to the same index */}
+                        {(index === steps[currentStep]?.i || 
+                          index === steps[currentStep]?.heapNodes.left || 
+                          index === steps[currentStep]?.heapNodes.right) && (
                           <div className="variable-label">
-                            {index === steps[currentStep]?.i ? "i" : "j"}
+                            {index === steps[currentStep]?.i && index === steps[currentStep]?.heapNodes.left
+                              ? "i, left"
+                              : index === steps[currentStep]?.i && index === steps[currentStep]?.heapNodes.right
+                              ? "i, right"
+                              : index === steps[currentStep]?.i
+                              ? "i"
+                              : index === steps[currentStep]?.heapNodes.left
+                              ? "left"
+                              : "right"}
                           </div>
                         )}
-                      <div className="element-value">{value}</div>
-                      <div className="element-index">{index}</div>
+                      </>
+                    )}
+                    
+                    {selectedAlgorithm === "shell" && steps[currentStep]?.gap && 
+                      index % steps[currentStep]?.gap === 0 && (
+                      <div className="gap-label">
+                        Gap {steps[currentStep]?.gap}
+                      </div>
+                    )}
+                    <div className="element-value">{value}</div>
+                    <div className="element-index">{index}</div>
                   </div>
                 ))}
               </div>
+              {selectedAlgorithm === "heap" && steps[currentStep]?.heapNodes && (
+                <div className="heap-visualization">
+                  <div className="heap-tree">
+                    {/* Draw SVG lines for connections */}
+                    <svg className="heap-connections" width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
+                      {steps[currentStep]?.array?.map((value, index) => {
+                        if (index === 0) return null; // Skip root node (no parent)
+                        
+                        const parentIndex = Math.floor((index - 1) / 2);
+                        const level = Math.floor(Math.log2(index + 1));
+                        const parentLevel = Math.floor(Math.log2(parentIndex + 1));
+                        const position = index - (Math.pow(2, level) - 1);
+                        const parentPosition = parentIndex - (Math.pow(2, parentLevel) - 1);
+                        const totalNodesInLevel = Math.pow(2, level);
+                        const totalNodesInParentLevel = Math.pow(2, parentLevel);
+                        
+                        // Calculate positions
+                        const x1 = (parentPosition + 0.5) * (100 / totalNodesInParentLevel) + '%';
+                        const y1 = (parentLevel * 60 + 22.5) + 'px';
+                        const x2 = (position + 0.5) * (100 / totalNodesInLevel) + '%';
+                        const y2 = (level * 60 - 22.5) + 'px';
+                        
+                        const isActive = index === steps[currentStep]?.heapNodes.left || 
+                                        index === steps[currentStep]?.heapNodes.right;
+                        
+                        return (
+                          <line
+                            key={`line-${index}`}
+                            x1={x1}
+                            y1={y1}
+                            x2={x2}
+                            y2={y2}
+                            stroke="var(--light-orange)"
+                            strokeWidth={isActive ? 2 : 1}
+                            strokeOpacity={isActive ? 0.8 : 0.4}
+                          />
+                        );
+                      })}
+                    </svg>
+                    
+                    {/* Draw nodes on top of lines */}
+                    {steps[currentStep]?.array?.map((value, index) => {
+                      const level = Math.floor(Math.log2(index + 1));
+                      const position = index - (Math.pow(2, level) - 1);
+                      const totalNodesInLevel = Math.pow(2, level);
+                      const leftPercent = (position + 0.5) * (100 / totalNodesInLevel);
+                      
+                      // Determine which variable label to show
+                      let variableLabel = null;
+                      if (index === steps[currentStep]?.heapNodes?.root && index === steps[currentStep]?.heapNodes?.left) {
+                        variableLabel = "i, left";
+                      } else if (index === steps[currentStep]?.heapNodes?.root && index === steps[currentStep]?.heapNodes?.right) {
+                        variableLabel = "i, right";
+                      } else if (index === steps[currentStep]?.heapNodes?.root) {
+                        variableLabel = "i";
+                      } else if (index === steps[currentStep]?.heapNodes?.left) {
+                        variableLabel = "left";
+                      } else if (index === steps[currentStep]?.heapNodes?.right) {
+                        variableLabel = "right";
+                      }
+                      
+                      return (
+                        <div
+                          key={index}
+                          className={`heap-node ${
+                            index === steps[currentStep]?.heapNodes.root
+                              ? "heap-root"
+                              : index === steps[currentStep]?.heapNodes.left
+                              ? "heap-left"
+                              : index === steps[currentStep]?.heapNodes.right
+                              ? "heap-right"
+                              : ""
+                          }`}
+                          style={{
+                            top: `${level * 60}px`,
+                            left: `${leftPercent}%`,
+                          }}
+                        >
+                          {variableLabel && (
+                            <div className="variable-label">{variableLabel}</div>
+                          )}
+                          <div className="node-value">{value}</div>
+                          <div className="node-index">{index}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
               {selectedAlgorithm === "merge" && steps[currentStep]?.merging && (
                 <div className="subarrays">
                   {steps[currentStep]?.leftSubarray?.length > 0 && (
