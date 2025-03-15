@@ -69,8 +69,8 @@ const SortingSection = () => {
 
   return (
     <section id="sorting" className="topic-section">
-      <div className="container py-5">
-        <h1 className="text-center mb-5">Sorting Algorithms</h1>
+      <div className="container pt-4 pb-5">
+        <h1 className="text-center mb-3">Sorting Algorithms</h1>
         <div className="row g-4">
           {sortingAlgorithms.map((algo, index) => (
             <div key={index} className="col-lg-3 col-md-6 col-sm-12 topic-card">

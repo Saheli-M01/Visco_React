@@ -2313,7 +2313,7 @@ void bucketSort(float arr[], int n) {
               }}
             />
           </div>
-          <div className="array-display">
+          <div className="display">
             <div className="phase-label">Array Elements</div>
             <div className="array-content">
               <div className="array-elements">
@@ -2361,13 +2361,38 @@ void bucketSort(float arr[], int n) {
                         : ""
                     }`}
                   >
+                    {/* For non-heap algorithms that use i and j */}
                     {selectedAlgorithm !== "merge" &&
-                      (index === steps[currentStep]?.i ||
-                        index === steps[currentStep]?.j) && (
-                        <div className="variable-label">
-                          {index === steps[currentStep]?.i ? "i" : "j"}
-                        </div>
+                     selectedAlgorithm !== "heap" &&
+                     (index === steps[currentStep]?.i ||
+                      index === steps[currentStep]?.j) && (
+                      <div className="variable-label">
+                        {index === steps[currentStep]?.i ? "i" : "j"}
+                      </div>
                     )}
+                    
+                    {/* For heap sort algorithm */}
+                    {selectedAlgorithm === "heap" && steps[currentStep]?.heapNodes && (
+                      <>
+                        {/* Combine labels if multiple variables point to the same index */}
+                        {(index === steps[currentStep]?.i || 
+                          index === steps[currentStep]?.heapNodes.left || 
+                          index === steps[currentStep]?.heapNodes.right) && (
+                          <div className="variable-label">
+                            {index === steps[currentStep]?.i && index === steps[currentStep]?.heapNodes.left
+                              ? "i, left"
+                              : index === steps[currentStep]?.i && index === steps[currentStep]?.heapNodes.right
+                              ? "i, right"
+                              : index === steps[currentStep]?.i
+                              ? "i"
+                              : index === steps[currentStep]?.heapNodes.left
+                              ? "left"
+                              : "right"}
+                          </div>
+                        )}
+                      </>
+                    )}
+                    
                     {selectedAlgorithm === "shell" && steps[currentStep]?.gap && 
                       index % steps[currentStep]?.gap === 0 && (
                       <div className="gap-label">
@@ -2382,11 +2407,63 @@ void bucketSort(float arr[], int n) {
               {selectedAlgorithm === "heap" && steps[currentStep]?.heapNodes && (
                 <div className="heap-visualization">
                   <div className="heap-tree">
+                    {/* Draw SVG lines for connections */}
+                    <svg className="heap-connections" width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
+                      {steps[currentStep]?.array?.map((value, index) => {
+                        if (index === 0) return null; // Skip root node (no parent)
+                        
+                        const parentIndex = Math.floor((index - 1) / 2);
+                        const level = Math.floor(Math.log2(index + 1));
+                        const parentLevel = Math.floor(Math.log2(parentIndex + 1));
+                        const position = index - (Math.pow(2, level) - 1);
+                        const parentPosition = parentIndex - (Math.pow(2, parentLevel) - 1);
+                        const totalNodesInLevel = Math.pow(2, level);
+                        const totalNodesInParentLevel = Math.pow(2, parentLevel);
+                        
+                        // Calculate positions
+                        const x1 = (parentPosition + 0.5) * (100 / totalNodesInParentLevel) + '%';
+                        const y1 = (parentLevel * 60 + 22.5) + 'px';
+                        const x2 = (position + 0.5) * (100 / totalNodesInLevel) + '%';
+                        const y2 = (level * 60 - 22.5) + 'px';
+                        
+                        const isActive = index === steps[currentStep]?.heapNodes.left || 
+                                        index === steps[currentStep]?.heapNodes.right;
+                        
+                        return (
+                          <line
+                            key={`line-${index}`}
+                            x1={x1}
+                            y1={y1}
+                            x2={x2}
+                            y2={y2}
+                            stroke="var(--light-orange)"
+                            strokeWidth={isActive ? 2 : 1}
+                            strokeOpacity={isActive ? 0.8 : 0.4}
+                          />
+                        );
+                      })}
+                    </svg>
+                    
+                    {/* Draw nodes on top of lines */}
                     {steps[currentStep]?.array?.map((value, index) => {
                       const level = Math.floor(Math.log2(index + 1));
                       const position = index - (Math.pow(2, level) - 1);
                       const totalNodesInLevel = Math.pow(2, level);
                       const leftPercent = (position + 0.5) * (100 / totalNodesInLevel);
+                      
+                      // Determine which variable label to show
+                      let variableLabel = null;
+                      if (index === steps[currentStep]?.heapNodes?.root && index === steps[currentStep]?.heapNodes?.left) {
+                        variableLabel = "i, left";
+                      } else if (index === steps[currentStep]?.heapNodes?.root && index === steps[currentStep]?.heapNodes?.right) {
+                        variableLabel = "i, right";
+                      } else if (index === steps[currentStep]?.heapNodes?.root) {
+                        variableLabel = "i";
+                      } else if (index === steps[currentStep]?.heapNodes?.left) {
+                        variableLabel = "left";
+                      } else if (index === steps[currentStep]?.heapNodes?.right) {
+                        variableLabel = "right";
+                      }
                       
                       return (
                         <div
@@ -2405,6 +2482,9 @@ void bucketSort(float arr[], int n) {
                             left: `${leftPercent}%`,
                           }}
                         >
+                          {variableLabel && (
+                            <div className="variable-label">{variableLabel}</div>
+                          )}
                           <div className="node-value">{value}</div>
                           <div className="node-index">{index}</div>
                         </div>

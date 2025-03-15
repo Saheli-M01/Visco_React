@@ -1,84 +1,8 @@
 @use '../../../_shared';
-@use '../../../mixins';
+@use '../../../mixins' as *;
 @use '../ArrayStyle/arrayVisualizer';
 @use './sortingVisualizer';
 
 #sorting {
-  position: relative;
-  min-height: 100vh;
-  z-index: 1;
-
-  .container {
-    @extend %glass-background;
-    padding: 2rem;
-    max-width: 95%;
-    margin: 0 auto;
-    position: relative;
-    z-index: 2;
-  }
-
-  h1 {
-    color: var(--primary-text);
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-
-  .row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    justify-items: center;
-    padding: 0 2rem;
-  }
-
-  .topic-card {
-    @include mixins.topic-card(var(--light-orange));
-    width: 100%;
-    max-width: 320px;
-  }
-
-  // Add overlay when algorithm details are shown
-  &::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    z-index: 998;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-  }
-
-  &.details-open::after {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  // Responsive breakpoints
-  @media (max-width: 1200px) {
-    .container {
-      padding: 2rem 1.5rem;
-    }
-    .row {
-      gap: 1.2rem;
-      padding: 0 1rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .container {
-      padding: 1.5rem 1rem;
-    }
-    .row {
-      padding: 0 0.5rem;
-    }
-    .topic-card {
-      max-width: 100%;
-    }
-  }
+  @include topic-element-section(var(--light-orange));
 }
