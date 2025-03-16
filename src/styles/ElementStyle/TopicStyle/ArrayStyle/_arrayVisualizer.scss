@@ -1,3 +1,5 @@
+@use '../../../_shared';
+@use '../../../mixins' as *;
 .array-visualizer {
   position: fixed;
   top: 0;

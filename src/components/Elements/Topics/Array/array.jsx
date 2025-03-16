@@ -128,7 +128,7 @@ const ArrayComponent = () => {
     };
 
     return (
-        <section id="sorting">
+        <section id="array">
             <div className="container">
                 <h1 className="text-center">Array Operations</h1>
                 <div className="row">
