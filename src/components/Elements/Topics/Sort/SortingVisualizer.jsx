@@ -14,6 +14,8 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
   const [speed, setSpeed] = useState(500); // Default speed: 500ms
   const [inputValue, setInputValue] = useState("");
   const [pivotIndex, setPivotIndex] = useState(0);
+  const [rangeMin, setRangeMin] = useState(1);
+  const [rangeMax, setRangeMax] = useState(20);
 
   const algorithms = {
     bubble: {
@@ -1815,67 +1817,120 @@ void bucketSort(float arr[], int n) {
         gap = Math.floor(gap / 2);
       }
     } else if (selectedAlgorithm === "counting") {
-      // Find max value for counting array size
-      const max = Math.max(...arr);
-      const count = new Array(max + 1).fill(0);
+      // Create count array and output array
+      const count = new Array(rangeMax - rangeMin + 1).fill(0);
       const output = new Array(n).fill(0);
 
-      // Count occurrences
+      // Initialize output array with zeros
+      steps.push({
+        array: [...arr],
+        outputArray: [...output],
+        i: null,
+        j: null,
+        highlightLine: 3,
+        action: "Initializing output array with zeros",
+        count: [...count],
+        phase: "initialization",
+        rangeMin: rangeMin,
+        rangeMax: rangeMax
+      });
+      history.push(`Step ${steps.length}: Initializing output array with zeros - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
+
+      // Count occurrences of each element
       for (let i = 0; i < n; i++) {
+        const value = arr[i];
+        const countIndex = value - rangeMin;
+        count[countIndex]++;
+
         steps.push({
           array: [...arr],
           i: i,
           j: null,
           highlightLine: 4,
-          action: `Counting occurrence of element ${arr[i]}`,
+          action: `Counting element ${value}: incrementing count[${countIndex}] to ${count[countIndex]}`,
           count: [...count],
-          phase: "counting"
+          phase: "counting",
+          rangeMin: rangeMin,
+          rangeMax: rangeMax,
+          countIndex: countIndex
         });
-        history.push(`Step ${steps.length}: Counting occurrence of ${arr[i]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
-        
-        count[arr[i]]++;
+        history.push(
+          `Step ${steps.length}: Counting element ${value}:<br>` +
+          `- Incrementing count[${countIndex}] to ${count[countIndex]}<br>` +
+          `<span style="color: var(--light-yellow)">Count array: [${count.join(", ")}]</span>`
+        );
       }
 
       // Calculate cumulative count
-      for (let i = 1; i <= max; i++) {
+      for (let i = 1; i < count.length; i++) {
+        const prevValue = count[i - 1];
+        count[i] += prevValue;
+
         steps.push({
           array: [...arr],
           i: i,
           j: null,
           highlightLine: 7,
-          action: `Calculating cumulative count at index ${i}`,
+          action: `Calculating cumulative count: count[${i}] = count[${i}](${count[i] - prevValue}) + count[${i-1}](${prevValue}) = ${count[i]}`,
           count: [...count],
-          phase: "cumulative"
+          phase: "cumulative",
+          rangeMin: rangeMin,
+          rangeMax: rangeMax
         });
-        history.push(`Step ${steps.length}: Calculating cumulative count at index ${i} - <span style="color: var(--light-yellow)">Count array: [${count.join(", ")}]</span>`);
-        
-        count[i] += count[i - 1];
+        history.push(
+          `Step ${steps.length}: Calculating cumulative count at index ${i}:<br>` +
+          `- count[${i}] = count[${i}](${count[i] - prevValue}) + count[${i-1}](${prevValue}) = ${count[i]}<br>` +
+          `<span style="color: var(--light-yellow)">Count array: [${count.join(", ")}]</span>`
+        );
       }
 
-      // Build output array
+      // Build output array by placing elements in their sorted positions
       for (let i = n - 1; i >= 0; i--) {
-        const currentElement = arr[i];
-        const position = count[currentElement] - 1;
-        output[position] = currentElement;
-        count[currentElement]--;
+        const value = arr[i];
+        const countIndex = value - rangeMin;
+        const position = count[countIndex] - 1;
+        output[position] = value;
+        count[countIndex]--;
 
         steps.push({
-          array: [...output],
-          i: position,
-          j: i,
+          array: [...arr],
+          outputArray: [...output],
+          i: i,
+          j: position,
           highlightLine: 11,
-          action: `Placing ${currentElement} at position ${position}`,
+          action: `Reading ${value} from input[${i}], count[${countIndex}]=${count[countIndex] + 1}, placing at output[${position}]`,
           count: [...count],
           phase: "placing",
-          original: [...arr]
+          rangeMin: rangeMin,
+          rangeMax: rangeMax,
+          value: value,
+          countIndex: countIndex,
+          readIndex: i
         });
-        history.push(`Step ${steps.length}: Placing ${currentElement} at position ${position} - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
+        history.push(
+          `Step ${steps.length}: Building output array:<br>` +
+          `- Reading ${value} from input[${i}]<br>` +
+          `- Using count[${countIndex}] = ${count[countIndex] + 1}<br>` +
+          `- Placing at output[${position}]<br>` +
+          `- Decreasing count[${countIndex}] to ${count[countIndex]}<br>` +
+          `<span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`
+        );
       }
 
-      // Copy output array back to original array
-      for (let i = 0; i < n; i++) {
-        arr[i] = output[i];
-      }
+      // Final step
+      steps.push({
+        array: [...arr],
+        outputArray: [...output],
+        i: null,
+        j: null,
+        highlightLine: null,
+        action: "Counting sort completed",
+        count: [...count],
+        phase: "completed",
+        rangeMin: rangeMin,
+        rangeMax: rangeMax
+      });
+      history.push(`Step ${steps.length}: Counting sort completed - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
     } else if (selectedAlgorithm === "radix") {
       const getMax = (arr) => {
         let max = arr[0];
@@ -1930,18 +1985,18 @@ void bucketSort(float arr[], int n) {
           output[position] = arr[i];
           count[digit]--;
 
-          steps.push({
-            array: [...output],
-            i: position,
-            j: i,
-            highlightLine: 11,
-            action: `Placing ${arr[i]} (digit ${digit}) at position ${position}`,
-            count: [...count],
-            digit,
-            exp,
-            phase: "placing",
-            original: [...arr]
-          });
+          // steps.push({
+          //   array: [...output],
+          //   i: position,
+          //   j: i,
+          //   highlightLine: 11,
+          //   action: `Placing ${arr[i]} (digit ${digit}) at position ${position}`,
+          //   count: [...count],
+          //   digit,
+          //   exp,
+          //   phase: "placing",
+          //   original: [...arr]
+          // });
           history.push(`Step ${steps.length}: Placing ${arr[i]} at position ${position} - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
         }
 
@@ -2066,6 +2121,14 @@ void bucketSort(float arr[], int n) {
       setWarning(`Pivot index cannot be larger than array length - 1 (${newArray.length - 1})`);
       setPivotIndex(newArray.length - 1);
       return;
+    }
+    
+    if (selectedAlgorithm === "counting") {
+      // Check if any value is outside the defined range
+      if (newArray.some(num => num < rangeMin || num > rangeMax)) {
+        setWarning(`All values must be within the range ${rangeMin} to ${rangeMax} (inclusive)`);
+        return;
+      }
     }
 
     console.log("Selected algorithm:", selectedAlgorithm);
@@ -2226,6 +2289,7 @@ void bucketSort(float arr[], int n) {
                 {selectedAlgorithm === "quick" && (
                   <div className="pivot-input-section">
                     <label htmlFor="pivotInput">Pivot Index: </label>
+                    <div className="number-input-container">
                     <input
                       type="number"
                       id="pivotInput"
@@ -2243,11 +2307,135 @@ void bucketSort(float arr[], int n) {
                           setWarning(""); // Clear warning when valid input is provided
                         }
                       }}
-                      style={{ width: '60px', marginLeft: '8px' }}
-                    />
-                    <span className="pivot-warning" style={{ fontSize: '0.8em', color: '#ff6b6b', marginLeft: '8px' }}>
-                      Max index: {inputValue ? inputValue.split(",").length - 1 : 9}
+                      />
+                      <div className="number-controls">
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            const maxIndex = inputValue ? inputValue.split(",").length - 1 : 9;
+                            if (pivotIndex < maxIndex) {
+                              setPivotIndex(pivotIndex + 1);
+                            }
+                          }}
+                        >
+                          ▲
+                        </button>
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            if (pivotIndex > 0) {
+                              setPivotIndex(pivotIndex - 1);
+                            }
+                          }}
+                        >
+                          ▼
+                        </button>
+                      </div>
+                    </div>
+                    <span className="pivot-warning">
+                      Max: {inputValue ? inputValue.split(",").length - 1 : 9}
                     </span>
+                  </div>
+                )}
+                
+                {selectedAlgorithm === "counting" && (
+                  <div className="range-input-section">
+                    <label htmlFor="rangeMin">Range:</label>
+                    <div className="number-input-container">
+                      <input
+                        type="number"
+                        id="rangeMin"
+                        value={rangeMin}
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value);
+                          if (!isNaN(value) && value >= 0) {
+                            // Ensure the range doesn't exceed 19
+                            if (rangeMax - value <= 19) {
+                              setRangeMin(value);
+                            } else {
+                              // Adjust rangeMax to maintain the maximum range of 19
+                              setRangeMin(value);
+                              setRangeMax(value + 19);
+                            }
+                          }
+                        }}
+                        min="0"
+                        max={rangeMax - 1}
+                      />
+                      <div className="number-controls">
+                        <button
+                          onClick={() => {
+                            if (rangeMin < rangeMax - 1) {
+                              setRangeMin(rangeMin + 1);
+                            }
+                          }}
+                        >
+                          ▲
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (rangeMin > 0) {
+                              setRangeMin(rangeMin - 1);
+                              // Check if range exceeds 19 after decreasing min
+                              if (rangeMax - (rangeMin - 1) > 19) {
+                                setRangeMax((rangeMin - 1) + 19);
+                              }
+                            }
+                          }}
+                        >
+                          ▼
+                        </button>
+                      </div>
+                    </div>
+                    <span className="range-separator">to</span>
+                    <div className="number-input-container">
+                      <input
+                        type="number"
+                        id="rangeMax"
+                        value={rangeMax}
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value);
+                          if (!isNaN(value) && value > rangeMin) {
+                            // Ensure the range doesn't exceed 19
+                            if (value - rangeMin <= 19) {
+                              setRangeMax(value);
+                            } else {
+                              // Adjust rangeMin to maintain the maximum range of 19
+                              setRangeMax(value);
+                              setRangeMin(value - 19);
+                            }
+                          }
+                        }}
+                        min={rangeMin + 1}
+                        max="100"
+                      />
+                      <div className="number-controls">
+                        <button
+                          onClick={() => {
+                            if (rangeMax < 100) {
+                              setRangeMax(rangeMax + 1);
+                              // Check if range exceeds 19 after increasing max
+                              if ((rangeMax + 1) - rangeMin > 19) {
+                                setRangeMin((rangeMax + 1) - 19);
+                              }
+                            }
+                          }}
+                        >
+                          ▲
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (rangeMax > rangeMin + 1) {
+                              setRangeMax(rangeMax - 1);
+                            }
+                          }}
+                        >
+                          ▼
+                        </button>
+                      </div>
+                    </div>
+                    <span className="range-info">Max range: 19</span>
+                    {warning && <span className="range-warning">{warning}</span>}
                   </div>
                 )}
               </div>
@@ -2337,143 +2525,173 @@ void bucketSort(float arr[], int n) {
             )}
             
             <div className="array-content">
-              <div className="array-elements">
-                {steps[currentStep]?.array?.map((value, index) => (
-                  <div
-                    key={index}
-                    className={`array-element ${
-                      index === steps[currentStep]?.i ||
-                      index === steps[currentStep]?.j
-                        ? "highlight"
-                        : ""
-                    } ${
-                      selectedAlgorithm === "heap" && steps[currentStep]?.heapNodes
-                        ? index === steps[currentStep]?.heapNodes.root
-                          ? "heap-root"
-                          : index === steps[currentStep]?.heapNodes.left
-                          ? "heap-left"
-                          : index === steps[currentStep]?.heapNodes.right
-                          ? "heap-right"
+              {/* Array Elements - Hide only in the last step of counting sort */}
+              {!(selectedAlgorithm === "counting" && 
+                 steps[currentStep]?.phase === "completed" && 
+                 currentStep === steps.length - 1) && (
+                <div className="array-elements">
+                  {steps[currentStep]?.array?.map((value, index) => (
+                    <div
+                      key={index}
+                      className={`array-element ${
+                        selectedAlgorithm === "counting"
+                          ? (steps[currentStep]?.phase === "placing" &&
+                             index === steps[currentStep]?.readIndex
+                              ? "highlight"
+                              : steps[currentStep]?.phase === "counting" &&
+                                index === steps[currentStep]?.i
+                              ? "highlight"
+                              : "")
+                          : ((index === steps[currentStep]?.i ||
+                              index === steps[currentStep]?.j)
+                              ? "highlight"
+                              : "")
+                      } ${
+                        selectedAlgorithm === "heap" && steps[currentStep]?.heapNodes
+                          ? index === steps[currentStep]?.heapNodes.root
+                            ? "heap-root"
+                            : index === steps[currentStep]?.heapNodes.left
+                            ? "heap-left"
+                            : index === steps[currentStep]?.heapNodes.right
+                            ? "heap-right"
+                            : ""
                           : ""
-                        : ""
-                    } ${
-                      selectedAlgorithm === "shell" && steps[currentStep]?.gap
-                        ? index % steps[currentStep]?.gap === 0
-                          ? "gap-start"
+                      } ${
+                        selectedAlgorithm === "shell" && steps[currentStep]?.gap
+                          ? index % steps[currentStep]?.gap === 0
+                            ? "gap-start"
+                            : ""
                           : ""
-                        : ""
-                    } ${
-                      selectedAlgorithm === "shell" && steps[currentStep]?.temp !== undefined
-                        ? value === steps[currentStep]?.temp
-                          ? "temp-element"
+                      } ${
+                        selectedAlgorithm === "shell" && steps[currentStep]?.temp !== undefined
+                          ? value === steps[currentStep]?.temp
+                            ? "temp-element"
+                            : ""
                           : ""
-                        : ""
-                    } ${
-                      selectedAlgorithm === "counting" && steps[currentStep]?.phase === "placing" && index === steps[currentStep]?.i
-                        ? "counting-active"
-                        : ""
-                    } ${
-                      selectedAlgorithm === "radix" && steps[currentStep]?.phase === "placing" && index === steps[currentStep]?.i
-                        ? "digit-active"
-                        : ""
-                    } ${
-                      selectedAlgorithm === "bucket" && steps[currentStep]?.phase === "concatenation" && index === steps[currentStep]?.i
-                        ? "bucket-active"
-                        : ""
-                    }`}
-                  >
-                    {/* For non-heap algorithms that use i and j */}
-                    {selectedAlgorithm !== "merge" &&
-                     selectedAlgorithm !== "heap" &&
-                     selectedAlgorithm !== "insertion" &&
-                     selectedAlgorithm !== "shell" &&
-                     (index === steps[currentStep]?.i ||
-                      index === steps[currentStep]?.j) && (
-                      <div className="variable-label">
-                        {index === steps[currentStep]?.i ? "i" : "j"}
-                      </div>
-                    )}
-                    
-                    {/* For insertion sort key label */}
-                    {selectedAlgorithm === "insertion" && 
-                     steps[currentStep]?.key !== undefined && 
-                     value === steps[currentStep]?.key && (
-                      <div className="key-label">key</div>
-                    )}
-                    
-                    {/* For insertion sort i/j labels */}
-                    {selectedAlgorithm === "insertion" && 
-                     (index === steps[currentStep]?.i || index === steps[currentStep]?.j) && (
-                      <div className="variable-label insertion-variable">
-                        {index === steps[currentStep]?.i ? "i" : "j"}
-                      </div>
-                    )}
-                    
-                    {/* For shell sort i/j labels (when not at gap position) */}
-                    {selectedAlgorithm === "shell" && 
-                     (index === steps[currentStep]?.i || index === steps[currentStep]?.j) &&
-                     !(index % steps[currentStep]?.gap === 0) && (
-                      <div className="variable-label shell-variable">
-                        {index === steps[currentStep]?.i ? "i" : "j"}
-                      </div>
-                    )}
-                    
-                    {/* Combined gap and variable label for shell sort */}
-                    {selectedAlgorithm === "shell" && 
-                     steps[currentStep]?.gap && 
-                     index % steps[currentStep]?.gap === 0 && 
-                     (index === steps[currentStep]?.i || index === steps[currentStep]?.j) && (
-                      <div className="variable-label shell-variable">
-                        {index === steps[currentStep]?.i ? `i, Gap ${steps[currentStep]?.gap}` : `j, Gap ${steps[currentStep]?.gap}`}
-                      </div>
-                    )}
-                    
-                    {/* Gap label for shell sort (only when not combined with variable) */}
-                    {selectedAlgorithm === "shell" && 
-                     steps[currentStep]?.gap && 
-                     index % steps[currentStep]?.gap === 0 && 
-                     !(index === steps[currentStep]?.i || index === steps[currentStep]?.j) && (
-                      <div className="gap-label">
-                        Gap {steps[currentStep]?.gap}
-                      </div>
-                    )}
-                    
-                    {/* For heap sort algorithm */}
-                    {selectedAlgorithm === "heap" && steps[currentStep]?.heapNodes && (
-                      <>
-                        {/* Combine labels if multiple variables point to the same index */}
-                        {(index === steps[currentStep]?.i || 
-                          index === steps[currentStep]?.heapNodes.left || 
-                          index === steps[currentStep]?.heapNodes.right) && (
-                          <div className="variable-label">
-                            {index === steps[currentStep]?.i && index === steps[currentStep]?.heapNodes.left
-                              ? "i, left"
-                              : index === steps[currentStep]?.i && index === steps[currentStep]?.heapNodes.right
-                              ? "i, right"
-                              : index === steps[currentStep]?.i
-                              ? "i"
-                              : index === steps[currentStep]?.heapNodes.left
-                              ? "left"
-                              : "right"}
+                      } ${
+                        selectedAlgorithm === "radix" && steps[currentStep]?.phase === "placing" && index === steps[currentStep]?.i
+                          ? "digit-active"
+                          : ""
+                      } ${
+                        selectedAlgorithm === "bucket" && steps[currentStep]?.phase === "concatenation" && index === steps[currentStep]?.i
+                          ? "bucket-active"
+                          : ""
+                      }`}
+                    >
+                      {/* For counting sort - counting phase */}
+                      {selectedAlgorithm === "counting" &&
+                        steps[currentStep]?.phase === "counting" &&
+                        index === steps[currentStep]?.i && (
+                          <div className="variable-label counting-label">
+                            counting {value}<br/>
+                            count[{value - rangeMin}]++
                           </div>
-                        )}
-                      </>
-                    )}
-                    <div className="element-value">{value}</div>
-                    <div className="element-index">{index}</div>
-                  </div>
-                ))}
-              </div>
+                      )}
+
+                      {/* For counting sort - placing phase */}
+                      {selectedAlgorithm === "counting" &&
+                        steps[currentStep]?.phase === "placing" &&
+                        index === steps[currentStep]?.readIndex && (
+                          <div className="variable-label counting-label">
+                            reading from here<br/>
+                            (right to left)
+                          </div>
+                      )}
+
+                      {/* For non-counting sort algorithms */}
+                      {selectedAlgorithm !== "counting" &&
+                       selectedAlgorithm !== "merge" &&
+                       selectedAlgorithm !== "heap" &&
+                       selectedAlgorithm !== "insertion" &&
+                       selectedAlgorithm !== "shell" &&
+                        (index === steps[currentStep]?.i ||
+                        index === steps[currentStep]?.j) && (
+                          <div className="variable-label">
+                            {index === steps[currentStep]?.i ? "i" : "j"}
+                          </div>
+                      )}
+                      
+                      {/* For insertion sort key label */}
+                      {selectedAlgorithm === "insertion" && 
+                       steps[currentStep]?.key !== undefined && 
+                       value === steps[currentStep]?.key && (
+                        <div className="key-label">key</div>
+                      )}
+                      
+                      {/* For insertion sort i/j labels */}
+                      {selectedAlgorithm === "insertion" && 
+                       (index === steps[currentStep]?.i || index === steps[currentStep]?.j) && (
+                        <div className="variable-label insertion-variable">
+                          {index === steps[currentStep]?.i ? "i" : "j"}
+                        </div>
+                      )}
+                      
+                      {/* For shell sort i/j labels (when not at gap position) */}
+                      {selectedAlgorithm === "shell" && 
+                       (index === steps[currentStep]?.i || index === steps[currentStep]?.j) &&
+                       !(index % steps[currentStep]?.gap === 0) && (
+                        <div className="variable-label shell-variable">
+                          {index === steps[currentStep]?.i ? "i" : "j"}
+                        </div>
+                      )}
+                      
+                      {/* Combined gap and variable label for shell sort */}
+                      {selectedAlgorithm === "shell" && 
+                       steps[currentStep]?.gap && 
+                       index % steps[currentStep]?.gap === 0 && 
+                       (index === steps[currentStep]?.i || index === steps[currentStep]?.j) && (
+                        <div className="variable-label shell-variable">
+                          {index === steps[currentStep]?.i ? `i, Gap ${steps[currentStep]?.gap}` : `j, Gap ${steps[currentStep]?.gap}`}
+                        </div>
+                      )}
+                      
+                      {/* Gap label for shell sort (only when not combined with variable) */}
+                      {selectedAlgorithm === "shell" && 
+                       steps[currentStep]?.gap && 
+                       index % steps[currentStep]?.gap === 0 && 
+                       !(index === steps[currentStep]?.i || index === steps[currentStep]?.j) && (
+                        <div className="gap-label">
+                          Gap {steps[currentStep]?.gap}
+                        </div>
+                      )}
+                      
+                      {/* For heap sort algorithm */}
+                      {selectedAlgorithm === "heap" && steps[currentStep]?.heapNodes && (
+                        <>
+                          {/* Combine labels if multiple variables point to the same index */}
+                          {(index === steps[currentStep]?.i || 
+                            index === steps[currentStep]?.heapNodes.left || 
+                            index === steps[currentStep]?.heapNodes.right) && (
+                            <div className="variable-label">
+                              {index === steps[currentStep]?.i && index === steps[currentStep]?.heapNodes.left
+                                ? "i, left"
+                                : index === steps[currentStep]?.i && index === steps[currentStep]?.heapNodes.right
+                                ? "i, right"
+                                : index === steps[currentStep]?.i
+                                ? "i"
+                                : index === steps[currentStep]?.heapNodes.left
+                                ? "left"
+                                : "right"}
+                            </div>
+                          )}
+                        </>
+                      )}
+                      <div className="element-value">{value}</div>
+                      <div className="element-index">{index}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
               {selectedAlgorithm === "heap" && steps[currentStep]?.heapNodes && (
                 <div className="heap-visualization">
                   <div className="heap-tree">
                     {/* Draw SVG lines for connections */}
                     <svg className="heap-connections" width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
-                      {steps[currentStep]?.array?.map((value, index) => {
+                    {steps[currentStep]?.array?.map((value, index) => {
                         if (index === 0) return null; // Skip root node (no parent)
                         
                         const parentIndex = Math.floor((index - 1) / 2);
-                        const level = Math.floor(Math.log2(index + 1));
+                      const level = Math.floor(Math.log2(index + 1));
                         const parentLevel = Math.floor(Math.log2(parentIndex + 1));
                         const position = index - (Math.pow(2, level) - 1);
                         const parentPosition = parentIndex - (Math.pow(2, parentLevel) - 1);
@@ -2604,6 +2822,113 @@ void bucketSort(float arr[], int n) {
                         </div>
                       ))}
                     </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Counting Sort Visualization */}
+              {selectedAlgorithm === "counting" && steps[currentStep]?.count && (
+                <div className="counting-visualization">
+                  {/* Count Array - Hide when completed */}
+                  {steps[currentStep]?.phase !== "completed" && (
+                    <div className="count-array">
+                      <div className="section-label">
+                        Count Array (Index: 0 to {rangeMax - rangeMin})
+                      </div>
+                      <div className="elements">
+                        {steps[currentStep]?.count.map((count, index) => (
+                          <div
+                            key={index}
+                            className={`count-element ${
+                              index === steps[currentStep]?.countIndex &&
+                              (steps[currentStep]?.phase === "counting" ||
+                               steps[currentStep]?.phase === "placing")
+                                ? "highlight"
+                                : index === steps[currentStep]?.i &&
+                                  steps[currentStep]?.phase === "cumulative"
+                                ? "highlight"
+                                : ""
+                            }`}
+                          >
+                            <div className="count-value">{count}</div>
+                            <div className="count-index">
+                              index: {index}<br/>
+                              value: {index + rangeMin}
+                            </div>
+                            {/* Variable labels for counting and placing phases */}
+                            {(steps[currentStep]?.phase === "counting" ||
+                              steps[currentStep]?.phase === "placing") &&
+                              index === steps[currentStep]?.countIndex && (
+                                <div className="variable-label counting-label">
+                                  count[{index}]
+                                </div>
+                            )}
+                            {/* Variable labels for cumulative phase */}
+                            {steps[currentStep]?.phase === "cumulative" &&
+                              index === steps[currentStep]?.i && (
+                                <div className="variable-label counting-label">
+                                  Adding count[{index - 1}] = {count - steps[currentStep]?.count[index]}<br/>
+                                  to count[{index}] = {steps[currentStep]?.count[index]}
+                                </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Output Array - Always show when placing or completed */}
+                  {(steps[currentStep]?.phase === "placing" ||
+                    steps[currentStep]?.phase === "completed") && (
+                    <div className="array-section" style={{ 
+                      marginTop: steps[currentStep]?.phase === "completed" && currentStep === steps.length - 1 ? "2rem" : "",
+                      marginBottom: "1rem"
+                    }}>
+                      <div className="section-label">
+                        {steps[currentStep]?.phase === "completed" ? "Sorted Array" : "Output Array"}
+                      </div>
+                      <div className="elements">
+                        {steps[currentStep]?.outputArray?.map((value, index) => (
+                          <div
+                            key={index}
+                            className={`array-element ${
+                              index === steps[currentStep]?.j &&
+                              steps[currentStep]?.phase === "placing"
+                                ? "highlight"
+                                : ""
+                            }`}
+                          >
+                            <div className="element-value">{value !== 0 ? value : "0"}</div>
+                            <div className="element-index">{index}</div>
+                            {steps[currentStep]?.phase === "placing" &&
+                              index === steps[currentStep]?.j && (
+                                <div className="variable-label counting-label">
+                                  position {index}<br/>
+                                  (count[{steps[currentStep]?.countIndex}]-1)
+                                </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Final Sorted Array (for all algorithms except counting sort) */}
+              {steps[currentStep]?.phase === "completed" && selectedAlgorithm !== "counting" && (
+                <div className="array-section">
+                  <div className="section-label">Sorted Array</div>
+                  <div className="elements">
+                    {steps[currentStep]?.array?.map((value, index) => (
+                      <div
+                        key={index}
+                        className="array-element"
+                      >
+                        <div className="element-value">{value}</div>
+                        <div className="element-index">{index}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
