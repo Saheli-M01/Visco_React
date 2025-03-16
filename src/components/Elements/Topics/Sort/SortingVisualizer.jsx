@@ -1544,6 +1544,7 @@ void bucketSort(float arr[], int n) {
           j: i,
           highlightLine: 2,
           action: `Selected ${key} as key`,
+          key: key, // Add key to the step
         });
         history.push(
           `Step ${steps.length}: Selected arr[${i}]=${key} as key - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
@@ -1556,6 +1557,7 @@ void bucketSort(float arr[], int n) {
             j,
             highlightLine: 4,
             action: `Comparing ${arr[j]} with key ${key}`,
+            key: key, // Add key to the step
           });
           history.push(
             `Step ${steps.length}: Comparing arr[${j}]=${arr[j]} with key=${key} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
@@ -1568,6 +1570,7 @@ void bucketSort(float arr[], int n) {
             j,
             highlightLine: 5,
             action: `Moved ${arr[j]} one position ahead`,
+            key: key, // Add key to the step
           });
           history.push(
             `Step ${steps.length}: Moved arr[${j}]=${arr[j]} one position ahead to index ${j + 1} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
@@ -1582,6 +1585,7 @@ void bucketSort(float arr[], int n) {
           j: j + 1,
           highlightLine: 7,
           action: `Inserted ${key} at position ${j + 1}`,
+          key: key, // Add key to the step
         });
         history.push(
           `Step ${steps.length}: Inserted key=${key} at position ${j + 1} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
@@ -2315,6 +2319,15 @@ void bucketSort(float arr[], int n) {
           </div>
           <div className="display">
             <div className="phase-label">Array Elements</div>
+            
+            {/* Key value box for insertion sort */}
+            {selectedAlgorithm === "insertion" && steps[currentStep]?.key !== undefined && (
+              <div className="key-value-box">
+                <div className="key-box-label">Key:</div>
+                <div className="key-box-value">{steps[currentStep]?.key}</div>
+              </div>
+            )}
+            
             <div className="array-content">
               <div className="array-elements">
                 {steps[currentStep]?.array?.map((value, index) => (

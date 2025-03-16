@@ -14,16 +14,65 @@
   overflow-x: auto;
   padding: 1rem;
   width: 100%;
- 
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  
   animation: fadeIn 0.5s ease;
   position: relative;
   z-index: 10;
   visibility: visible;
   color: var(--secondary-text);
+ 
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  // Key value box for insertion sort
+  .key-value-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--light-orange);
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    width: fit-content;
+    
+    .key-box-label {
+      font-weight: bold;
+      color: var(--light-orange);
+      font-size: 1rem;
+    }
+    
+    .key-box-value {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      height: 40px;
+      padding: 0.5rem 1rem;
+      background: var(--medium-orange);
+      color: var(--secondary-background);
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    @media (max-width: 768px) {
+      padding: 0.5rem 0.75rem;
+      
+      .key-box-label {
+        font-size: 0.9rem;
+      }
+      
+      .key-box-value {
+        min-width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+    }
+  }
   
   .array-content {
     display: flex;
@@ -111,6 +160,13 @@
       color: var(--primary-background);
       z-index: 2;
     }
+    
+    &.key-element {
+      background: var(--medium-orange);
+      transform: scale(1.05);
+      z-index: 1;
+      box-shadow: 0 0 8px rgba(var(--light-green-rgb), 0.4);
+    }
 
     .element-value {
       font-size: clamp(0.75rem, 1vw, 1rem);
@@ -144,6 +200,28 @@
       transform: translateX(-50%);
       z-index: 5;
       border: 1px solid grey;
+      
+      &.key-variable-label {
+    
+        font-weight: bold;
+        background: rgba(0, 0, 0, 0.4);
+      }
+    }
+    
+    .key-label {
+      position: absolute;
+      top: -20px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: var(--light-green);
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      border: 1px solid var(--medium-green);
     }
 
     @media (max-width: 768px) {
@@ -294,7 +372,7 @@
   }
 
   &.temp-element {
-    background: var(--light-green) !important;
+    background: var(--light-) !important;
     border-color: var(--medium-green) !important;
     box-shadow: 0 0 10px rgba(var(--light-green-rgb), 0.3);
   }
