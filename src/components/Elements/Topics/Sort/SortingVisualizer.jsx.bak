@@ -1805,7 +1805,8 @@ void bucketSort(float arr[], int n) {
             j: null,
             highlightLine: 6,
             action: `Placing ${temp} at position ${j}`,
-            gap: gap
+            gap: gap,
+            temp: temp
           });
           history.push(
             `Step ${steps.length}: Placing ${temp} at position ${j} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
@@ -2409,7 +2410,7 @@ void bucketSort(float arr[], int n) {
                       </div>
                     )}
                     
-                    {/* For shell sort i/j labels (when not at gap position) */}
+                    {/* For shell sort i/j labels */}
                     {selectedAlgorithm === "shell" && 
                      (index === steps[currentStep]?.i || index === steps[currentStep]?.j) &&
                      !(index % steps[currentStep]?.gap === 0) && (
@@ -2443,22 +2444,6 @@ void bucketSort(float arr[], int n) {
                       <>
                         {/* Combine labels if multiple variables point to the same index */}
                         {(index === steps[currentStep]?.i || 
-                          index === steps[currentStep]?.heapNodes.left || 
-                          index === steps[currentStep]?.heapNodes.right) && (
-                          <div className="variable-label">
-                            {index === steps[currentStep]?.i && index === steps[currentStep]?.heapNodes.left
-                              ? "i, left"
-                              : index === steps[currentStep]?.i && index === steps[currentStep]?.heapNodes.right
-                              ? "i, right"
-                              : index === steps[currentStep]?.i
-                              ? "i"
-                              : index === steps[currentStep]?.heapNodes.left
-                              ? "left"
-                              : "right"}
-                          </div>
-                        )}
-                      </>
-                    )}
                     <div className="element-value">{value}</div>
                     <div className="element-index">{index}</div>
                   </div>
