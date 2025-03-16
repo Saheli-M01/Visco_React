@@ -38,6 +38,19 @@
     margin-bottom: 1rem;
     width: fit-content;
     
+    &.temp-value-box {
+      border-color: var(--light-yellow);
+      
+      .key-box-label {
+        color: var(--light-yellow);
+      }
+      
+      .key-box-value {
+        background: var(--medium-orange);
+        border-color: var(--light-yellow);
+      }
+    }
+    
     .key-box-label {
       font-weight: bold;
       color: var(--light-orange);
@@ -184,13 +197,20 @@
       width: 100%;
       text-align: center;
     }
+    
+    &.gap-start .element-index {
+      left: 30%;
+      transform: translateX(-50%);
+      width: auto;
+    }
 
     .variable-label {
       position: absolute;
       top: -20px;
       font-size: 0.7rem;
       color: var(--light-yellow);
-      width: 100%;
+      width: auto;
+      min-width: 20px;
       text-align: center;
       white-space: nowrap;
       background: rgba(0, 0, 0, 0.3);
@@ -201,10 +221,13 @@
       z-index: 5;
       border: 1px solid grey;
       
-      &.key-variable-label {
-    
-        font-weight: bold;
-        background: rgba(0, 0, 0, 0.4);
+      &.insertion-variable {
+        left: 30%;
+      }
+      
+      &.shell-variable {
+        left: 20px;
+        top: -40px;
       }
     }
     
@@ -352,29 +375,46 @@
 
     .gap-label {
       position: absolute;
-      top: -25px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: -45px;
+      left: -3px;
+      transform: translateX(0);
       font-size: 0.7rem;
       color: var(--light-yellow);
       white-space: nowrap;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 4px;
+      border-radius: 4px;
+      border: 1px solid var(--light-yellow);
+      z-index: 5;
     }
 
     &::before {
       content: '';
       position: absolute;
-      top: -10px;
+      top: -15px;
       left: -2px;
       width: 2px;
-      height: 10px;
+      height: 25px;
+      background: var(--light-yellow);
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: -15px;
+      left: -2px;
+      width: 25px;
+      height: 2px;
       background: var(--light-yellow);
     }
   }
 
   &.temp-element {
-    background: var(--light-) !important;
-    border-color: var(--medium-green) !important;
-    box-shadow: 0 0 10px rgba(var(--light-green-rgb), 0.3);
+    background: var(--medium-orange) !important;
+    border: 1px solid var(--light-yellow) !important;
+    transform: scale(1.05);
+    z-index: 1;
+    box-shadow: 0 0 8px rgba(255, 165, 0, 0.4);
   }
 }
 
