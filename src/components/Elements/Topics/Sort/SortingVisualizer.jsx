@@ -1820,22 +1820,23 @@ void bucketSort(float arr[], int n) {
       // Use the defined range instead of finding max value
       const count = new Array(rangeMax - rangeMin + 1).fill(0);
       const output = new Array(n).fill(0);
+      const mainArray = [...arr]; // Keep a copy of the main array for reference
 
       // Count occurrences
       for (let i = 0; i < n; i++) {
-        const adjustedValue = arr[i] - rangeMin; // Adjust value to start from 0
+        const adjustedValue = mainArray[i] - rangeMin; // Adjust value to start from 0
         steps.push({
-          array: [...arr],
+          array: [...mainArray],
           i: i,
           j: null,
           highlightLine: 4,
-          action: `Counting occurrence of element ${arr[i]} (index ${adjustedValue} in count array)`,
+          action: `Counting occurrence of element ${mainArray[i]} (index ${adjustedValue} in count array)`,
           count: [...count],
           phase: "counting",
           rangeMin: rangeMin,
           rangeMax: rangeMax
         });
-        history.push(`Step ${steps.length}: Counting occurrence of ${arr[i]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
+        history.push(`Step ${steps.length}: Counting occurrence of ${mainArray[i]} - <span style="color: var(--light-yellow)">Array state: [${mainArray.join(", ")}]</span>`);
         
         count[adjustedValue]++;
       }
@@ -1843,7 +1844,7 @@ void bucketSort(float arr[], int n) {
       // Calculate cumulative count
       for (let i = 1; i < count.length; i++) {
         steps.push({
-          array: [...arr],
+          array: [...mainArray],
           i: i,
           j: null,
           highlightLine: 7,
@@ -1860,7 +1861,7 @@ void bucketSort(float arr[], int n) {
 
       // Build output array
       for (let i = n - 1; i >= 0; i--) {
-        const currentElement = arr[i];
+        const currentElement = mainArray[i];
         const adjustedValue = currentElement - rangeMin; // Adjust value to start from 0
         const position = count[adjustedValue] - 1;
         output[position] = currentElement;
@@ -1869,22 +1870,30 @@ void bucketSort(float arr[], int n) {
         steps.push({
           array: [...output],
           i: position,
-          j: i,
+          j: null,
           highlightLine: 11,
-          action: `Placing ${currentElement} at position ${position}`,
+          action: `Reading ${currentElement} from main array and placing at position ${position} in output array`,
           count: [...count],
           phase: "placing",
-          original: [...arr],
           rangeMin: rangeMin,
           rangeMax: rangeMax
         });
-        history.push(`Step ${steps.length}: Placing ${currentElement} at position ${position} - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
+        history.push(`Step ${steps.length}: Reading ${currentElement} from main array and placing at position ${position} in output array - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
       }
 
-      // Copy output array back to original array
-      for (let i = 0; i < n; i++) {
-        arr[i] = output[i];
-      }
+      // Final step showing completed output array
+      steps.push({
+        array: [...output],
+        i: null,
+        j: null,
+        highlightLine: null,
+        action: "Counting sort completed",
+        count: [...count],
+        phase: "completed",
+        rangeMin: rangeMin,
+        rangeMax: rangeMax
+      });
+      history.push(`Step ${steps.length}: Counting sort completed - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
     } else if (selectedAlgorithm === "radix") {
       const getMax = (arr) => {
         let max = arr[0];
@@ -2748,26 +2757,6 @@ void bucketSort(float arr[], int n) {
               {/* Counting Sort Visualization */}
               {selectedAlgorithm === "counting" && steps[currentStep]?.count && (
                 <div className="counting-visualization">
-                  {steps[currentStep]?.phase === "placing" && (
-                    <div className="array-section">
-                      <div className="section-label">Original Array</div>
-                      <div className="elements">
-                        {steps[currentStep]?.original?.map((value, index) => (
-                          <div
-                            key={index}
-                            className={`array-element ${
-                              index === steps[currentStep]?.j ? "highlight" : ""
-                            }`}
-                          >
-                            {value}
-                            {index === steps[currentStep]?.j && (
-                              <div className="variable-label">j</div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                   <div className="count-array">
                     <div className="section-label">
                       Count Array (Range: {steps[currentStep]?.rangeMin} to {steps[currentStep]?.rangeMax})
@@ -2790,24 +2779,27 @@ void bucketSort(float arr[], int n) {
                     </div>
                   </div>
                   {steps[currentStep]?.phase === "placing" && (
-                    <div className="array-section">
-                      <div className="section-label">Output Array</div>
-                      <div className="elements">
-                        {steps[currentStep]?.array?.map((value, index) => (
-                          <div
-                            key={index}
-                            className={`array-element ${
-                              index === steps[currentStep]?.i ? "highlight" : ""
-                            }`}
-                          >
-                            {value || ""}
-                            {index === steps[currentStep]?.i && (
-                              <div className="variable-label">i</div>
-                            )}
-                          </div>
-                        ))}
+                    <>
+                      
+                      <div className="array-section">
+                        <div className="section-label">Output Array</div>
+                        <div className="elements">
+                          {steps[currentStep]?.array?.map((value, index) => (
+                            <div
+                              key={index}
+                              className={`array-element ${
+                                index === steps[currentStep]?.i ? "highlight" : ""
+                              }`}
+                            >
+                              {value || ""}
+                              {index === steps[currentStep]?.i && (
+                                <div className="variable-label">i</div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    </>
                   )}
                 </div>
               )}
