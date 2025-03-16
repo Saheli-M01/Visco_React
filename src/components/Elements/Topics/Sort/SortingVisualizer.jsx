@@ -14,6 +14,8 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
   const [speed, setSpeed] = useState(500); // Default speed: 500ms
   const [inputValue, setInputValue] = useState("");
   const [pivotIndex, setPivotIndex] = useState(0);
+  const [rangeMin, setRangeMin] = useState(1);
+  const [rangeMax, setRangeMax] = useState(20);
 
   const algorithms = {
     bubble: {
@@ -1815,37 +1817,41 @@ void bucketSort(float arr[], int n) {
         gap = Math.floor(gap / 2);
       }
     } else if (selectedAlgorithm === "counting") {
-      // Find max value for counting array size
-      const max = Math.max(...arr);
-      const count = new Array(max + 1).fill(0);
+      // Use the defined range instead of finding max value
+      const count = new Array(rangeMax - rangeMin + 1).fill(0);
       const output = new Array(n).fill(0);
 
       // Count occurrences
       for (let i = 0; i < n; i++) {
+        const adjustedValue = arr[i] - rangeMin; // Adjust value to start from 0
         steps.push({
           array: [...arr],
           i: i,
           j: null,
           highlightLine: 4,
-          action: `Counting occurrence of element ${arr[i]}`,
+          action: `Counting occurrence of element ${arr[i]} (index ${adjustedValue} in count array)`,
           count: [...count],
-          phase: "counting"
+          phase: "counting",
+          rangeMin: rangeMin,
+          rangeMax: rangeMax
         });
         history.push(`Step ${steps.length}: Counting occurrence of ${arr[i]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
         
-        count[arr[i]]++;
+        count[adjustedValue]++;
       }
 
       // Calculate cumulative count
-      for (let i = 1; i <= max; i++) {
+      for (let i = 1; i < count.length; i++) {
         steps.push({
           array: [...arr],
           i: i,
           j: null,
           highlightLine: 7,
-          action: `Calculating cumulative count at index ${i}`,
+          action: `Calculating cumulative count at index ${i} (value ${i + rangeMin})`,
           count: [...count],
-          phase: "cumulative"
+          phase: "cumulative",
+          rangeMin: rangeMin,
+          rangeMax: rangeMax
         });
         history.push(`Step ${steps.length}: Calculating cumulative count at index ${i} - <span style="color: var(--light-yellow)">Count array: [${count.join(", ")}]</span>`);
         
@@ -1855,9 +1861,10 @@ void bucketSort(float arr[], int n) {
       // Build output array
       for (let i = n - 1; i >= 0; i--) {
         const currentElement = arr[i];
-        const position = count[currentElement] - 1;
+        const adjustedValue = currentElement - rangeMin; // Adjust value to start from 0
+        const position = count[adjustedValue] - 1;
         output[position] = currentElement;
-        count[currentElement]--;
+        count[adjustedValue]--;
 
         steps.push({
           array: [...output],
@@ -1867,7 +1874,9 @@ void bucketSort(float arr[], int n) {
           action: `Placing ${currentElement} at position ${position}`,
           count: [...count],
           phase: "placing",
-          original: [...arr]
+          original: [...arr],
+          rangeMin: rangeMin,
+          rangeMax: rangeMax
         });
         history.push(`Step ${steps.length}: Placing ${currentElement} at position ${position} - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
       }
@@ -2067,6 +2076,14 @@ void bucketSort(float arr[], int n) {
       setPivotIndex(newArray.length - 1);
       return;
     }
+    
+    if (selectedAlgorithm === "counting") {
+      // Check if any value is outside the defined range
+      if (newArray.some(num => num < rangeMin || num > rangeMax)) {
+        setWarning(`All values must be within the range ${rangeMin} to ${rangeMax} (inclusive)`);
+        return;
+      }
+    }
 
     console.log("Selected algorithm:", selectedAlgorithm);
     const { steps: newSteps, history: newHistory } = generateSteps(newArray);
@@ -2226,27 +2243,145 @@ void bucketSort(float arr[], int n) {
                 {selectedAlgorithm === "quick" && (
                   <div className="pivot-input-section">
                     <label htmlFor="pivotInput">Pivot Index: </label>
-                    <input
-                      type="number"
-                      id="pivotInput"
-                      min="0"
-                      max={inputValue ? inputValue.split(",").length - 1 : 9}
-                      value={pivotIndex}
-                      onChange={(e) => {
-                        const newValue = parseInt(e.target.value) || 0;
-                        const maxIndex = inputValue ? inputValue.split(",").length - 1 : 9;
-                        if (newValue > maxIndex) {
-                          setWarning(`Pivot index cannot be larger than array length - 1 (${maxIndex})`);
-                          setPivotIndex(maxIndex);
-                        } else {
-                          setPivotIndex(newValue);
-                          setWarning(""); // Clear warning when valid input is provided
-                        }
-                      }}
-                      style={{ width: '60px', marginLeft: '8px' }}
-                    />
-                    <span className="pivot-warning" style={{ fontSize: '0.8em', color: '#ff6b6b', marginLeft: '8px' }}>
-                      Max index: {inputValue ? inputValue.split(",").length - 1 : 9}
+                    <div className="number-input-container">
+                      <input
+                        type="number"
+                        id="pivotInput"
+                        min="0"
+                        max={inputValue ? inputValue.split(",").length - 1 : 9}
+                        value={pivotIndex}
+                        onChange={(e) => {
+                          const newValue = parseInt(e.target.value) || 0;
+                          const maxIndex = inputValue ? inputValue.split(",").length - 1 : 9;
+                          if (newValue > maxIndex) {
+                            setWarning(`Pivot index cannot be larger than array length - 1 (${maxIndex})`);
+                            setPivotIndex(maxIndex);
+                          } else {
+                            setPivotIndex(newValue);
+                            setWarning(""); // Clear warning when valid input is provided
+                          }
+                        }}
+                      />
+                      <div className="number-controls">
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            const maxIndex = inputValue ? inputValue.split(",").length - 1 : 9;
+                            if (pivotIndex < maxIndex) {
+                              setPivotIndex(pivotIndex + 1);
+                            }
+                          }}
+                        >
+                          ▲
+                        </button>
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            if (pivotIndex > 0) {
+                              setPivotIndex(pivotIndex - 1);
+                            }
+                          }}
+                        >
+                          ▼
+                        </button>
+                      </div>
+                    </div>
+                    <span className="pivot-warning">
+                      Max: {inputValue ? inputValue.split(",").length - 1 : 9}
+                    </span>
+                  </div>
+                )}
+                
+                {selectedAlgorithm === "counting" && (
+                  <div className="range-input-section">
+                    <label htmlFor="rangeMinInput">Range: </label>
+                    <div className="number-input-container">
+                      <input
+                        type="number"
+                        id="rangeMinInput"
+                        min="0"
+                        max={rangeMax - 1}
+                        value={rangeMin}
+                        onChange={(e) => {
+                          const newValue = parseInt(e.target.value) || 0;
+                          if (newValue >= 0 && rangeMax - newValue <= 20) {
+                            setRangeMin(newValue);
+                            setWarning("");
+                          } else {
+                            setWarning(`Range span cannot exceed 20 values`);
+                          }
+                        }}
+                      />
+                      <div className="number-controls">
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            if (rangeMin < rangeMax - 1 && rangeMax - (rangeMin + 1) <= 20) {
+                              setRangeMin(rangeMin + 1);
+                            } else {
+                              setWarning(`Range span cannot exceed 20 values`);
+                            }
+                          }}
+                        >
+                          ▲
+                        </button>
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            if (rangeMin > 0) {
+                              setRangeMin(rangeMin - 1);
+                            }
+                          }}
+                        >
+                          ▼
+                        </button>
+                      </div>
+                    </div>
+                    <span className="range-separator">to</span>
+                    <div className="number-input-container">
+                      <input
+                        type="number"
+                        id="rangeMaxInput"
+                        min={rangeMin + 1}
+                        max={rangeMin + 19}
+                        value={rangeMax}
+                        onChange={(e) => {
+                          const newValue = parseInt(e.target.value) || 0;
+                          if (newValue > rangeMin && newValue <= rangeMin + 19) {
+                            setRangeMax(newValue);
+                            setWarning("");
+                          } else {
+                            setWarning(`Range span cannot exceed 20 values`);
+                          }
+                        }}
+                      />
+                      <div className="number-controls">
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            if (rangeMax < rangeMin + 19) {
+                              setRangeMax(rangeMax + 1);
+                            } else {
+                              setWarning(`Range span cannot exceed 20 values`);
+                            }
+                          }}
+                        >
+                          ▲
+                        </button>
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            if (rangeMax > rangeMin + 1) {
+                              setRangeMax(rangeMax - 1);
+                            }
+                          }}
+                        >
+                          ▼
+                        </button>
+                      </div>
+                    </div>
+                    <span className="range-warning">
+                      Max span: 20
                     </span>
                   </div>
                 )}
@@ -2342,8 +2477,9 @@ void bucketSort(float arr[], int n) {
                   <div
                     key={index}
                     className={`array-element ${
-                      index === steps[currentStep]?.i ||
-                      index === steps[currentStep]?.j
+                      (index === steps[currentStep]?.i ||
+                       index === steps[currentStep]?.j) &&
+                      !(selectedAlgorithm === "counting" && steps[currentStep]?.phase === "cumulative")
                         ? "highlight"
                         : ""
                     } ${
@@ -2388,7 +2524,8 @@ void bucketSort(float arr[], int n) {
                      selectedAlgorithm !== "insertion" &&
                      selectedAlgorithm !== "shell" &&
                      (index === steps[currentStep]?.i ||
-                      index === steps[currentStep]?.j) && (
+                      index === steps[currentStep]?.j) &&
+                     !(selectedAlgorithm === "counting" && steps[currentStep]?.phase === "cumulative") && (
                       <div className="variable-label">
                         {index === steps[currentStep]?.i ? "i" : "j"}
                       </div>
@@ -2605,6 +2742,73 @@ void bucketSort(float arr[], int n) {
                       ))}
                     </div>
                   </div>
+                </div>
+              )}
+              
+              {/* Counting Sort Visualization */}
+              {selectedAlgorithm === "counting" && steps[currentStep]?.count && (
+                <div className="counting-visualization">
+                  {steps[currentStep]?.phase === "placing" && (
+                    <div className="array-section">
+                      <div className="section-label">Original Array</div>
+                      <div className="elements">
+                        {steps[currentStep]?.original?.map((value, index) => (
+                          <div
+                            key={index}
+                            className={`array-element ${
+                              index === steps[currentStep]?.j ? "highlight" : ""
+                            }`}
+                          >
+                            {value}
+                            {index === steps[currentStep]?.j && (
+                              <div className="variable-label">j</div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="count-array">
+                    <div className="section-label">
+                      Count Array (Range: {steps[currentStep]?.rangeMin} to {steps[currentStep]?.rangeMax})
+                    </div>
+                    <div className="elements">
+                      {steps[currentStep]?.count.map((count, index) => (
+                        <div
+                          key={index}
+                          className={`count-element ${
+                            steps[currentStep]?.i === index &&
+                            steps[currentStep]?.phase === "cumulative"
+                              ? "active"
+                              : ""
+                          }`}
+                        >
+                          <div className="index">{index + steps[currentStep]?.rangeMin}</div>
+                          <div className="count">{count}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {steps[currentStep]?.phase === "placing" && (
+                    <div className="array-section">
+                      <div className="section-label">Output Array</div>
+                      <div className="elements">
+                        {steps[currentStep]?.array?.map((value, index) => (
+                          <div
+                            key={index}
+                            className={`array-element ${
+                              index === steps[currentStep]?.i ? "highlight" : ""
+                            }`}
+                          >
+                            {value || ""}
+                            {index === steps[currentStep]?.i && (
+                              <div className="variable-label">i</div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

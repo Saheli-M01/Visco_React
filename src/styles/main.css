@@ -2790,6 +2790,88 @@ body {
     padding: 1rem;
   }
 }
+.input-section .pivot-input-section, .input-section .range-input-section {
+  margin-top: 0.5rem;
+}
+.input-section .pivot-input-section input[type=number], .input-section .range-input-section input[type=number] {
+  width: 50px;
+  margin-left: 8px;
+  padding: 0.5rem !important;
+  text-align: center;
+  background-color: var(--secondary-background);
+  color: var(--light-orange);
+  border: 1px solid var(--medium-orange);
+  border-radius: 4px;
+  font-size: 0.75rem !important;
+  height: 20px !important;
+  line-height: 1;
+  box-sizing: border-box !important;
+  /* Hide default spinners */
+  /* Firefox */
+  -moz-appearance: textfield;
+  /* Focus state */
+}
+.input-section .pivot-input-section input[type=number]::-webkit-outer-spin-button, .input-section .pivot-input-section input[type=number]::-webkit-inner-spin-button, .input-section .range-input-section input[type=number]::-webkit-outer-spin-button, .input-section .range-input-section input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.input-section .pivot-input-section input[type=number]:focus, .input-section .range-input-section input[type=number]:focus {
+  outline: none;
+  border-color: var(--light-orange);
+  box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
+}
+.input-section .pivot-input-section .number-input-container, .input-section .range-input-section .number-input-container {
+  display: inline-flex;
+  align-items: center;
+}
+.input-section .pivot-input-section .number-input-container .number-controls, .input-section .range-input-section .number-input-container .number-controls {
+  display: flex;
+  flex-direction: column;
+  margin-left: 4px;
+}
+.input-section .pivot-input-section .number-input-container .number-controls button, .input-section .range-input-section .number-input-container .number-controls button {
+  width: 14px;
+  height: 10px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--secondary-background);
+  border: 1px solid var(--medium-orange);
+  color: var(--light-orange);
+  font-size: 8px;
+  cursor: pointer;
+}
+.input-section .pivot-input-section .number-input-container .number-controls button:first-child, .input-section .range-input-section .number-input-container .number-controls button:first-child {
+  border-radius: 2px 2px 0 0;
+  border-bottom: none;
+}
+.input-section .pivot-input-section .number-input-container .number-controls button:last-child, .input-section .range-input-section .number-input-container .number-controls button:last-child {
+  border-radius: 0 0 2px 2px;
+}
+.input-section .pivot-input-section .number-input-container .number-controls button:hover, .input-section .range-input-section .number-input-container .number-controls button:hover {
+  background-color: var(--medium-orange);
+  color: var(--secondary-background);
+}
+.input-section .pivot-input-section .pivotInput, .input-section .range-input-section .pivotInput {
+  color: var(--primary-text);
+}
+.input-section .pivot-input-section .pivot-warning, .input-section .pivot-input-section .range-warning, .input-section .range-input-section .pivot-warning, .input-section .range-input-section .range-warning {
+  font-size: 0.75em;
+  margin-left: 8px;
+  padding: 2px 6px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+.input-section .pivot-input-section .pivot-warning, .input-section .pivot-input-section .range-warning, .input-section .range-input-section .pivot-warning, .input-section .range-input-section .range-warning {
+  color: #ff6b6b;
+}
+.input-section .pivot-input-section .range-separator, .input-section .range-input-section .range-separator {
+  margin: 0 8px;
+  color: var(--primary-text);
+  font-size: 0.75rem;
+}
+
 .display {
   display: flex;
   flex-direction: column;
@@ -2975,6 +3057,8 @@ body {
 .display .array-element .variable-label {
   position: absolute;
   top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 0.7rem;
   color: var(--light-yellow);
   width: auto;
@@ -2984,8 +3068,6 @@ body {
   background: rgba(0, 0, 0, 0.3);
   padding: 2px 4px;
   border-radius: 4px;
-  left: 50%;
-  transform: translateX(-50%);
   z-index: 5;
   border: 1px solid grey;
 }
@@ -3164,7 +3246,7 @@ body {
 .counting-visualization,
 .radix-visualization,
 .bucket-visualization {
-  margin-top: 2rem;
+  margin-top: 0rem;
   width: 100%;
   padding: 1rem;
 }
@@ -3219,6 +3301,7 @@ body {
   border: 1px solid var(--light-orange);
   border-radius: 4px;
   min-width: 40px;
+  position: relative;
 }
 .counting-visualization .count-element .index {
   font-size: 0.7rem;
@@ -3229,9 +3312,29 @@ body {
   font-weight: bold;
   color: var(--primary-text);
 }
+.counting-visualization .count-element .variable-label {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  color: var(--light-yellow);
+  width: auto;
+  min-width: 20px;
+  text-align: center;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 4px;
+  border-radius: 4px;
+  z-index: 5;
+  border: 1px solid grey;
+}
 .counting-visualization .count-element.active {
   background: var(--light-orange);
   border-color: var(--light-yellow);
+}
+.counting-visualization .count-element.active .index, .counting-visualization .count-element.active .count {
+  color: var(--primary-background);
 }
 
 .radix-visualization .digit-group {
