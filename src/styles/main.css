@@ -3253,12 +3253,15 @@ body {
 .counting-visualization .count-array,
 .counting-visualization .digit-groups,
 .counting-visualization .buckets,
+.counting-visualization .array-section,
 .radix-visualization .count-array,
 .radix-visualization .digit-groups,
 .radix-visualization .buckets,
+.radix-visualization .array-section,
 .bucket-visualization .count-array,
 .bucket-visualization .digit-groups,
-.bucket-visualization .buckets {
+.bucket-visualization .buckets,
+.bucket-visualization .array-section {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
@@ -3267,29 +3270,199 @@ body {
 .counting-visualization .count-array .section-label,
 .counting-visualization .digit-groups .section-label,
 .counting-visualization .buckets .section-label,
+.counting-visualization .array-section .section-label,
 .radix-visualization .count-array .section-label,
 .radix-visualization .digit-groups .section-label,
 .radix-visualization .buckets .section-label,
+.radix-visualization .array-section .section-label,
 .bucket-visualization .count-array .section-label,
 .bucket-visualization .digit-groups .section-label,
-.bucket-visualization .buckets .section-label {
-  font-size: 0.7rem;
+.bucket-visualization .buckets .section-label,
+.bucket-visualization .array-section .section-label {
+  font-size: 0.9rem;
   color: var(--light-yellow);
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 .counting-visualization .count-array .elements,
 .counting-visualization .digit-groups .elements,
 .counting-visualization .buckets .elements,
+.counting-visualization .array-section .elements,
 .radix-visualization .count-array .elements,
 .radix-visualization .digit-groups .elements,
 .radix-visualization .buckets .elements,
+.radix-visualization .array-section .elements,
 .bucket-visualization .count-array .elements,
 .bucket-visualization .digit-groups .elements,
-.bucket-visualization .buckets .elements {
+.bucket-visualization .buckets .elements,
+.bucket-visualization .array-section .elements {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: flex-start;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0;
+}
+.counting-visualization .count-array .count-element,
+.counting-visualization .digit-groups .count-element,
+.counting-visualization .buckets .count-element,
+.counting-visualization .array-section .count-element,
+.radix-visualization .count-array .count-element,
+.radix-visualization .digit-groups .count-element,
+.radix-visualization .buckets .count-element,
+.radix-visualization .array-section .count-element,
+.bucket-visualization .count-array .count-element,
+.bucket-visualization .digit-groups .count-element,
+.bucket-visualization .buckets .count-element,
+.bucket-visualization .array-section .count-element {
+  position: relative;
+  min-width: 50px;
+  min-height: 60px;
+  padding: 0.8rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  background: var(--secondary-background);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  flex: 0 1 auto;
+  border: 1px dashed var(--light-orange);
+}
+.counting-visualization .count-array .count-element .count-value,
+.counting-visualization .digit-groups .count-element .count-value,
+.counting-visualization .buckets .count-element .count-value,
+.counting-visualization .array-section .count-element .count-value,
+.radix-visualization .count-array .count-element .count-value,
+.radix-visualization .digit-groups .count-element .count-value,
+.radix-visualization .buckets .count-element .count-value,
+.radix-visualization .array-section .count-element .count-value,
+.bucket-visualization .count-array .count-element .count-value,
+.bucket-visualization .digit-groups .count-element .count-value,
+.bucket-visualization .buckets .count-element .count-value,
+.bucket-visualization .array-section .count-element .count-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--primary-text);
+}
+.counting-visualization .count-array .count-element .count-index,
+.counting-visualization .digit-groups .count-element .count-index,
+.counting-visualization .buckets .count-element .count-index,
+.counting-visualization .array-section .count-element .count-index,
+.radix-visualization .count-array .count-element .count-index,
+.radix-visualization .digit-groups .count-element .count-index,
+.radix-visualization .buckets .count-element .count-index,
+.radix-visualization .array-section .count-element .count-index,
+.bucket-visualization .count-array .count-element .count-index,
+.bucket-visualization .digit-groups .count-element .count-index,
+.bucket-visualization .buckets .count-element .count-index,
+.bucket-visualization .array-section .count-element .count-index {
+  font-size: 0.75rem;
+  color: var(--light-yellow);
+  margin-top: 4px;
+}
+.counting-visualization .count-array .count-element.highlight, .counting-visualization .count-array .count-element.active,
+.counting-visualization .digit-groups .count-element.highlight,
+.counting-visualization .digit-groups .count-element.active,
+.counting-visualization .buckets .count-element.highlight,
+.counting-visualization .buckets .count-element.active,
+.counting-visualization .array-section .count-element.highlight,
+.counting-visualization .array-section .count-element.active,
+.radix-visualization .count-array .count-element.highlight,
+.radix-visualization .count-array .count-element.active,
+.radix-visualization .digit-groups .count-element.highlight,
+.radix-visualization .digit-groups .count-element.active,
+.radix-visualization .buckets .count-element.highlight,
+.radix-visualization .buckets .count-element.active,
+.radix-visualization .array-section .count-element.highlight,
+.radix-visualization .array-section .count-element.active,
+.bucket-visualization .count-array .count-element.highlight,
+.bucket-visualization .count-array .count-element.active,
+.bucket-visualization .digit-groups .count-element.highlight,
+.bucket-visualization .digit-groups .count-element.active,
+.bucket-visualization .buckets .count-element.highlight,
+.bucket-visualization .buckets .count-element.active,
+.bucket-visualization .array-section .count-element.highlight,
+.bucket-visualization .array-section .count-element.active {
+  background: var(--light-orange);
+  transform: scale(1.1);
+  color: var(--primary-background);
+  z-index: 2;
+}
+.counting-visualization .count-array .count-element.highlight .count-value, .counting-visualization .count-array .count-element.highlight .count-index, .counting-visualization .count-array .count-element.active .count-value, .counting-visualization .count-array .count-element.active .count-index,
+.counting-visualization .digit-groups .count-element.highlight .count-value,
+.counting-visualization .digit-groups .count-element.highlight .count-index,
+.counting-visualization .digit-groups .count-element.active .count-value,
+.counting-visualization .digit-groups .count-element.active .count-index,
+.counting-visualization .buckets .count-element.highlight .count-value,
+.counting-visualization .buckets .count-element.highlight .count-index,
+.counting-visualization .buckets .count-element.active .count-value,
+.counting-visualization .buckets .count-element.active .count-index,
+.counting-visualization .array-section .count-element.highlight .count-value,
+.counting-visualization .array-section .count-element.highlight .count-index,
+.counting-visualization .array-section .count-element.active .count-value,
+.counting-visualization .array-section .count-element.active .count-index,
+.radix-visualization .count-array .count-element.highlight .count-value,
+.radix-visualization .count-array .count-element.highlight .count-index,
+.radix-visualization .count-array .count-element.active .count-value,
+.radix-visualization .count-array .count-element.active .count-index,
+.radix-visualization .digit-groups .count-element.highlight .count-value,
+.radix-visualization .digit-groups .count-element.highlight .count-index,
+.radix-visualization .digit-groups .count-element.active .count-value,
+.radix-visualization .digit-groups .count-element.active .count-index,
+.radix-visualization .buckets .count-element.highlight .count-value,
+.radix-visualization .buckets .count-element.highlight .count-index,
+.radix-visualization .buckets .count-element.active .count-value,
+.radix-visualization .buckets .count-element.active .count-index,
+.radix-visualization .array-section .count-element.highlight .count-value,
+.radix-visualization .array-section .count-element.highlight .count-index,
+.radix-visualization .array-section .count-element.active .count-value,
+.radix-visualization .array-section .count-element.active .count-index,
+.bucket-visualization .count-array .count-element.highlight .count-value,
+.bucket-visualization .count-array .count-element.highlight .count-index,
+.bucket-visualization .count-array .count-element.active .count-value,
+.bucket-visualization .count-array .count-element.active .count-index,
+.bucket-visualization .digit-groups .count-element.highlight .count-value,
+.bucket-visualization .digit-groups .count-element.highlight .count-index,
+.bucket-visualization .digit-groups .count-element.active .count-value,
+.bucket-visualization .digit-groups .count-element.active .count-index,
+.bucket-visualization .buckets .count-element.highlight .count-value,
+.bucket-visualization .buckets .count-element.highlight .count-index,
+.bucket-visualization .buckets .count-element.active .count-value,
+.bucket-visualization .buckets .count-element.active .count-index,
+.bucket-visualization .array-section .count-element.highlight .count-value,
+.bucket-visualization .array-section .count-element.highlight .count-index,
+.bucket-visualization .array-section .count-element.active .count-value,
+.bucket-visualization .array-section .count-element.active .count-index {
+  color: var(--primary-background) !important;
+}
+.counting-visualization .count-array .count-element .variable-label,
+.counting-visualization .digit-groups .count-element .variable-label,
+.counting-visualization .buckets .count-element .variable-label,
+.counting-visualization .array-section .count-element .variable-label,
+.radix-visualization .count-array .count-element .variable-label,
+.radix-visualization .digit-groups .count-element .variable-label,
+.radix-visualization .buckets .count-element .variable-label,
+.radix-visualization .array-section .count-element .variable-label,
+.bucket-visualization .count-array .count-element .variable-label,
+.bucket-visualization .digit-groups .count-element .variable-label,
+.bucket-visualization .buckets .count-element .variable-label,
+.bucket-visualization .array-section .count-element .variable-label {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: var(--light-yellow);
+  width: auto;
+  min-width: 80px;
+  text-align: center;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 5;
+  border: 1px solid var(--light-orange);
 }
 
 .counting-visualization {
@@ -3298,15 +3471,11 @@ body {
   flex-direction: column;
   gap: 1rem;
 }
-.counting-visualization .array-section .section-label, .counting-visualization .count-array .section-label {
-  font-size: 0.9rem;
-  color: var(--light-yellow);
-  margin-bottom: 0.5rem;
-}
-.counting-visualization .array-section .elements, .counting-visualization .count-array .elements {
+.counting-visualization .array-section .elements {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.8rem;
   justify-content: center;
 }
 .counting-visualization .array-section .array-element {
@@ -3348,45 +3517,10 @@ body {
   z-index: 5;
   border: 1px solid grey;
 }
-.counting-visualization .count-array .count-element {
-  position: relative;
-  min-width: 40px;
-  width: auto;
-  height: auto;
-  min-height: 40px;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: var(--secondary-background);
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  flex: 0 1 auto;
-  border: 1px dashed var(--light-orange);
-}
-.counting-visualization .count-array .count-element.active {
-  background: var(--light-orange);
-  transform: scale(1.1);
-  color: var(--primary-background);
-  z-index: 2;
-}
-.counting-visualization .count-array .count-element.active .index, .counting-visualization .count-array .count-element.active .count {
-  color: var(--primary-background);
-  font-size: 0.5rem;
-}
-.counting-visualization .count-array .count-element .index {
-  font-size: 0.7rem;
-  color: var(--light-yellow);
-}
-.counting-visualization .count-array .count-element .count-index {
-  font-size: 0.75rem;
-}
-.counting-visualization .count-array .count-element .count-value {
-  font-size: 0.85rem;
-}
-.counting-visualization .count-array .elements .count-element .variable-label, .counting-visualization .count-array .elements .array-element .variable-label, .counting-visualization .array-section .elements .count-element .variable-label, .counting-visualization .array-section .elements .array-element .variable-label {
-  padding-bottom: 0;
+
+.range-info {
+  color: var(--light-red);
+  font-size: 0.9rem;
 }
 
 .array-elements .array-element .variable-label.counting-label,
@@ -3399,6 +3533,101 @@ body {
   font-size: 0.9rem;
 }
 
+.variable-label.radix-label {
+  position: absolute !important;
+  top: auto !important;
+  bottom: -65px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  color: var(--light-yellow) !important;
+  background: rgba(0, 0, 0, 0.3) !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  border: 1px solid var(--light-orange) !important;
+  font-size: 0.8rem !important;
+  white-space: nowrap !important;
+  z-index: 10 !important;
+  min-width: 80px !important;
+}
+
+.count-element .variable-label.radix-label {
+  bottom: -35px !important;
+  z-index: 20 !important;
+}
+
+.radix-visualization .count-array .elements .count-element,
+.radix-visualization .array-section .elements .array-element {
+  margin-bottom: 10px;
+}
+.radix-visualization .count-array {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+.radix-visualization .count-array .elements {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  overflow-x: auto;
+  padding-bottom: 30px;
+  width: 100%;
+  max-width: 100%;
+}
+.radix-visualization .count-array .elements .count-element {
+  min-width: 50px;
+  width: 50px;
+  min-height: 60px;
+  padding: 0.8rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.radix-visualization .count-array .elements .count-element .count-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.radix-visualization .count-array .elements .count-element .count-index {
+  font-size: 0.75rem;
+  color: var(--light-yellow);
+}
+.radix-visualization .count-array .elements .count-element.highlight {
+  background: var(--light-orange);
+  transform: scale(1.1);
+}
+.radix-visualization .count-array .elements .count-element.highlight .count-value, .radix-visualization .count-array .elements .count-element.highlight .count-index {
+  color: var(--primary-background) !important;
+}
+.radix-visualization .array-section .elements {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: center;
+}
+.radix-visualization .array-section .elements .array-element {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.radix-visualization .array-section .elements .array-element .element-value {
+  font-size: 1rem;
+  font-weight: bold;
+}
+.radix-visualization .array-section .elements .array-element .element-index {
+  position: absolute;
+  bottom: -20px;
+  font-size: 0.7rem;
+  color: var(--secondary-text);
+  width: 100%;
+  text-align: center;
+}
 .radix-visualization .digit-group {
   background: var(--secondary-background);
   border: 1px solid var(--light-orange);
@@ -3489,7 +3718,7 @@ body {
   border-color: var(--light-yellow) !important;
 }
 .array-element.digit-active {
-  background: var(--light-green) !important;
+  background: var(--medium-orange) !important;
   border-color: var(--medium-green) !important;
 }
 .array-element.bucket-active {

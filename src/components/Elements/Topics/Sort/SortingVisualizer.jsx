@@ -170,6 +170,20 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
     }
 }`,
 
+      javaScript: `function insertionSort(arr) {
+  for (let i = 1; i < arr.length; i++) {
+      let key = arr[i];
+      let j = i - 1;
+      // Move elements of arr[0..i-1] that are greater than key
+      // to one position ahead of their current position
+      while (j >= 0 && arr[j] > key) {
+          arr[j + 1] = arr[j];
+          j--;
+      }
+      arr[j + 1] = key;
+  }
+  return arr;
+}`,
       c: `void insertionSort(int arr[], int n) {
     int i, key, j;
     for (i = 1; i < n; i++) {
@@ -184,20 +198,6 @@ const SortingVisualizer = ({ onClose, algorithm }) => {
         }
         arr[j + 1] = key;
     }
-}`,
-      javaScript: `function insertionSort(arr) {
-  for (let i = 1; i < arr.length; i++) {
-      let key = arr[i];
-      let j = i - 1;
-      // Move elements of arr[0..i-1] that are greater than key
-      // to one position ahead of their current position
-      while (j >= 0 && arr[j] > key) {
-          arr[j + 1] = arr[j];
-          j--;
-      }
-      arr[j + 1] = key;
-  }
-  return arr;
 }`,
     },
     merge: {
@@ -480,8 +480,8 @@ function mergeSort(arr, start = 0, end = arr.length - 1) {
     return arr;
 }`,
     },
-    name: "Quick Sort",
     quick: {
+      name: "Quick Sort",
       python: `def quick_sort(arr, low, high):
     if low < high:
         pivot_index = partition(arr, low, high)
@@ -897,121 +897,190 @@ private static void heapify(int arr[], int n, int i) {
     },
     radix: {
       name: "Radix Sort",
-      python: `def radixSort(arr):
-  max_val = max(arr)
-  exp = 1
-  while max_val // exp > 0:
-      n = len(arr)
-      output = [0] * n
-      count = [0] * 10
+      python: `def countingSort(arr, exp):
+    n = len(arr)
+    output = [0] * n
+    count = [0] * 10
 
-      for i in range(n):
-          index = (arr[i] // exp) % 10
-          count[index] += 1
+    # Store count of occurrences
+    for i in range(n):
+        index = arr[i] // exp
+        count[index % 10] += 1
 
-      for i in range(1, 10):
-          count[i] += count[i - 1]
+    # Change count[i] so that count[i] now contains actual
+    # position of this digit in output[]
+    for i in range(1, 10):
+        count[i] += count[i - 1]
 
-      for i in range(n - 1, -1, -1):
-          index = (arr[i] // exp) % 10
-          output[count[index] - 1] = arr[i]
-          count[index] -= 1
+    # Build the output array
+    i = n - 1
+    while i >= 0:
+        index = arr[i] // exp
+        output[count[index % 10] - 1] = arr[i]
+        count[index % 10] -= 1
+        i -= 1
 
-      for i in range(n):
-          arr[i] = output[i]
+    # Copy the output array to arr[]
+    for i in range(n):
+        arr[i] = output[i]
 
-      exp *= 10`,
+def radixSort(arr):
+    # Find the maximum number to know number of digits
+    max_num = max(arr)
+    
+    # Do counting sort for every digit
+    exp = 1
+    while max_num // exp > 0:
+        countingSort(arr, exp)
+        exp *= 10
+    return arr`,
+      "c++": `void countingSort(int arr[], int n, int exp) {
+    int output[n];
+    int count[10] = {0};
 
-      "c++": `void radixSort(int arr[], int n) {
-  int max_val = *max_element(arr, arr + n);
-  for (int exp = 1; max_val / exp > 0; exp *= 10) {
-      int output[n], count[10] = {0};
+    // Store count of occurrences
+    for (int i = 0; i < n; i++)
+        count[(arr[i] / exp) % 10]++;
 
-      for (int i = 0; i < n; i++)
-          count[(arr[i] / exp) % 10]++;
+    // Change count[i] so that count[i] now contains actual
+    // position of this digit in output[]
+    for (int i = 1; i < 10; i++)
+        count[i] += count[i - 1];
 
-      for (int i = 1; i < 10; i++)
-          count[i] += count[i - 1];
+    // Build the output array
+    for (int i = n - 1; i >= 0; i--) {
+        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+        count[(arr[i] / exp) % 10]--;
+    }
 
-      for (int i = n - 1; i >= 0; i--) {
-          output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-          count[(arr[i] / exp) % 10]--;
-      }
+    // Copy the output array to arr[]
+    for (int i = 0; i < n; i++)
+        arr[i] = output[i];
+}
 
-      for (int i = 0; i < n; i++)
-          arr[i] = output[i];
-  }
+void radixSort(int arr[], int n) {
+    // Find the maximum number to know number of digits
+    int max_num = arr[0];
+    for (int i = 1; i < n; i++)
+        if (arr[i] > max_num)
+            max_num = arr[i];
+
+    // Do counting sort for every digit
+    for (int exp = 1; max_num / exp > 0; exp *= 10)
+        countingSort(arr, n, exp);
 }`,
+      java: `void countingSort(int arr[], int n, int exp) {
+    int output[] = new int[n];
+    int count[] = new int[10];
+    Arrays.fill(count, 0);
 
-      java: `void radixSort(int[] arr) {
-  int max_val = Arrays.stream(arr).max().getAsInt();
-  for (int exp = 1; max_val / exp > 0; exp *= 10) {
-      int n = arr.length;
-      int[] output = new int[n];
-      int[] count = new int[10];
+    // Store count of occurrences
+    for (int i = 0; i < n; i++)
+        count[(arr[i] / exp) % 10]++;
 
-      for (int i = 0; i < n; i++)
-          count[(arr[i] / exp) % 10]++;
+    // Change count[i] so that count[i] now contains
+    // actual position of this digit in output[]
+    for (int i = 1; i < 10; i++)
+        count[i] += count[i - 1];
 
-      for (int i = 1; i < 10; i++)
-          count[i] += count[i - 1];
+    // Build the output array
+    for (int i = n - 1; i >= 0; i--) {
+        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+        count[(arr[i] / exp) % 10]--;
+    }
 
-      for (int i = n - 1; i >= 0; i--) {
-          output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-          count[(arr[i] / exp) % 10]--;
-      }
+    // Copy the output array to arr[]
+    for (int i = 0; i < n; i++)
+        arr[i] = output[i];
+}
 
-      System.arraycopy(output, 0, arr, 0, n);
-  }
+void radixSort(int arr[]) {
+    int n = arr.length;
+    
+    // Find the maximum number to know number of digits
+    int max_num = arr[0];
+    for (int i = 1; i < n; i++)
+        if (arr[i] > max_num)
+            max_num = arr[i];
+
+    // Do counting sort for every digit
+    for (int exp = 1; max_num / exp > 0; exp *= 10)
+        countingSort(arr, n, exp);
 }`,
+      javaScript: `function countingSort(arr, exp) {
+    let n = arr.length;
+    let output = new Array(n).fill(0);
+    let count = new Array(10).fill(0);
 
-      javaScript: `function radixSort(arr) {
-  let max_val = Math.max(...arr);
-  for (let exp = 1; Math.floor(max_val / exp) > 0; exp *= 10) {
-      let n = arr.length;
-      let output = new Array(n).fill(0);
-      let count = new Array(10).fill(0);
+    // Store count of occurrences
+    for (let i = 0; i < n; i++) {
+        let index = Math.floor(arr[i] / exp) % 10;
+        count[index]++;
+    }
 
-      for (let i = 0; i < n; i++)
-          count[Math.floor(arr[i] / exp) % 10]++;
+    // Change count[i] so that count[i] now contains actual
+    // position of this digit in output[]
+    for (let i = 1; i < 10; i++) {
+        count[i] += count[i - 1];
+    }
 
-      for (let i = 1; i < 10; i++)
-          count[i] += count[i - 1];
+    // Build the output array
+    for (let i = n - 1; i >= 0; i--) {
+        let index = Math.floor(arr[i] / exp) % 10;
+        output[count[index] - 1] = arr[i];
+        count[index]--;
+    }
 
-      for (let i = n - 1; i >= 0; i--) {
-          let index = Math.floor(arr[i] / exp) % 10];
-          output[count[index] - 1] = arr[i];
-          count[index]--;
-      }
+    // Copy the output array to arr[]
+    for (let i = 0; i < n; i++) {
+        arr[i] = output[i];
+    }
+}
 
-      for (let i = 0; i < n; i++)
-          arr[i] = output[i];
-  }
+function radixSort(arr) {
+    // Find the maximum number to know number of digits
+    let max_num = Math.max(...arr);
+
+    // Do counting sort for every digit
+    for (let exp = 1; Math.floor(max_num / exp) > 0; exp *= 10) {
+        countingSort(arr, exp);
+    }
+    return arr;
 }`,
+      c: `void countingSort(int arr[], int n, int exp) {
+    int output[n];
+    int count[10] = {0};
 
-      c: `void radixSort(int arr[], int n) {
-  int max_val = arr[0];
-  for (int i = 1; i < n; i++)
-      if (arr[i] > max_val)
-          max_val = arr[i];
+    // Store count of occurrences
+    for (int i = 0; i < n; i++)
+        count[(arr[i] / exp) % 10]++;
 
-  for (int exp = 1; max_val / exp > 0; exp *= 10) {
-      int output[n], count[10] = {0};
+    // Change count[i] so that count[i] now contains actual
+    // position of this digit in output[]
+    for (int i = 1; i < 10; i++)
+        count[i] += count[i - 1];
 
-      for (int i = 0; i < n; i++)
-          count[(arr[i] / exp) % 10]++;
+    // Build the output array
+    for (int i = n - 1; i >= 0; i--) {
+        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+        count[(arr[i] / exp) % 10]--;
+    }
 
-      for (int i = 1; i < 10; i++)
-          count[i] += count[i - 1];
+    // Copy the output array to arr[]
+    for (int i = 0; i < n; i++)
+        arr[i] = output[i];
+}
 
-      for (int i = n - 1; i >= 0; i--) {
-          output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-          count[(arr[i] / exp) % 10]--;
-      }
+void radixSort(int arr[], int n) {
+    // Find the maximum number to know number of digits
+    int max_num = arr[0];
+    for (int i = 1; i < n; i++)
+        if (arr[i] > max_num)
+            max_num = arr[i];
 
-      for (int i = 0; i < n; i++)
-          arr[i] = output[i];
-  }
+    // Do counting sort for every digit
+    for (int exp = 1; max_num / exp > 0; exp *= 10)
+        countingSort(arr, n, exp);
 }`,
     },
     bucket: {
@@ -1985,18 +2054,18 @@ void bucketSort(float arr[], int n) {
           output[position] = arr[i];
           count[digit]--;
 
-          // steps.push({
-          //   array: [...output],
-          //   i: position,
-          //   j: i,
-          //   highlightLine: 11,
-          //   action: `Placing ${arr[i]} (digit ${digit}) at position ${position}`,
-          //   count: [...count],
-          //   digit,
-          //   exp,
-          //   phase: "placing",
-          //   original: [...arr]
-          // });
+          steps.push({
+            array: [...arr],
+            i: i,
+            j: position,
+            highlightLine: 11,
+            action: `Placing ${arr[i]} (digit ${digit}) at position ${position}`,
+            count: [...count],
+            digit,
+            exp,
+            phase: "placing",
+            outputArray: [...output]
+          });
           history.push(`Step ${steps.length}: Placing ${arr[i]} at position ${position} - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
         }
 
@@ -2004,6 +2073,18 @@ void bucketSort(float arr[], int n) {
         for (let i = 0; i < n; i++) {
           arr[i] = output[i];
         }
+        
+        // Add a step to show the array after this pass
+        steps.push({
+          array: [...arr],
+          i: null,
+          j: null,
+          highlightLine: 15,
+          action: `Completed sorting by digit at position ${Math.log10(exp) + 1}`,
+          exp,
+          phase: "completed_pass"
+        });
+        history.push(`Step ${steps.length}: Completed sorting by digit at position ${Math.log10(exp) + 1} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
       };
 
       const max = getMax(arr);
@@ -2202,6 +2283,61 @@ void bucketSort(float arr[], int n) {
 
   return (
     <div className="sorting-visualizer">
+      <style jsx>{`
+        .sorting-visualizer {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          width: 100%;
+          background-color: var(--dark-bg);
+          color: var(--light-text);
+          font-family: 'Roboto', sans-serif;
+          overflow: hidden;
+        }
+        
+        /* ... existing styles ... */
+        
+        /* Radix Sort Styles */
+        .radix-visualization {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          margin-top: 1.5rem;
+        }
+        
+        .radix-info {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          padding: 0.5rem;
+          background-color: var(--dark-card);
+          border-radius: 8px;
+          margin-bottom: 0.5rem;
+        }
+        
+        .digit-info {
+          font-size: 0.9rem;
+          padding: 0.5rem;
+          background-color: var(--dark-bg);
+          border-radius: 4px;
+        }
+        
+        .highlight-digit {
+          color: var(--light-yellow);
+          font-weight: bold;
+          font-size: 1.1rem;
+        }
+        
+        .radix-label {
+          background-color: var(--dark-accent);
+          color: var(--light-text);
+          padding: 0.25rem 0.5rem;
+          border-radius: 4px;
+          font-size: 0.8rem;
+          white-space: nowrap;
+        }
+      `}</style>
+      
       <div className="visualizer-overlay" onClick={onClose}></div>
       <div className="visualizer-content">
         {warning && (
@@ -2598,6 +2734,16 @@ void bucketSort(float arr[], int n) {
                           </div>
                       )}
 
+                      {/* For radix sort - show current digit */}
+                      {selectedAlgorithm === "radix" &&
+                        steps[currentStep]?.exp &&
+                        index === steps[currentStep]?.i && (
+                          <div className="variable-label radix-label">
+                            current element<br/>
+                            digit: {Math.floor(value / steps[currentStep]?.exp) % 10}
+                          </div>
+                      )}
+
                       {/* For non-counting sort algorithms */}
                       {selectedAlgorithm !== "counting" &&
                        selectedAlgorithm !== "merge" &&
@@ -2881,7 +3027,7 @@ void bucketSort(float arr[], int n) {
                   {(steps[currentStep]?.phase === "placing" ||
                     steps[currentStep]?.phase === "completed") && (
                     <div className="array-section" style={{ 
-                      marginTop: steps[currentStep]?.phase === "completed" && currentStep === steps.length - 1 ? "2rem" : "",
+                      marginTop: steps[currentStep]?.phase === "completed" ? "2rem" : "",
                       marginBottom: "1rem"
                     }}>
                       <div className="section-label">
@@ -2906,6 +3052,94 @@ void bucketSort(float arr[], int n) {
                                   position {index}<br/>
                                   (count[{steps[currentStep]?.countIndex}]-1)
                                 </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Radix Sort Visualization */}
+              {selectedAlgorithm === "radix" && steps[currentStep]?.count && (
+                <div className="radix-visualization">
+                  {/* Current Digit Information */}
+                  <div className="radix-info">
+                    <div className="section-label">
+                      Sorting by digit position: {Math.log10(steps[currentStep]?.exp) + 1}
+                    </div>
+                    {steps[currentStep]?.digit !== undefined && (
+                      <div className="digit-info">
+                        Current digit of {steps[currentStep]?.array[steps[currentStep]?.i]}: 
+                        <span className="highlight-digit"> {steps[currentStep]?.digit}</span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Count Array */}
+                  <div className="count-array">
+                    <div className="section-label">
+                      Count Array (Digits 0-9)
+                    </div>
+                    <div className="elements">
+                      {steps[currentStep]?.count?.map((count, index) => (
+                        <div
+                          key={index}
+                          className={`count-element ${
+                            index === steps[currentStep]?.digit &&
+                            steps[currentStep]?.phase === "counting"
+                              ? "highlight"
+                              : index === steps[currentStep]?.i &&
+                                steps[currentStep]?.phase === "cumulative"
+                              ? "highlight"
+                              : ""
+                          }`}
+                        >
+                          <div className="count-value">{count}</div>
+                          <div className="count-index">
+                            digit: {index}
+                          </div>
+                          {steps[currentStep]?.phase === "counting" &&
+                            index === steps[currentStep]?.digit && (
+                              <div className="variable-label radix-label">
+                                count[{index}]++
+                              </div>
+                          )}
+                          {steps[currentStep]?.phase === "cumulative" &&
+                            index === steps[currentStep]?.i && (
+                              <div className="variable-label radix-label">
+                                Adding previous count
+                              </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Output Array - Show when placing */}
+                  {steps[currentStep]?.phase === "placing" && steps[currentStep]?.outputArray && (
+                    <div className="array-section">
+                      <div className="section-label">
+                        Output Array
+                      </div>
+                      <div className="elements">
+                        {steps[currentStep]?.outputArray?.map((value, index) => (
+                          <div
+                            key={index}
+                            className={`array-element ${
+                              index === steps[currentStep]?.j
+                                ? "highlight"
+                                : ""
+                            }`}
+                          >
+                            <div className="element-value">{value !== 0 ? value : "0"}</div>
+                            <div className="element-index">{index}</div>
+                            {index === steps[currentStep]?.j && (
+                              <div className="variable-label radix-label">
+                                position {index}<br/>
+                                (count[{steps[currentStep]?.digit}]-1)
+                              </div>
                             )}
                           </div>
                         ))}
@@ -2989,4 +3223,3 @@ void bucketSort(float arr[], int n) {
 };
 
 export default SortingVisualizer;
-
