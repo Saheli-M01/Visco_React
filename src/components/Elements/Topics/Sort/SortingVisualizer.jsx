@@ -1817,26 +1817,39 @@ void bucketSort(float arr[], int n) {
         gap = Math.floor(gap / 2);
       }
     } else if (selectedAlgorithm === "counting") {
-      // Use the defined range instead of finding max value
       const count = new Array(rangeMax - rangeMin + 1).fill(0);
       const output = new Array(n).fill(0);
-      const mainArray = [...arr]; // Keep a copy of the main array for reference
+
+      // Initialize output array step
+      steps.push({
+        array: [...arr],
+        outputArray: [...output],
+        i: null,
+        j: null,
+        highlightLine: 3,
+        action: `Initializing output array with zeros`,
+        count: [...count],
+        phase: "initialization",
+        rangeMin: rangeMin,
+        rangeMax: rangeMax
+      });
+      history.push(`Step ${steps.length}: Initializing output array with zeros - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
 
       // Count occurrences
       for (let i = 0; i < n; i++) {
-        const adjustedValue = mainArray[i] - rangeMin; // Adjust value to start from 0
+        const adjustedValue = arr[i] - rangeMin;
         steps.push({
-          array: [...mainArray],
+          array: [...arr],
           i: i,
           j: null,
           highlightLine: 4,
-          action: `Counting occurrence of element ${mainArray[i]} (index ${adjustedValue} in count array)`,
+          action: `Counting occurrence of element ${arr[i]} (index ${adjustedValue} in count array)`,
           count: [...count],
           phase: "counting",
           rangeMin: rangeMin,
           rangeMax: rangeMax
         });
-        history.push(`Step ${steps.length}: Counting occurrence of ${mainArray[i]} - <span style="color: var(--light-yellow)">Array state: [${mainArray.join(", ")}]</span>`);
+        history.push(`Step ${steps.length}: Counting occurrence of ${arr[i]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
         
         count[adjustedValue]++;
       }
@@ -1844,7 +1857,7 @@ void bucketSort(float arr[], int n) {
       // Calculate cumulative count
       for (let i = 1; i < count.length; i++) {
         steps.push({
-          array: [...mainArray],
+          array: [...arr],
           i: i,
           j: null,
           highlightLine: 7,
@@ -1859,31 +1872,33 @@ void bucketSort(float arr[], int n) {
         count[i] += count[i - 1];
       }
 
-      // Build output array
+      // Build output array - using your exact logic
       for (let i = n - 1; i >= 0; i--) {
-        const currentElement = mainArray[i];
-        const adjustedValue = currentElement - rangeMin; // Adjust value to start from 0
+        const currentElement = arr[i];
+        const adjustedValue = currentElement - rangeMin;
         const position = count[adjustedValue] - 1;
         output[position] = currentElement;
         count[adjustedValue]--;
 
         steps.push({
-          array: [...output],
-          i: position,
-          j: null,
+          array: [...arr],
+          outputArray: [...output],
+          i: i,
+          j: position,
           highlightLine: 11,
-          action: `Reading ${currentElement} from main array and placing at position ${position} in output array`,
+          action: `Reading ${currentElement} from array at index ${i} and placing at position ${position} in output array`,
           count: [...count],
           phase: "placing",
           rangeMin: rangeMin,
           rangeMax: rangeMax
         });
-        history.push(`Step ${steps.length}: Reading ${currentElement} from main array and placing at position ${position} in output array - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
+        history.push(`Step ${steps.length}: Reading ${currentElement} from array and placing at position ${position} in output array - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
       }
 
       // Final step showing completed output array
       steps.push({
-        array: [...output],
+        array: [...arr],
+        outputArray: [...output],
         i: null,
         j: null,
         highlightLine: null,
@@ -1948,18 +1963,18 @@ void bucketSort(float arr[], int n) {
           output[position] = arr[i];
           count[digit]--;
 
-          steps.push({
-            array: [...output],
-            i: position,
-            j: i,
-            highlightLine: 11,
-            action: `Placing ${arr[i]} (digit ${digit}) at position ${position}`,
-            count: [...count],
-            digit,
-            exp,
-            phase: "placing",
-            original: [...arr]
-          });
+          // steps.push({
+          //   array: [...output],
+          //   i: position,
+          //   j: i,
+          //   highlightLine: 11,
+          //   action: `Placing ${arr[i]} (digit ${digit}) at position ${position}`,
+          //   count: [...count],
+          //   digit,
+          //   exp,
+          //   phase: "placing",
+          //   original: [...arr]
+          // });
           history.push(`Step ${steps.length}: Placing ${arr[i]} at position ${position} - <span style="color: var(--light-yellow)">Output array: [${output.join(", ")}]</span>`);
         }
 
@@ -2778,28 +2793,28 @@ void bucketSort(float arr[], int n) {
                       ))}
                     </div>
                   </div>
-                  {steps[currentStep]?.phase === "placing" && (
-                    <>
-                      
-                      <div className="array-section">
-                        <div className="section-label">Output Array</div>
-                        <div className="elements">
-                          {steps[currentStep]?.array?.map((value, index) => (
-                            <div
-                              key={index}
-                              className={`array-element ${
-                                index === steps[currentStep]?.i ? "highlight" : ""
-                              }`}
-                            >
-                              {value || ""}
-                              {index === steps[currentStep]?.i && (
-                                <div className="variable-label">i</div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
+                 
+                  {/* Show output array during initialization, placing phase and completion */}
+                  {(steps[currentStep]?.phase === "initialization" || steps[currentStep]?.phase === "placing" || steps[currentStep]?.phase === "completed") && (
+                    <div className="array-section">
+                      <div className="section-label">Output Array</div>
+                      <div className="elements">
+                        {steps[currentStep]?.outputArray?.map((value, index) => (
+                          <div
+                            key={index}
+                            className={`array-element ${
+                              index === steps[currentStep]?.j ? "highlight" : ""
+                            }`}
+                          >
+                            <div className="element-value">{value || "0"}</div>
+                            <div className="element-index">{index}</div>
+                            {index === steps[currentStep]?.j && (
+                              <div className="variable-label">j</div>
+                            )}
+                          </div>
+                        ))}
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
               )}
