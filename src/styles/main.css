@@ -2972,6 +2972,75 @@ body {
     padding: 1rem 0.25rem;
   }
 }
+.display .array-content .bucket-containers {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+.display .array-content .bucket-containers .bucket-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+.display .array-content .bucket-containers .bucket-row .bucket-container {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--light-orange);
+  border-radius: 6px;
+  padding: 1rem;
+  min-width: 150px;
+}
+.display .array-content .bucket-containers .bucket-row .bucket-container .bucket-title {
+  color: var(--light-yellow);
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+  text-align: center;
+  font-weight: bold;
+}
+.display .array-content .bucket-containers .bucket-row .bucket-container .bucket-elements {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 50px;
+}
+.display .array-content .bucket-containers .bucket-row .bucket-container .bucket-elements .array-element {
+  margin: 0 auto;
+}
+.display .array-content .bucket-containers .bucket-row .bucket-container .bucket-elements .array-element.active {
+  background: var(--light-orange);
+  color: var(--dark-background);
+  border-color: var(--light-yellow);
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(255, 165, 0, 0.4);
+}
+.display .array-content .bucket-containers .bucket-row .bucket-container .bucket-elements .array-element.active .element-value {
+  color: var(--dark-background);
+}
+.display .array-content .bucket-containers .bucket-row .bucket-container .bucket-elements:empty::after {
+  content: "Empty";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  color: var(--secondary-text);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+.display .array-content .bucket-containers .bucket-row .bucket-container.active {
+  border-color: var(--light-yellow);
+  box-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+}
+.display .array-content .bucket-containers .result-row {
+  margin-top: 1rem;
+}
+.display .array-content .bucket-containers .result-row .result-label {
+  color: var(--light-yellow);
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  text-align: center;
+  font-weight: bold;
+}
 .display .array-content .subarrays {
   display: flex;
   flex-direction: column;
@@ -3671,46 +3740,167 @@ body {
   color: var(--dark-background);
 }
 
+.bucket-visualization {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 1rem;
+}
+.bucket-visualization .section-label {
+  font-size: 1rem;
+  color: var(--light-yellow);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--light-orange);
+}
+.bucket-visualization .phase-indicator {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--light-orange);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--medium-orange);
+}
 .bucket-visualization .buckets {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.bucket-visualization .buckets .buckets-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
 }
 .bucket-visualization .buckets .bucket {
   background: var(--secondary-background);
   border: 1px solid var(--light-orange);
   border-radius: 4px;
-  padding: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  min-width: 120px;
+  flex: 0 1 auto;
 }
 .bucket-visualization .buckets .bucket .bucket-label {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--light-yellow);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
+  text-align: center;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.3rem;
+  border-radius: 4px;
 }
 .bucket-visualization .buckets .bucket .elements {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.8rem;
+  min-height: 50px;
+  align-items: center;
 }
 .bucket-visualization .buckets .bucket .bucket-element {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
+  padding: 0.6rem;
+  width: 40px;
+  height: 40px;
   background: var(--tertiary-background);
   border: 1px solid var(--medium-orange);
   border-radius: 4px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--primary-text);
+  font-weight: bold;
+  transition: all 0.3s ease;
+  position: relative;
 }
 .bucket-visualization .buckets .bucket .bucket-element.active {
   background: var(--light-orange);
   border-color: var(--light-yellow);
   color: var(--dark-background);
+  transform: scale(1.05);
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(255, 165, 0, 0.4);
+}
+.bucket-visualization .buckets .bucket .bucket-element .element-index {
+  position: absolute;
+  top: -18px;
+  right: 5px;
+  font-size: 0.7rem;
+  color: var(--light-yellow);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: normal;
 }
 .bucket-visualization .buckets .bucket.active {
   border-color: var(--light-yellow);
-  box-shadow: 0 0 10px rgba(var(--light-yellow-rgb), 0.2);
+  box-shadow: 0 0 15px rgba(255, 165, 0, 0.3);
+  transform: translateY(-5px);
+}
+.bucket-visualization .buckets .bucket.empty {
+  opacity: 0.7;
+}
+.bucket-visualization .buckets .bucket.empty .elements:after {
+  content: "Empty";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  color: var(--secondary-text);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+.bucket-visualization .buckets .original-array, .bucket-visualization .buckets .sorted-array {
+  margin: 1rem 0;
+}
+.bucket-visualization .buckets .original-array .array-label, .bucket-visualization .buckets .sorted-array .array-label {
+  font-size: 1rem;
+  color: var(--light-yellow);
+  margin-bottom: 0.8rem;
+  text-align: center;
+  font-weight: bold;
+}
+.bucket-visualization .buckets .original-array .array-elements, .bucket-visualization .buckets .sorted-array .array-elements {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+}
+.bucket-visualization .array-section {
+  margin-top: 2rem;
+}
+.bucket-visualization .array-section .array-elements {
+  padding: 1.5rem 0.5rem;
+}
+.bucket-visualization .array-section .array-element.bucket-active {
+  background: var(--light-orange) !important;
+  border-color: var(--light-yellow) !important;
+  color: var(--dark-background) !important;
+  transform: scale(1.1);
+  z-index: 5;
+  box-shadow: 0 0 12px rgba(255, 165, 0, 0.5);
+}
+.bucket-visualization .array-section .array-element.bucket-active .element-value {
+  color: var(--dark-background);
+}
+.bucket-visualization .array-section .array-element .bucket-indicator {
+  position: absolute;
+  top: -25px;
+  font-size: 0.8rem;
+  color: var(--light-yellow);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  border: 1px solid var(--light-orange);
 }
 
 .array-element.counting-active {
@@ -3724,6 +3914,7 @@ body {
 .array-element.bucket-active {
   background: var(--medium-orange) !important;
   border-color: var(--light-orange) !important;
+  color: var(--dark-background) !important;
 }
 
 @media (max-width: 1024px) {
@@ -4874,4 +5065,127 @@ html body p {
 .Main section .container {
   margin: 0 auto;
   width: 100%;
+}
+
+/* Bucket Sort Calculation Step */
+.bucket-visualization .calculation-step {
+  background-color: var(--dark-bg-color);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.bucket-visualization .calculation-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--light-yellow);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.bucket-visualization .calculation-formula {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  font-family: 'Courier New', monospace;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.bucket-visualization .formula-part {
+  color: var(--light-blue);
+}
+
+.bucket-visualization .formula-operator {
+  color: var(--light-gray);
+}
+
+.bucket-visualization .formula-result {
+  color: var(--light-green);
+  font-weight: bold;
+  margin-left: 0.3rem;
+}
+
+/* Bucket Distribution */
+.bucket-visualization .bucket-distribution {
+  margin-top: 1rem;
+}
+
+.bucket-visualization .distribution-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--light-yellow);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.bucket-visualization .buckets {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.bucket-visualization .bucket {
+  background-color: var(--dark-bg-color);
+  border-radius: 8px;
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.bucket-visualization .bucket.active {
+  border-color: var(--light-orange);
+  box-shadow: 0 0 8px var(--light-orange-transparent);
+}
+
+.bucket-visualization .bucket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.bucket-visualization .bucket-label {
+  font-weight: 600;
+  color: var(--light-blue);
+}
+
+.bucket-visualization .bucket-range {
+  font-size: 0.85rem;
+  color: var(--light-gray);
+}
+
+.bucket-visualization .bucket-elements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+}
+
+.bucket-visualization .bucket-element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: var(--element-bg);
+  border-radius: 4px;
+  color: var(--text-color);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.bucket-visualization .bucket-element.active {
+  background-color: var(--light-orange);
+  color: var(--dark-bg-color);
+  transform: scale(1.1);
+  z-index: 1;
+}
+
 }/*# sourceMappingURL=main.css.map */

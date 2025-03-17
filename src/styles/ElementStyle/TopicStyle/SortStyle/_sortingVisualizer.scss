@@ -207,6 +207,88 @@
         padding: 1rem 0.25rem;
       }
     }
+    
+    // Bucket visualization within array display
+    .bucket-containers {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 100%;
+      
+      .bucket-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        
+        .bucket-container {
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px solid var(--light-orange);
+          border-radius: 6px;
+          padding: 1rem;
+          min-width: 150px;
+          
+          .bucket-title {
+            color: var(--light-yellow);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            text-align: center;
+            font-weight: bold;
+          }
+          
+          .bucket-elements {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-height: 50px;
+            
+            .array-element {
+              margin: 0 auto;
+              
+              &.active {
+                background: var(--light-orange);
+                color: var(--dark-background);
+                border-color: var(--light-yellow);
+                transform: scale(1.05);
+                box-shadow: 0 0 8px rgba(255, 165, 0, 0.4);
+                
+                .element-value {
+                  color: var(--dark-background);
+                }
+              }
+            }
+            
+            &:empty::after {
+              content: 'Empty';
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              height: 40px;
+              color: var(--secondary-text);
+              font-style: italic;
+              font-size: 0.9rem;
+            }
+          }
+          
+          &.active {
+            border-color: var(--light-yellow);
+            box-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+          }
+        }
+      }
+      
+      .result-row {
+        margin-top: 1rem;
+        
+        .result-label {
+          color: var(--light-yellow);
+          font-size: 1rem;
+          margin-bottom: 0.8rem;
+          text-align: center;
+          font-weight: bold;
+        }
+      }
+    }
 //for merge sort
     .subarrays {
       display: flex;
@@ -850,50 +932,172 @@
 }
 
 .bucket-visualization {
-  .buckets {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+  padding: 1rem;
+  
+  .array-bounds {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid var(--light-orange);
 
-    .bucket {
-      background: var(--secondary-background);
-      border: 1px solid var(--light-orange);
-      border-radius: 4px;
-      padding: 0.5rem;
-
-      .bucket-label {
-        font-size: 0.8rem;
+    .bound {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      
+      .bound-label {
+        font-size: 1rem;
         color: var(--light-yellow);
-        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+      
+      .bound-value {
+        font-size: 1.2rem;
+        color: var(--light-orange);
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        border: 1px solid var(--medium-orange);
+      }
+    }
+  }
+
+  .bucket-formation {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid var(--light-orange);
+
+    .formation-title {
+      font-size: 1.1rem;
+      color: var(--light-yellow);
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+
+    .bucket-ranges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+
+      .range-item {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.8rem;
+        border-radius: 6px;
+        border: 1px solid var(--medium-orange);
+        min-width: 180px;
+
+        .range-label {
+          font-size: 1rem;
+          color: var(--light-yellow);
+          margin-bottom: 0.5rem;
+          text-align: center;
+          font-weight: bold;
+        }
+
+        .range-values {
+          display: flex;
+          justify-content: center;
+          gap: 0.5rem;
+          font-size: 0.9rem;
+          color: var(--light-orange);
+
+          .range-min, .range-max {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--medium-orange);
+          }
+
+          .range-separator {
+            color: var(--light-yellow);
+          }
+        }
+      }
+    }
+  }
+
+  .calculation-step {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid var(--light-orange);
+
+    .calculation-title {
+      font-size: 1rem;
+      color: var(--light-yellow);
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+
+    .calculation-formula {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+      color: var(--light-orange);
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.6rem;
+      border-radius: 6px;
+      border: 1px solid var(--medium-orange);
+
+      .formula-part {
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.2);
       }
 
-      .elements {
+      .formula-operator {
+        color: var(--light-yellow);
+      }
+
+      .formula-result {
+        color: var(--light-green);
+        font-weight: bold;
+      }
+    }
+  }
+
+  // Update existing bucket styles
+  .buckets {
+    .bucket {
+      .bucket-header {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-      }
+        margin-bottom: 1rem;
 
-      .bucket-element {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.5rem;
-        background: var(--tertiary-background);
-        border: 1px solid var(--medium-orange);
-        border-radius: 4px;
-        font-size: 0.9rem;
-        color: var(--primary-text);
-
-        &.active {
-          background: var(--light-orange);
-          border-color: var(--light-yellow);
-          color: var(--dark-background);
+        .bucket-label {
+          font-size: 1.1rem;
+          color: var(--light-yellow);
+          text-align: center;
+          font-weight: bold;
+          background: rgba(0, 0, 0, 0.2);
+          padding: 0.5rem;
+          border-radius: 6px;
+          border: 1px solid var(--light-orange);
         }
-      }
 
-      &.active {
-        border-color: var(--light-yellow);
-        box-shadow: 0 0 10px rgba(var(--light-yellow-rgb), 0.2);
+        .bucket-range {
+          font-size: 0.9rem;
+          color: var(--light-orange);
+          text-align: center;
+          background: rgba(0, 0, 0, 0.2);
+          padding: 0.3rem;
+          border-radius: 4px;
+          border: 1px solid var(--medium-orange);
+        }
       }
     }
   }
@@ -913,6 +1117,7 @@
   &.bucket-active {
     background: var(--medium-orange) !important;
     border-color: var(--light-orange) !important;
+    color: var(--dark-background) !important;
   }
 }
 
