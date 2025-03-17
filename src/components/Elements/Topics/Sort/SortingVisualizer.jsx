@@ -2103,47 +2103,136 @@ void bucketSort(float arr[], int n) {
         countingSortForRadix(arr, exp);
       }
     } else if (selectedAlgorithm === "bucket") {
+      // Find max and min values first
       const max = Math.max(...arr);
       const min = Math.min(...arr);
+      
+      steps.push({
+        array: [...arr],
+        i: null,
+        j: null,
+        highlightLine: 1,
+        action: `Finding array bounds: min = ${min}, max = ${max}`,
+        phase: "array_bounds",
+        maxValue: max,
+        minValue: min
+      });
+      history.push(`Step ${steps.length}: Found array bounds - min: ${min}, max: ${max} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
+
       const bucketCount = Math.min(n, 5); // Use at most 5 buckets
       const bucketRange = (max - min) / bucketCount + 1;
       const buckets = Array.from({ length: bucketCount }, () => []);
+      
+      // Calculate bucket ranges
+      const bucketRanges = Array.from({ length: bucketCount }, (_, i) => ({
+        min: min + i * bucketRange,
+        max: min + (i + 1) * bucketRange,
+        label: `Bucket ${i}`
+      }));
+
+      steps.push({
+        array: [...arr],
+        i: null,
+        j: null,
+        highlightLine: 2,
+        action: `Creating ${bucketCount} buckets with range ${bucketRange.toFixed(2)}`,
+        buckets: buckets.map(bucket => [...bucket]),
+        phase: "bucket_formation",
+        maxValue: max,
+        minValue: min,
+        bucketRanges: bucketRanges,
+        bucketDetails: bucketRanges.map((range, idx) => 
+          `Bucket ${idx}: [${range.min.toFixed(2)} to ${range.max.toFixed(2)}]`
+        ).join(", ")
+      });
+      history.push(`Step ${steps.length}: Created ${bucketCount} buckets - <span style="color: var(--light-yellow)">Ranges: ${bucketRanges.map((range, idx) => 
+        `Bucket ${idx}: [${range.min.toFixed(2)} to ${range.max.toFixed(2)}]`
+      ).join(", ")}</span>`);
 
       // Distribute elements into buckets
       for (let i = 0; i < n; i++) {
+        const value = arr[i];
         const bucketIndex = Math.min(
-          Math.floor((arr[i] - min) / bucketRange),
+          Math.floor((value - min) / bucketRange),
           bucketCount - 1
         );
-        buckets[bucketIndex].push(arr[i]);
-
-        steps.push({
-          array: [...arr],
-          i: i,
-          j: bucketIndex,
-          highlightLine: 4,
-          action: `Placing ${arr[i]} in bucket ${bucketIndex}`,
-          buckets: buckets.map(bucket => [...bucket]),
-          phase: "distribution"
-        });
-        history.push(`Step ${steps.length}: Placing ${arr[i]} in bucket ${bucketIndex} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
-      }
-
-      // Sort individual buckets
-      let currentIndex = 0;
-      for (let i = 0; i < bucketCount; i++) {
-        buckets[i].sort((a, b) => a - b);
         
         steps.push({
           array: [...arr],
           i: i,
           j: null,
-          highlightLine: 7,
-          action: `Sorted bucket ${i}: [${buckets[i].join(", ")}]`,
+          highlightLine: 3,
+          action: `Calculating bucket for ${value}: (${value} - ${min}) / ${bucketRange.toFixed(2)} = ${bucketIndex}`,
           buckets: buckets.map(bucket => [...bucket]),
-          phase: "sorting"
+          phase: "calculation",
+          currentElement: value,
+          targetBucket: bucketIndex,
+          maxValue: max,
+          minValue: min,
+          bucketRanges: bucketRanges,
+          calculation: {
+            value: value,
+            min: min,
+            range: bucketRange,
+            result: bucketIndex
+          }
         });
-        history.push(`Step ${steps.length}: Sorted bucket ${i} - <span style="color: var(--light-yellow)">Bucket contents: [${buckets[i].join(", ")}]</span>`);
+        history.push(`Step ${steps.length}: Calculating bucket for ${value} - <span style="color: var(--light-yellow)">Goes to Bucket ${bucketIndex} [${bucketRanges[bucketIndex].min.toFixed(2)} to ${bucketRanges[bucketIndex].max.toFixed(2)}]</span>`);
+
+        buckets[bucketIndex].push(value);
+        
+        steps.push({
+          array: [...arr],
+          i: i,
+          j: bucketIndex,
+          highlightLine: 4,
+          action: `Placed ${value} in Bucket ${bucketIndex} [${bucketRanges[bucketIndex].min.toFixed(2)} to ${bucketRanges[bucketIndex].max.toFixed(2)}]`,
+          buckets: buckets.map(bucket => [...bucket]),
+          phase: "distribution",
+          currentElement: value,
+          activeBucket: bucketIndex,
+          maxValue: max,
+          minValue: min,
+          bucketRanges: bucketRanges,
+          bucketContents: buckets.map((bucket, idx) => 
+            `Bucket ${idx}: [${bucket.join(", ")}]`
+          ).join(", ")
+        });
+        history.push(`Step ${steps.length}: Placed ${value} in Bucket ${bucketIndex} - <span style="color: var(--light-yellow)">Current bucket contents: [${buckets[bucketIndex].join(", ")}]</span>`);
+      }
+
+      // Sort individual buckets
+      let currentIndex = 0;
+      for (let i = 0; i < bucketCount; i++) {
+        if (buckets[i].length > 0) {
+          steps.push({
+            array: [...arr],
+            i: i,
+            j: null,
+            highlightLine: 7,
+            action: `Sorting bucket ${i} with elements [${buckets[i].join(", ")}]`,
+            buckets: buckets.map(bucket => [...bucket]),
+            phase: "sorting",
+            activeBucket: i,
+            bucketRanges: bucketRanges
+          });
+          history.push(`Step ${steps.length}: Sorting bucket ${i} - <span style="color: var(--light-yellow)">Bucket contents: [${buckets[i].join(", ")}]</span>`);
+
+          buckets[i].sort((a, b) => a - b);
+
+          steps.push({
+            array: [...arr],
+            i: i,
+            j: null,
+            highlightLine: 8,
+            action: `Sorted bucket ${i}: [${buckets[i].join(", ")}]`,
+            buckets: buckets.map(bucket => [...bucket]),
+            phase: "sorted",
+            activeBucket: i,
+            bucketRanges: bucketRanges
+          });
+          history.push(`Step ${steps.length}: Sorted bucket ${i} - <span style="color: var(--light-yellow)">Sorted contents: [${buckets[i].join(", ")}]</span>`);
+        }
 
         // Concatenate sorted buckets
         for (const element of buckets[i]) {
@@ -2152,15 +2241,30 @@ void bucketSort(float arr[], int n) {
             array: [...arr],
             i: currentIndex,
             j: i,
-            highlightLine: 8,
-            action: `Placing ${element} from bucket ${i} back into array`,
+            highlightLine: 9,
+            action: `Moving ${element} from bucket ${i} to position ${currentIndex} in final array`,
             buckets: buckets.map(bucket => [...bucket]),
-            phase: "concatenation"
+            phase: "concatenation",
+            currentElement: element,
+            activeBucket: i,
+            bucketRanges: bucketRanges
           });
-          history.push(`Step ${steps.length}: Placing ${element} from bucket ${i} back into array - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
+          history.push(`Step ${steps.length}: Moving ${element} to final array position ${currentIndex} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`);
           currentIndex++;
         }
       }
+
+      steps.push({
+        array: [...arr],
+        i: null,
+        j: null,
+        highlightLine: null,
+        action: "Bucket sort completed",
+        buckets: buckets.map(bucket => [...bucket]),
+        phase: "completed",
+        bucketRanges: bucketRanges
+      });
+      history.push(`Step ${steps.length}: Bucket sort completed - <span style="color: var(--light-yellow)">Final array: [${arr.join(", ")}]</span>`);
     }
 
     steps.push({
@@ -2280,6 +2384,96 @@ void bucketSort(float arr[], int n) {
       historyListRef.current.scrollTop = historyListRef.current.scrollHeight;
     }
   }, [currentStep]);
+
+  const renderBucketSort = (step) => {
+    switch (step.phase) {
+      case "array_bounds":
+        return (
+          <div className="array-bounds">
+            <div className="bound">
+              <span className="bound-label">Min:</span>
+              <span className="bound-value">{step.minValue}</span>
+            </div>
+            <div className="bound">
+              <span className="bound-label">Max:</span>
+              <span className="bound-value">{step.maxValue}</span>
+            </div>
+          </div>
+        );
+        
+      case "bucket_formation":
+        return (
+          <div className="bucket-formation">
+            <div className="formation-title">Bucket Formation</div>
+            <div className="bucket-ranges">
+              {step.bucketRanges.map((range, index) => (
+                <div key={index} className="range-item">
+                  <div className="range-label">Bucket {index}</div>
+                  <div className="range-values">
+                    <span className="range-min">{range.min.toFixed(2)}</span>
+                    <span className="range-separator">to</span>
+                    <span className="range-max">{range.max.toFixed(2)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+        
+      case "calculation":
+        return (
+          <div className="calculation-step">
+            <div className="calculation-title">Bucket Index Calculation</div>
+            <div className="calculation-formula">
+              <span className="formula-part">floor</span>
+              <span className="formula-operator">(</span>
+              <span className="formula-part">{step.calculation.value}</span>
+              <span className="formula-operator">-</span>
+              <span className="formula-part">{step.calculation.min}</span>
+              <span className="formula-operator">) /</span>
+              <span className="formula-part">{step.calculation.range.toFixed(2)}</span>
+              <span className="formula-operator">=</span>
+              <span className="formula-result">{step.calculation.result}</span>
+            </div>
+          </div>
+        );
+        
+      case "distribution":
+        return (
+          <div className="bucket-distribution">
+            <div className="distribution-title">Bucket Distribution</div>
+            <div className="buckets">
+              {step.buckets.map((bucket, index) => (
+                <div 
+                  key={index} 
+                  className={`bucket ${index === step.activeBucket ? 'active' : ''}`}
+                >
+                  <div className="bucket-header">
+                    <div className="bucket-label">Bucket {index}</div>
+                    <div className="bucket-range">
+                      {step.bucketRanges[index].min.toFixed(2)} to {step.bucketRanges[index].max.toFixed(2)}
+                    </div>
+                  </div>
+                  <div className="bucket-elements">
+                    {bucket.map((value, idx) => (
+                      <div 
+                        key={idx} 
+                        className={`bucket-element ${value === step.currentElement ? 'active' : ''}`}
+                      >
+                        {value}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+        
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="sorting-visualizer">
@@ -3146,6 +3340,13 @@ void bucketSort(float arr[], int n) {
                       </div>
                     </div>
                   )}
+                </div>
+              )}
+
+              {/* Bucket Sort Visualization */}
+              {selectedAlgorithm === "bucket" && steps[currentStep] && (
+                <div className="bucket-visualization">
+                  {renderBucketSort(steps[currentStep])}
                 </div>
               )}
 
