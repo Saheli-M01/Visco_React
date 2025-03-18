@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import '../../styles/CommonStyle/_backgroundAnimation.scss';
 
 const BackgroundAnimation = () => {
   const canvasRef = useRef(null);
@@ -6,93 +7,172 @@ const BackgroundAnimation = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const fixedWidth = 1920;
-    const fixedHeight = 1080;
-    canvas.width = fixedWidth;
-    canvas.height = fixedHeight;
+    
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
 
-    let particles = [];
-    let colorShift = 0;
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
-    // 150 ta particle create korchi
-    for (let i = 0; i < 150; i++) {
+    // Enhanced particle configuration
+    const particleCount = 100;
+    const connectionDistance = 180;
+    const particles = [];
+    const glowStrength = 20; // Controls the strength of the glow effect
+
+    // Create particles with more sophisticated variations
+    for (let i = 0; i < particleCount; i++) {
+      const size = Math.random();
+      const isLarge = size > 0.85; // 15% chance of being large
+      const isMedium = size > 0.6 && size <= 0.85; // 25% chance of being medium
+      const isHollow = Math.random() < 0.45; // 45% chance of being hollow
+      
+      const baseRadius = isLarge ? 4.5 : (isMedium ? 3 : 1.8);
+      const orbitRadius = Math.random() * 50; // Radius of orbital motion
+      const orbitSpeed = (Math.random() * 0.002) + 0.001; // Speed of orbital motion
+      const startAngle = Math.random() * Math.PI * 2; // Starting position in orbit
+
       particles.push({
-        x: Math.random() * fixedWidth,
-        y: Math.random() * fixedHeight,
-        speedX: Math.random() * 0.5 - 0.25,
-        speedY: Math.random() * 0.5 - 0.25,
-        radius: Math.random() * 3 + 1,
-        angle: Math.random() * Math.PI * 2,
-        angularSpeed: (Math.random() - 0.5) * 0.05,
-        trail: [],
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: baseRadius + Math.random() * (isLarge ? 2 : 0.7),
+        speedX: (Math.random() - 0.5) * 0.15,
+        speedY: (Math.random() - 0.5) * 0.15,
+        isLarge,
+        isMedium,
+        isHollow,
+        hasRing: (isLarge || isMedium) && Math.random() < 0.7,
+        hasGlow: Math.random() < 0.3, // 30% chance of having a glow effect
+        pulseOffset: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.015 + Math.random() * 0.015,
+        orbitRadius,
+        orbitSpeed,
+        orbitAngle: startAngle,
+        baseX: 0, // Will be set in first update
+        baseY: 0, // Will be set in first update
+        opacity: 0, // Start invisible for fade-in effect
+        targetOpacity: isLarge ? 0.9 : (isMedium ? 0.7 : 0.5)
       });
     }
 
-    function getVibrantColor() {
-      const r = Math.floor(Math.sin(colorShift) * 127 + 128);
-      const g = Math.floor(Math.sin(colorShift + Math.PI / 2) * 127 + 128);
-      const b = Math.floor(Math.sin(colorShift + Math.PI) * 127 + 128);
-      return `rgb(${r}, ${g}, ${b})`;
-    }
+    // Initialize base positions
+    particles.forEach(particle => {
+      particle.baseX = particle.x;
+      particle.baseY = particle.y;
+    });
 
     function drawNetwork() {
-      ctx.clearRect(0, 0, fixedWidth, fixedHeight);
-      colorShift += 0.02;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      for (let p of particles) {
-        p.trail.push({ x: p.x, y: p.y });
-        if (p.trail.length > 10) {
-          p.trail.shift();
-        }
+      // Draw connections with enhanced styling
+      ctx.shadowBlur = 0; // Reset shadow for connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Particle er trail draw kora
-        for (let i = 0; i < p.trail.length; i++) {
-          const alpha = (i + 1) / p.trail.length;
-          ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-          ctx.beginPath();
-          ctx.arc(p.trail[i].x, p.trail[i].y, p.radius * 0.5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        // Particle draw kora
-        ctx.fillStyle = getVibrantColor();
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Particle er position update kora
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.angle += p.angularSpeed;
-        p.x += Math.sin(p.angle) * 0.5;
-        p.y += Math.cos(p.angle) * 0.5;
-
-        if (p.x < 0 || p.x > fixedWidth) p.speedX *= -1;
-        if (p.y < 0 || p.y > fixedHeight) p.speedY *= -1;
-
-        // Particles gulor majhe line draw kora jodi durutto kom hoy
-        for (let q of particles) {
-          const distance = Math.sqrt(Math.pow(p.x - q.x, 2) + Math.pow(p.y - q.y, 2));
-          if (distance < 150) {
-            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 150})`;
-            ctx.lineWidth = 0.5;
+          if (distance < connectionDistance) {
+            const opacity = (1 - distance / connectionDistance) * 0.12;
+            const gradient = ctx.createLinearGradient(
+              particles[i].x, particles[i].y,
+              particles[j].x, particles[j].y
+            );
+            
+            gradient.addColorStop(0, `rgba(255, 189, 0, ${opacity * particles[i].opacity})`);
+            gradient.addColorStop(1, `rgba(255, 189, 0, ${opacity * particles[j].opacity})`);
+            
             ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(q.x, q.y);
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 0.5;
             ctx.stroke();
           }
         }
       }
-      requestAnimationFrame(drawNetwork);
+
+      const time = Date.now() * 0.001;
+
+      // Draw particles with enhanced effects
+      particles.forEach(particle => {
+        // Smooth opacity transition
+        particle.opacity += (particle.targetOpacity - particle.opacity) * 0.02;
+
+        // Update orbital position
+        particle.orbitAngle += particle.orbitSpeed;
+        particle.x = particle.baseX + Math.cos(particle.orbitAngle) * particle.orbitRadius;
+        particle.y = particle.baseY + Math.sin(particle.orbitAngle) * particle.orbitRadius;
+
+        // Calculate pulse effect
+        const pulse = Math.sin(time * particle.pulseSpeed + particle.pulseOffset) * 0.3;
+        const currentRadius = particle.radius * (1 + (particle.isLarge ? pulse * 0.25 : pulse * 0.15));
+
+        // Apply glow effect
+        if (particle.hasGlow) {
+          ctx.shadowColor = 'rgba(255, 189, 0, 0.5)';
+          ctx.shadowBlur = glowStrength * particle.opacity;
+        } else {
+          ctx.shadowBlur = 0;
+        }
+
+        // Draw main particle
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, currentRadius, 0, Math.PI * 2);
+        
+        if (particle.isHollow) {
+          ctx.strokeStyle = `rgba(255, 189, 0, ${particle.opacity})`;
+          ctx.lineWidth = particle.isLarge ? 1.8 : particle.isMedium ? 1.2 : 0.7;
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = `rgba(255, 189, 0, ${particle.opacity})`;
+          ctx.fill();
+        }
+
+        // Draw ring with enhanced effect
+        if (particle.hasRing) {
+          const ringPulse = Math.sin(time * particle.pulseSpeed * 0.7 + particle.pulseOffset) * 0.5;
+          const ringRadius = currentRadius + 2 + ringPulse;
+          
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, ringRadius, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(255, 189, 0, ${0.2 * particle.opacity})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+
+        // Update base position for orbital motion
+        particle.baseX += particle.speedX;
+        particle.baseY += particle.speedY;
+
+        // Bounce off walls
+        if (particle.baseX < 0 || particle.baseX > canvas.width) {
+          particle.speedX *= -1;
+          particle.baseX = Math.max(0, Math.min(canvas.width, particle.baseX));
+        }
+        if (particle.baseY < 0 || particle.baseY > canvas.height) {
+          particle.speedY *= -1;
+          particle.baseY = Math.max(0, Math.min(canvas.height, particle.baseY));
+        }
+      });
     }
 
-    drawNetwork();
+    function animate() {
+      drawNetwork();
+      requestAnimationFrame(animate);
+    }
 
-    // Cleanup function: jodi component unmount hoy tokhon
- 
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    };
   }, []);
 
-  return <canvas ref={canvasRef} id="networkCanvas"></canvas>;
+  return <canvas ref={canvasRef} id="networkCanvas" />;
 };
 
 export default BackgroundAnimation;

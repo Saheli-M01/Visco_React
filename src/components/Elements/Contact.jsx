@@ -1,81 +1,52 @@
 import React from "react";
 import "../../styles/ElementStyle/_contact.scss";
 
-const teamMembers = [
-  {
-    name: "Devdeep Saha",
-    role: "Designer, FrontEnd",
-    image: "/src/Assets/Images/Team/Devdeep.jpeg",
-    email: "mailto:devdeep120205@gmail.com",
-    linkedin: "https://www.linkedin.com/in/devdeep-saha-3b4570260",
-    instagram: "https://www.instagram.com/devdeepsaha?igsh=ZmIwODdmaGNnMGFq",
-  },
-  {
-    name: "Saheli Mondal",
-    role: "UI/UX, FrontEnd",
-    image: "/src/Assets/Images/Team/Saheli.jpg",
-    email: "mailto:saheli.mondal.prof@gmail.com",
-    linkedin: "https://www.linkedin.com/in/saheli-mondal-b9387729b/",
-    twitter: "https://x.com/Mond_Saheli",
-  },
-  {
-    name: "Santanu Pramanik",
-    role: "Web Developer",
-    image: "/src/Assets/Images/Team/Santanu.jpeg",
-    email: "mailto:prasantanu00@gmail.com",
-    linkedin: "https://www.linkedin.com/in/santanu-pramanik-290b66229b/",
-    twitter: "https://x.com/SantanuPra64579",
-  },
-];
-
-const TeamSection = () => {
+const Contact = () => {
   return (
     <section id="contact">
-      <div className="container py-5">
-        <h1 className="text-center mb-5">Our Team</h1>
-        <div className="row g-4 justify-content-center">
-          {teamMembers.map((member, index) => (
-            <div className="col-md-3" key={index}>
-              <div className="team-card text-center">
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="team-photo mb-3"
-                />
-                <h5>{member.name}</h5>
-                <p className="text-center">{member.role}</p>
-                <p className="text-center">
-                  <em>{member.quote}</em>
-                </p>
-                <div className="social-links">
-                  {member.email && (
-                    <a href={member.email} target="_blank" rel="noopener noreferrer">
-                      <i className="fa-solid fa-envelope"></i>
-                    </a>
-                  )}
-                  {member.linkedin && (
-                    <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
-                      <i className="fa-brands fa-linkedin"></i>
-                    </a>
-                  )}
-                  {member.instagram && (
-                    <a href={member.instagram} target="_blank" rel="noopener noreferrer">
-                      <i className="fa-brands fa-instagram"></i>
-                    </a>
-                  )}
-                  {member.twitter && (
-                    <a href={member.twitter} target="_blank" rel="noopener noreferrer">
-                      <i className="fa-brands fa-x-twitter"></i>
-                    </a>
-                  )}
-                </div>
+      <div className="container">
+        <h1>Get In Touch</h1>
+        <div className="contact-card">
+          <div className="contact-info">
+            <div className="photo-section">
+              <img 
+                src="/src/Assets/Images/Laptop.png" 
+                alt="Visco Team" 
+                className="contact-photo"
+              />
+            </div>
+            
+            <div className="contact-details">
+              <h2>Contact Us</h2>
+              <p className="contact-description">
+                Have a question or want to collaborate with us? We're here to help you turn your ideas into reality. Reach out via email and we'll get back to you as soon as possible.
+              </p>
+              <a 
+                href="mailto:visualizecode.official@gmail.com" 
+                className="email-link"
+              >
+                <i className="fas fa-envelope"></i>
+                <span>visualizecode.official@gmail.com</span>
+              </a>
+              
+              <div className="social-link">
+                <p>Connect with us on LinkedIn:</p>
+                <a
+                  href="https://www.linkedin.com/in/devdeep-saha-3b4570260"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="linkedin-btn"
+                >
+                  <i className="fa-brands fa-linkedin"></i>
+                  <span>Visco</span>
+                </a>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
   );
 };
 
-export default TeamSection;
+export default Contact;
