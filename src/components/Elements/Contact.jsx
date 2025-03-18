@@ -20,7 +20,7 @@ const Contact = () => {
             <div className="contact-details">
               <h2>Contact Us</h2>
               <p className="contact-description">
-                Have a question or want to collaborate with us? We're here to help you turn your ideas into reality. Reach out via email and we'll get back to you as soon as possible.
+                Have a question or want to suggest anything? Reach out via email or LinkedIn and we'll get back to you as soon as possible.
               </p>
               <a 
                 href="mailto:visualizecode.official@gmail.com" 
@@ -33,7 +33,7 @@ const Contact = () => {
               <div className="social-link">
                 <p>Connect with us on LinkedIn:</p>
                 <a
-                  href="https://www.linkedin.com/in/devdeep-saha-3b4570260"
+                  href="https://www.linkedin.com/in/saheli-mondal-b9387729b/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="linkedin-btn"

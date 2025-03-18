@@ -1,0 +1,66 @@
+.loading-spinner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--primary-background);
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  .spinner-ring {
+    width: var(--size);
+    height: var(--size);
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .spinner-text {
+    color: var(--secondary-text);
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+// Size variants
+.loading-spinner[style*="--size: small"] {
+  --size: 40px;
+}
+
+.loading-spinner[style*="--size: medium"] {
+  --size: 60px;
+}
+
+.loading-spinner[style*="--size: large"] {
+  --size: 80px;
+} 

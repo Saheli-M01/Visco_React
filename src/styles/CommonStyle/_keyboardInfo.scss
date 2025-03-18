@@ -1,0 +1,72 @@
+.keyboard-info {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
+
+  .keyboard-info-content {
+    background: var(--primary-background);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    cursor: help;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    i {
+      color: var(--light-yellow);
+      font-size: 1rem;
+    }
+
+    span {
+      color: var(--secondary-text);
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    kbd {
+      background: var(--light-yellow);
+      color: var(--primary-background);
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin: 0 0.1rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .keyboard-info {
+    bottom: 0.5rem;
+    right: 0.5rem;
+
+    .keyboard-info-content {
+      padding: 0.3rem 0.6rem;
+
+      i {
+        font-size: 0.9rem;
+      }
+
+      span {
+        font-size: 0.75rem;
+      }
+
+      kbd {
+        padding: 0.1rem 0.3rem;
+        font-size: 0.65rem;
+      }
+    }
+  }
+} 
