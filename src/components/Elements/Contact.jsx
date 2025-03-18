@@ -33,7 +33,7 @@ const Contact = () => {
               <div className="social-link">
                 <p>Connect with us on LinkedIn:</p>
                 <a
-                  href="https://www.linkedin.com/in/devdeep-saha-3b4570260"
+                  href="https://www.linkedin.com/in/saheli-mondal-b9387729b"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="linkedin-btn"
