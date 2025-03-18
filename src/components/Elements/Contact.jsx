@@ -1,5 +1,6 @@
 import React from "react";
 import "../../styles/ElementStyle/_contact.scss";
+import laptopImage from "../../Assets/Images/Laptop.png";
 
 const Contact = () => {
   return (
@@ -10,7 +11,7 @@ const Contact = () => {
           <div className="contact-info">
             <div className="photo-section">
               <img 
-                src="/src/Assets/Images/Laptop.png" 
+                src={laptopImage} 
                 alt="Visco Team" 
                 className="contact-photo"
               />
