@@ -38,7 +38,7 @@ const codeSnippets = [
       "",
       "    return arr",
     ],
-    color: "#adff2f", // Green for Python
+    color: " #B8F9D3", // Green for Python
   },
   {
     code: [
@@ -75,7 +75,7 @@ const codeSnippets = [
       "    return 0;",
       "}",
     ],
-    color: "#ffa089", // Orange for C
+    color: " #ffd4a9", // Orange for C
   },
   {
     code: [
@@ -110,7 +110,7 @@ const codeSnippets = [
       "    return 0;",
       "}",
     ],
-    color: "#ffc40c", // Yellow for C++
+    color: "#ff7e7e", // red for C++
   },
   {
     code: [
@@ -149,7 +149,7 @@ const codeSnippets = [
       "console.log(stack.pop());",
       "console.log(stack.peek());",
     ],
-    color: "#ff1493", // Deep pink for JS
+    color: "#ceb2fc", // violet for JS
   },
   {
     code: [
@@ -176,7 +176,7 @@ const codeSnippets = [
       "    }",
       "}",
     ],
-    color: "#9370db", // Purple for Java
+    color: "#afceff", // blue for Java
   },
 ];
 
