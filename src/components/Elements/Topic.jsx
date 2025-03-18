@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"; // Import navigation hook
-import "../../styles/ElementStyle/_topic.scss";
+import "../../styles/ElementStyle/_topic.scss"; // Updated styles with unique borders
 import array from "../../Assets/Images/Topic/array.svg";
 import tree from "../../Assets/Images/Topic/tree.svg";
 import graph from "../../Assets/Images/Topic/graph.svg";

@@ -24,56 +24,21 @@
   }
 
   @mixin card-base-style {
-    background: linear-gradient(#111010, #212121) padding-box;
+    background: rgba(30, 30, 30, 0.8);
     height: 230px;
     padding: 20px;
     color: white;
-    border: 2px solid transparent;
-    border-radius: 8px;
+    border: 2px solid;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
     transform-origin: right bottom;
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  @mixin card-hover-image {
-    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%)
-      hue-rotate(238deg) brightness(103%) contrast(101%);
-  }
-
-  @mixin card-theme($light-color, $dark-color) {
-    .card-content {
-      @include card-base-style;
-      background: linear-gradient(#111010, #212121) padding-box,
-        linear-gradient(145deg, transparent 35%, $light-color, $dark-color)
-          border-box;
-      p,
-      button {
-        color: $light-color;
-      }
-      button {
-        border: 2px solid $light-color;
-      }
-      &:hover {
-        .card-name {
-          color: $light-color;
-        }
-        p {
-          color: var(--primary-text);
-        }
-        button {
-          background: $light-color;
-          color: var(--primary-background);
-          border: 2px solid $light-color;
-        }
-        .icon-container img {
-          filter: brightness(0) saturate(100%);
-          opacity: 0.9;
-        }
-      }
-    }
+    transition: all 0.6s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   }
 
   .topic-card {
@@ -81,70 +46,233 @@
     min-width: 240px;
     max-width: 280px;
 
-    &:nth-child(1) {
-      @include card-theme(var(--light-blue), var(--dark-blue));
-      .card-content .icon-container img {
-        filter: brightness(0) saturate(100%) invert(83%) sepia(11%)
-          saturate(1122%) hue-rotate(190deg) brightness(103%) contrast(96%);
-        transition: filter 0.3s ease;
-      }
-      .card-content:hover .icon-container img {
-        filter: brightness(0) saturate(100%) invert(83%) sepia(11%)
-          saturate(1122%) hue-rotate(190deg) brightness(90%) contrast(110%);
-      }
-    }
-    
-    &:nth-child(2) {
-      @include card-theme(var(--light-violet), var(--dark-violet));
-      .card-content .icon-container img {
-        filter: brightness(0) saturate(100%) invert(87%) sepia(9%)
-          saturate(1023%) hue-rotate(220deg) brightness(103%) contrast(95%);
-        transition: filter 0.3s ease;
-      }
-      .card-content:hover .icon-container img {
-        filter: brightness(0) saturate(100%) invert(87%) sepia(9%)
-          saturate(1023%) hue-rotate(220deg) brightness(90%) contrast(110%);
-      }
-    }
-    
-    &:nth-child(3) {
-      @include card-theme(var(--light-red), var(--dark-red));
-      .card-content .icon-container img {
-        filter: brightness(0) saturate(100%) invert(75%) sepia(51%)
-          saturate(499%) hue-rotate(320deg) brightness(104%) contrast(101%);
-        transition: filter 0.3s ease;
-      }
-      .card-content:hover .icon-container img {
-        filter: brightness(0) saturate(100%) invert(75%) sepia(51%)
-          saturate(499%) hue-rotate(320deg) brightness(90%) contrast(110%);
-      }
-    }
-    
-    &:nth-child(4) {
-      @include card-theme(var(--light-green), var(--dark-green));
-      .card-content .icon-container img {
-        filter: brightness(0) saturate(100%) invert(90%) sepia(10%)
-          saturate(567%) hue-rotate(90deg) brightness(102%) contrast(96%);
-        transition: filter 0.3s ease;
-      }
-      .card-content:hover .icon-container img {
-        filter: brightness(0) saturate(100%) invert(90%) sepia(10%)
-          saturate(567%) hue-rotate(90deg) brightness(85%) contrast(110%);
-      }
-    }
-    
-    &:nth-child(5) {
-      @include card-theme(var(--light-orange), var(--dark-orange));
-      .card-content .icon-container img {
-        filter: brightness(0) saturate(100%) invert(89%) sepia(18%) saturate(669%) hue-rotate(332deg) brightness(103%) contrast(101%);
-        transition: filter 0.3s ease;
-      }
-      .card-content:hover .icon-container img {
-        filter: brightness(0) saturate(100%) invert(89%) sepia(18%) saturate(669%) hue-rotate(332deg) brightness(103%) contrast(101%);
-      }
-    }
-    
+    // Card 1 - Blue
+    &:nth-child(1) .card-content {
+      @include card-base-style;
+      border-color: var(--light-blue);
 
+      p, button {
+        color: var(--light-blue);
+      }
+      button {
+        border: 2px solid var(--light-blue);
+        background: transparent;
+      }
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        .card-name {
+          color: var(--light-blue);
+        }
+        p {
+          color: var(--primary-text);
+        }
+        button {
+          background: var(--light-blue);
+          color: var(--primary-background);
+          border: 2px solid var(--light-blue);
+        }
+        .icon-container img {
+          filter: brightness(0) saturate(100%);
+          opacity: 0.9;
+        }
+      }
+    }
+    
+    // Card 2 - Violet
+    &:nth-child(2) .card-content {
+      @include card-base-style;
+      border-color: var(--light-violet);
+
+      p, button {
+        color: var(--light-violet);
+      }
+      button {
+        border: 2px solid var(--light-violet);
+        background: transparent;
+      }
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        .card-name {
+          color: var(--light-violet);
+        }
+        p {
+          color: var(--primary-text);
+        }
+        button {
+          background: var(--light-violet);
+          color: var(--primary-background);
+          border: 2px solid var(--light-violet);
+        }
+        .icon-container img {
+          filter: brightness(0) saturate(100%);
+          opacity: 0.9;
+        }
+      }
+    }
+    
+    // Card 3 - Red
+    &:nth-child(3) .card-content {
+      @include card-base-style;
+      border-color: var(--light-red);
+
+      p, button {
+        color: var(--light-red);
+      }
+      button {
+        border: 2px solid var(--light-red);
+        background: transparent;
+      }
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        .card-name {
+          color: var(--light-red);
+        }
+        p {
+          color: var(--primary-text);
+        }
+        button {
+          background: var(--light-red);
+          color: var(--primary-background);
+          border: 2px solid var(--light-red);
+        }
+        .icon-container img {
+          filter: brightness(0) saturate(100%);
+          opacity: 0.9;
+        }
+      }
+    }
+    
+    // Card 4 - Green
+    &:nth-child(4) .card-content {
+      @include card-base-style;
+      border-color: var(--light-green);
+
+      p, button {
+        color: var(--light-green);
+      }
+      button {
+        border: 2px solid var(--light-green);
+        background: transparent;
+      }
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        .card-name {
+          color: var(--light-green);
+        }
+        p {
+          color: var(--primary-text);
+        }
+        button {
+          background: var(--light-green);
+          color: var(--primary-background);
+          border: 2px solid var(--light-green);
+        }
+        .icon-container img {
+          filter: brightness(0) saturate(100%);
+          opacity: 0.9;
+        }
+      }
+    }
+    
+    // Card 5 - Orange
+    &:nth-child(5) .card-content {
+      @include card-base-style;
+      border-color: var(--light-orange);
+
+      p, button {
+        color: var(--light-orange);
+      }
+      button {
+        border: 2px solid var(--light-orange);
+        background: transparent;
+      }
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        .card-name {
+          color: var(--light-orange);
+        }
+        p {
+          color: var(--primary-text);
+        }
+        button {
+          background: var(--light-orange);
+          color: var(--primary-background);
+          border: 2px solid var(--light-orange);
+        }
+        .icon-container img {
+          filter: brightness(0) saturate(100%);
+          opacity: 0.9;
+        }
+      }
+    }
+
+    &:nth-child(1) .card-content .icon-container img {
+      filter: brightness(0) saturate(100%) invert(83%) sepia(11%)
+        saturate(1122%) hue-rotate(190deg) brightness(103%) contrast(96%);
+      transition: filter 0.3s ease;
+    }
+    &:nth-child(1) .card-content:hover .icon-container img {
+      filter: brightness(0) saturate(100%) invert(83%) sepia(11%)
+        saturate(1122%) hue-rotate(190deg) brightness(90%) contrast(110%);
+    }
+    
+    &:nth-child(2) .card-content .icon-container img {
+      filter: brightness(0) saturate(100%) invert(87%) sepia(9%)
+        saturate(1023%) hue-rotate(220deg) brightness(103%) contrast(95%);
+      transition: filter 0.3s ease;
+    }
+    &:nth-child(2) .card-content:hover .icon-container img {
+      filter: brightness(0) saturate(100%) invert(87%) sepia(9%)
+        saturate(1023%) hue-rotate(220deg) brightness(90%) contrast(110%);
+    }
+    
+    &:nth-child(3) .card-content .icon-container img {
+      filter: brightness(0) saturate(100%) invert(75%) sepia(51%)
+        saturate(499%) hue-rotate(320deg) brightness(104%) contrast(101%);
+      transition: filter 0.3s ease;
+    }
+    &:nth-child(3) .card-content:hover .icon-container img {
+      filter: brightness(0) saturate(100%) invert(75%) sepia(51%)
+        saturate(499%) hue-rotate(320deg) brightness(90%) contrast(110%);
+    }
+    
+    &:nth-child(4) .card-content .icon-container img {
+      filter: brightness(0) saturate(100%) invert(90%) sepia(10%)
+        saturate(567%) hue-rotate(90deg) brightness(102%) contrast(96%);
+      transition: filter 0.3s ease;
+    }
+    &:nth-child(4) .card-content:hover .icon-container img {
+      filter: brightness(0) saturate(100%) invert(90%) sepia(10%)
+        saturate(567%) hue-rotate(90deg) brightness(85%) contrast(110%);
+    }
+    
+    &:nth-child(5) .card-content .icon-container img {
+      filter: brightness(0) saturate(100%) invert(89%) sepia(18%) saturate(669%) hue-rotate(332deg) brightness(103%) contrast(101%);
+      transition: filter 0.3s ease;
+    }
+    &:nth-child(5) .card-content:hover .icon-container img {
+      filter: brightness(0) saturate(100%) invert(89%) sepia(18%) saturate(669%) hue-rotate(332deg) brightness(103%) contrast(101%);
+    }
 
     .card-content {
       .icon-container {
@@ -177,6 +305,7 @@
         justify-content: center;
         font-size: 1rem;
         transition: color 0.3s ease;
+        opacity: 0.8;
       }
 
       button {
@@ -187,6 +316,10 @@
         font-size: 15px;
         border-radius: 0;
         padding: 10px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        
         i {
           margin-left: 5px;
         }
