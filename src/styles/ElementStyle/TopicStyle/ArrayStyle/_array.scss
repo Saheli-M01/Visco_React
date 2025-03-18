@@ -1,0 +1,8 @@
+@use '../../../_shared';
+@use '../../../mixins' as *;
+@use './arrayVisualizer' ;
+
+#array {
+  @include topic-element-section(var(--light-blue));
+}
+  

@@ -1,0 +1,8 @@
+@use '../../../_shared';
+@use '../../../mixins' as *;
+
+@use './sortingVisualizer';
+
+#sorting {
+  @include topic-element-section(var(--light-orange));
+}

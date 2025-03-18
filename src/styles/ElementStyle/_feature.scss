@@ -1,0 +1,183 @@
+@use '../_shared' as *;
+
+#feature {
+  padding: 60px 0;
+  position: relative;
+
+  .container {
+    @extend %glass-background;
+    max-width: 1140px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  h1 {
+    padding-bottom: 15px;
+    position: relative;
+    text-align: center;    
+   margin: 0;
+  }
+
+  .row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .col-lg-3 {
+    flex: 0 0 calc(25% - 15px);
+    min-width: 240px;
+    margin: 0;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 35px 25px;
+    background: rgba(20, 20, 20, 0.5);
+    position: relative;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    
+    // Add feature number indicator
+    &::before {
+      content: attr(data-number);
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--light-yellow);
+      opacity: 0.3;
+      letter-spacing: 1px;
+    }
+
+    &:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      
+      &::before {
+        opacity: 0.6;
+      }
+      
+      &::after {
+        width: 100%;
+      }
+    }
+    
+    // Add bottom border indicator
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: rgba(255, 240, 194, 0.2);
+      transition: width 0.5s ease;
+    }
+  }
+
+  // Maintain compatibility with col-lg-4 class
+  .col-lg-4 {
+    @extend .col-lg-3;
+    flex: 0 0 calc(33.33333% - 20px);
+    min-width: 300px;
+    padding: 40px 30px;
+  }
+
+  .icon-box {
+    width: 55px;
+    height: 55px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    &:hover {
+      background: rgba(255, 253, 185, 0.1);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .icon-box i {
+    font-size: 22px;
+    color: var(--light-yellow);
+    opacity: 0.9;
+    transition: all 0.3s ease;
+  }
+  
+  .feature-title {
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin: 0 0 12px 0;
+    color: var(--primary-text);
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  p {
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: var(--secondary-text);
+    text-align: center;
+    transition: all 0.3s ease;
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0.8;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+  
+  .feature-link {
+    margin-top: 18px;
+    font-size: 0.85rem;
+    color: var(--light-yellow);
+    opacity: 0.6;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    
+    &::after {
+      content: '→';
+      display: inline-block;
+      margin-left: 5px;
+      transition: transform 0.3s ease;
+    }
+    
+    &:hover {
+      opacity: 1;
+      
+      &::after {
+        transform: translateX(3px);
+      }
+    }
+  }
+
+  @media (max-width: 1199px) {
+    .col-lg-3 {
+      flex: 0 0 calc(50% - 10px);
+      min-width: 230px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .col-lg-3, .col-lg-4 {
+      flex: 0 0 100%;
+      min-width: 100%;
+    }
+  }
+}

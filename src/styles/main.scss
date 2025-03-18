@@ -1,207 +1,75 @@
-@import "backgroundAnimation";
-@import "navbar";
-@import "home";
-@import "about";
-@import "feature";
-@import "topic";
-@import "contact";
-@import './Topics/sortingVisualizer';
+// Import all modules using @use
+@use "./variables";
+@use "./base";
+@use "./mixins";
+@use "./shared";
+@use "./CommonStyle/backgroundAnimation" as backgroundAnimation;
+@use "./CommonStyle/navbar" as navbar;
+@use "./CommonStyle/footer" as footer;
+@use "./ElementStyle/home";
+@use "./ElementStyle/about";
+@use "./ElementStyle/feature";
+@use "./ElementStyle/contact";
+@use "./ElementStyle/topic";
+@use './ElementStyle/TopicStyle/ArrayStyle/array';
+@use './ElementStyle/TopicStyle/ArrayStyle/arrayVisualizer';
+@use './ElementStyle/TopicStyle/GraphStyle/graph';
+@use './ElementStyle/TopicStyle/GraphStyle/graphVisualizer';
+@use './ElementStyle/TopicStyle/SortStyle/sort';
+@use './ElementStyle/TopicStyle/SortStyle/sortingVisualizer';
+@use './ElementStyle/TopicStyle/TreeStyle/tree';
+@use './ElementStyle/TopicStyle/TreeStyle/treeVisualizer';
+@use './ElementStyle/TopicStyle/LinkedListStyle/linkedList';
+@use './ElementStyle/TopicStyle/LinkedListStyle/linkedListVisualizer';
 
+// Import Google Fonts
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Protest+Revolution&family=Quicksand:wght@300..700&display=swap");
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  padding-top: 80px; // Height of your navbar
-  min-height: 100vh;
-  background: linear-gradient(135deg, #000000, #0e0d1c, #2d2c31);
-}
-
-.app-container {
-  min-height: calc(100vh - 80px); // Subtract navbar height
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.main-content {
-  flex: 1;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-}
-
-:active,
-:hover,
-:focus {
-  outline: 0 !important;
-  outline-offset: 0;
-}
-
-//variables
-:root {
-  --primary-background: #0d0d0d;
-  --secondary-background: #1a1a1a;
-  --primary-text: #eaeaea;
-  --secondary-text: #c2c2c2;
-  --tertiary-text: #001772;
-  --light-blue: #afceff;
-  --medium-blue:#34a5f5;
-  --dark-blue: #3b6cb7;
-  --light-yellow: #ffeebb;
-  --dark-yellow: #fcbd00;
-  --light-red: #ff7e7e;
-  --dark-red: #ff4848;
-  --light-green: #B8F9D3;
-  --dark-green: #4fc391;
-  --light-violet:#ceb2fc;
-  --dark-violet:#8b6fc0;
-  --light-orange: #ffd4a9;
-  --dark-orange: #ff9248;
-  --primary-font: "Josefin Sans", sans-serif;
-  --secondary-font: "Montserrat Alternates", serif;
-  --font-h1: 2.8vw;
-  --font-span-h1: 3.2vw;
-  --font-h4: 1.5vw;
-  --font-span-h4: 2.5vw;
-  --font-code: 0.9vw;
-}
-
+// Typography styles
 html {
-  scroll-behavior: smooth;
-  height: 100%;
-  
   body {
-    font-size: 100%;
-    margin: 0;
-    
     h1 {
-      font-size: 3rem;
-      font-weight: 900;
-      line-height: 4.3rem;
-      font-family: var(--primary-font);
-      color: var(--primary-text);
+      @include mixins.heading-1;
     }
 
     h2 {
-      font-weight: 700;
-      font-size: 2rem;
-      font-family: var(--primary-font);
-      line-height: 3.5rem;
+      @include mixins.heading-2;
     }
 
     h4 {
-      font-size: 1.5rem;
-      font-weight: 400;
-      font-family: var(--primary-font);
-      text-align: justify;
+      @include mixins.heading-4;
     }
 
     h5 {
-      font-size: 1.2rem;
-      font-weight: 700;
+      @include mixins.heading-5;
     }
 
     p {
-      font-weight: 400;
-      font-size: 1rem;
-      line-height: 2.5rem;
-      letter-spacing: 1px;
-      text-align: justify;
-      font-family: var(--secondry-font);
+      @include mixins.paragraph;
     }
   }
 }
 
-/* Button properties */
-%button {
-  font-family: var(--secondary-font);
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 0.6rem 1.2rem;
-  background: transparent;
-  border: 2px solid var(--dark-yellow);
-  color: var(--dark-yellow);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
-  border-radius:0 ;
-  &:hover {
-    background: var(--dark-yellow);
-    color: black;
-  }
-}
-
-//glassmorphism
-%glass-background {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 2rem 3rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transform: translateY(20px);
-  opacity: 0;
-  animation: slideUp 0.8s ease-out forwards;
-}
-
-@keyframes slideUp {
-  0% {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-// Section spacing
-
-
-// Custom Scrollbar
-::-webkit-scrollbar {
-  width: 0.625rem;
-
-  &-track {
-    background: var(--white-color);
-  }
-
-  &-thumb {
-    background: var(--primary-color);
-  }
-}
-
+// Main layout styles
 .Main {
   section {
     scroll-margin-top: 80px;
-
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 1rem 0;
 
-    &#home-section {
-      margin-top: -80px;
-
-    }
-
-  
 
     .container {
       margin: 0 auto;
       width: 100%;
-
+      @extend %glass-background;
     }
   }
+}
+
+// Button styles
+.btn {
+  @extend %button;
 }
 

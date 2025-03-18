@@ -1,0 +1,119 @@
+.keyboard-shortcuts-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+
+  .keyboard-shortcuts-content {
+    background: var(--primary-background);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+
+    .shortcuts-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+
+      h2 {
+        color: var(--primary-text);
+        margin: 0;
+        font-size: 1.8rem;
+      }
+
+      button {
+        background: none;
+        border: none;
+        color: var(--secondary-text);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: var(--primary-text);
+        }
+      }
+    }
+
+    .shortcuts-list {
+      display: grid;
+      gap: 1rem;
+
+      .shortcut-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.8rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        transition: background 0.3s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .key {
+          background: var(--light-yellow);
+          color: var(--primary-background);
+          padding: 0.3rem 0.8rem;
+          border-radius: 4px;
+          font-weight: 600;
+          min-width: 2rem;
+          text-align: center;
+        }
+
+        .description {
+          color: var(--secondary-text);
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .keyboard-shortcuts-overlay {
+    .keyboard-shortcuts-content {
+      width: 95%;
+      padding: 1.5rem;
+
+      .shortcuts-header h2 {
+        font-size: 1.5rem;
+      }
+    }
+  }
+} 

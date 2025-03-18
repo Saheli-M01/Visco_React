@@ -1,0 +1,378 @@
+@use '../_shared' as *;
+
+#topic {
+  padding: 40px 0px;
+
+  .container {
+    @extend %glass-background;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  h1 {
+    font-weight: 600;
+    padding-bottom: 10px;
+    margin-bottom: 2rem;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  @mixin card-base-style {
+    background: rgba(30, 30, 30, 0.8);
+    height: 230px;
+    padding: 20px;
+    color: white;
+    border: 2px solid;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transform-origin: right bottom;
+    transition: all 0.6s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  .topic-card {
+    flex: 1;
+    min-width: 240px;
+    max-width: 280px;
+
+    // Card 1 - Blue
+    &:nth-child(1) .card-content {
+      @include card-base-style;
+      border-color: var(--light-blue);
+
+      p, button {
+        color: var(--light-blue);
+      }
+      button {
+        border: 2px solid var(--light-blue);
+        background: transparent;
+      }
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        .card-name {
+          color: var(--light-blue);
+        }
+        p {
+          color: var(--primary-text);
+        }
+        button {
+          background: var(--light-blue);
+          color: var(--primary-background);
+          border: 2px solid var(--light-blue);
+        }
+        .icon-container img {
+          filter: brightness(0) saturate(100%);
+          opacity: 0.9;
+        }
+      }
+    }
+    
+    // Card 2 - Violet
+    &:nth-child(2) .card-content {
+      @include card-base-style;
+      border-color: var(--light-violet);
+
+      p, button {
+        color: var(--light-violet);
+      }
+      button {
+        border: 2px solid var(--light-violet);
+        background: transparent;
+      }
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        .card-name {
+          color: var(--light-violet);
+        }
+        p {
+          color: var(--primary-text);
+        }
+        button {
+          background: var(--light-violet);
+          color: var(--primary-background);
+          border: 2px solid var(--light-violet);
+        }
+        .icon-container img {
+          filter: brightness(0) saturate(100%);
+          opacity: 0.9;
+        }
+      }
+    }
+    
+    // Card 3 - Red
+    &:nth-child(3) .card-content {
+      @include card-base-style;
+      border-color: var(--light-red);
+
+      p, button {
+        color: var(--light-red);
+      }
+      button {
+        border: 2px solid var(--light-red);
+        background: transparent;
+      }
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        .card-name {
+          color: var(--light-red);
+        }
+        p {
+          color: var(--primary-text);
+        }
+        button {
+          background: var(--light-red);
+          color: var(--primary-background);
+          border: 2px solid var(--light-red);
+        }
+        .icon-container img {
+          filter: brightness(0) saturate(100%);
+          opacity: 0.9;
+        }
+      }
+    }
+    
+    // Card 4 - Green
+    &:nth-child(4) .card-content {
+      @include card-base-style;
+      border-color: var(--light-green);
+
+      p, button {
+        color: var(--light-green);
+      }
+      button {
+        border: 2px solid var(--light-green);
+        background: transparent;
+      }
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        .card-name {
+          color: var(--light-green);
+        }
+        p {
+          color: var(--primary-text);
+        }
+        button {
+          background: var(--light-green);
+          color: var(--primary-background);
+          border: 2px solid var(--light-green);
+        }
+        .icon-container img {
+          filter: brightness(0) saturate(100%);
+          opacity: 0.9;
+        }
+      }
+    }
+    
+    // Card 5 - Orange
+    &:nth-child(5) .card-content {
+      @include card-base-style;
+      border-color: var(--light-orange);
+
+      p, button {
+        color: var(--light-orange);
+      }
+      button {
+        border: 2px solid var(--light-orange);
+        background: transparent;
+      }
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        .card-name {
+          color: var(--light-orange);
+        }
+        p {
+          color: var(--primary-text);
+        }
+        button {
+          background: var(--light-orange);
+          color: var(--primary-background);
+          border: 2px solid var(--light-orange);
+        }
+        .icon-container img {
+          filter: brightness(0) saturate(100%);
+          opacity: 0.9;
+        }
+      }
+    }
+
+    &:nth-child(1) .card-content .icon-container img {
+      filter: brightness(0) saturate(100%) invert(83%) sepia(11%)
+        saturate(1122%) hue-rotate(190deg) brightness(103%) contrast(96%);
+      transition: filter 0.3s ease;
+    }
+    &:nth-child(1) .card-content:hover .icon-container img {
+      filter: brightness(0) saturate(100%) invert(83%) sepia(11%)
+        saturate(1122%) hue-rotate(190deg) brightness(90%) contrast(110%);
+    }
+    
+    &:nth-child(2) .card-content .icon-container img {
+      filter: brightness(0) saturate(100%) invert(87%) sepia(9%)
+        saturate(1023%) hue-rotate(220deg) brightness(103%) contrast(95%);
+      transition: filter 0.3s ease;
+    }
+    &:nth-child(2) .card-content:hover .icon-container img {
+      filter: brightness(0) saturate(100%) invert(87%) sepia(9%)
+        saturate(1023%) hue-rotate(220deg) brightness(90%) contrast(110%);
+    }
+    
+    &:nth-child(3) .card-content .icon-container img {
+      filter: brightness(0) saturate(100%) invert(75%) sepia(51%)
+        saturate(499%) hue-rotate(320deg) brightness(104%) contrast(101%);
+      transition: filter 0.3s ease;
+    }
+    &:nth-child(3) .card-content:hover .icon-container img {
+      filter: brightness(0) saturate(100%) invert(75%) sepia(51%)
+        saturate(499%) hue-rotate(320deg) brightness(90%) contrast(110%);
+    }
+    
+    &:nth-child(4) .card-content .icon-container img {
+      filter: brightness(0) saturate(100%) invert(90%) sepia(10%)
+        saturate(567%) hue-rotate(90deg) brightness(102%) contrast(96%);
+      transition: filter 0.3s ease;
+    }
+    &:nth-child(4) .card-content:hover .icon-container img {
+      filter: brightness(0) saturate(100%) invert(90%) sepia(10%)
+        saturate(567%) hue-rotate(90deg) brightness(85%) contrast(110%);
+    }
+    
+    &:nth-child(5) .card-content .icon-container img {
+      filter: brightness(0) saturate(100%) invert(89%) sepia(18%) saturate(669%) hue-rotate(332deg) brightness(103%) contrast(101%);
+      transition: filter 0.3s ease;
+    }
+    &:nth-child(5) .card-content:hover .icon-container img {
+      filter: brightness(0) saturate(100%) invert(89%) sepia(18%) saturate(669%) hue-rotate(332deg) brightness(103%) contrast(101%);
+    }
+
+    .card-content {
+      .icon-container {
+        position: relative;
+        width: 100%;
+        height: 60px;
+        margin-bottom: 10px;
+        display: grid;
+        justify-items: center;
+
+        img {
+          width: 60px;
+          height: 60px;
+          object-fit: contain;
+          transition: transform 0.3s ease;
+        }
+      }
+
+      .card-name {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--primary-text);
+        margin-bottom: 10px;
+        transition: color 0.3s ease;
+      }
+
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+        opacity: 0.8;
+      }
+
+      button {
+        width: 9rem;
+        position: relative;
+        top: 20px;
+        text-transform: uppercase;
+        font-size: 15px;
+        border-radius: 0;
+        padding: 10px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        
+        i {
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+
+  // Responsive breakpoints
+  @media (min-width: 1441px) {
+    .topic-card {
+      flex: 1;
+      max-width: 260px;
+    }
+  }
+
+  @media (max-width: 1440px) {
+    .topic-card {
+      flex: 1;
+      max-width: 280px;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .topic-card {
+      flex: 1;
+      max-width: 320px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .topic-card {
+      flex: 1;
+      max-width: 300px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .topic-card {
+      flex: 1;
+      min-width: 280px;
+      max-width: 45%;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .topic-card {
+      flex: 1;
+      min-width: 280px;
+      max-width: 100%;
+    }
+
+    .row {
+      gap: 1rem;
+    }
+  }
+}
