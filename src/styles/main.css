@@ -1363,7 +1363,7 @@ body {
   height: 230px;
   padding: 20px;
   color: white;
-  border: 2px solid;
+  border: 1px solid;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -1409,7 +1409,7 @@ body {
   height: 230px;
   padding: 20px;
   color: white;
-  border: 2px solid;
+  border: 1px solid;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -1455,7 +1455,7 @@ body {
   height: 230px;
   padding: 20px;
   color: white;
-  border: 2px solid;
+  border: 1px solid;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -1501,7 +1501,7 @@ body {
   height: 230px;
   padding: 20px;
   color: white;
-  border: 2px solid;
+  border: 1px solid;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -1547,7 +1547,7 @@ body {
   height: 230px;
   padding: 20px;
   color: white;
-  border: 2px solid;
+  border: 1px solid;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -2717,6 +2717,10 @@ body {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   border: 1px solid var(--light-orange);
+  margin: 0.5rem 0;
+}
+.sorting-visualizer .display .array-elements {
+  padding: 0 !important;
 }
 .sorting-visualizer .display .phase-label {
   color: var(--light-orange);
@@ -2731,9 +2735,6 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  -webkit-backdrop-filter: blur(5px);
-          backdrop-filter: blur(5px);
 }
 .sorting-visualizer .visualizer-content {
   position: relative;
@@ -2778,8 +2779,10 @@ body {
 .sorting-visualizer .visualizer-content .left-section,
 .sorting-visualizer .visualizer-content .right-section {
   flex: 1;
-  padding: 2rem;
+  padding: 1rem;
   overflow-y: auto;
+  border: 1px solid var(--primary-text);
+  height: 80vh;
 }
 .sorting-visualizer .visualizer-content .left-section {
   background: linear-gradient(145deg, #111010, #1a1a1a);
@@ -2798,7 +2801,7 @@ body {
 }
 .sorting-visualizer .visualizer-content .right-section .select-container select {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.5rem;
   background: rgba(0, 0, 0, 0.2);
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
@@ -2835,6 +2838,7 @@ body {
   color: var(--light-orange);
   margin-bottom: 0.1rem;
   font-size: 1.5rem;
+  text-align: center;
 }
 .sorting-visualizer .visualizer-content .input-section {
   margin-bottom: 2rem;
@@ -2850,7 +2854,7 @@ body {
 }
 .sorting-visualizer .visualizer-content .input-section .select-container select {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.5rem;
   background: rgba(0, 0, 0, 0.2);
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
@@ -2894,9 +2898,6 @@ body {
     flex-direction: column;
     gap: 1rem;
   }
-  .sorting-visualizer .visualizer-content .input-controls .array-input-section {
-    width: 100%;
-  }
   .sorting-visualizer .visualizer-content .input-controls .playback-controls {
     width: 100%;
     justify-content: flex-start;
@@ -2904,6 +2905,7 @@ body {
   }
 }
 .sorting-visualizer .visualizer-content .input-controls .array-input-section {
+  width: 100%;
   flex: 1;
   display: flex;
   align-items: center;
@@ -2926,7 +2928,7 @@ body {
 }
 .sorting-visualizer .visualizer-content .input-controls .array-input-section input {
   flex: 1;
-  padding: 0.8rem 1rem;
+  padding: 0.5rem;
   background: var(--primary-background);
   border: 2px solid rgba(255, 255, 255, 0.1);
   color: var(--primary-text);
@@ -3076,6 +3078,7 @@ body {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   border: 1px solid grey;
+  height: 50%;
 }
 .sorting-visualizer .visualizer-content .step-history h4 {
   color: var(--light-orange);
@@ -3122,7 +3125,7 @@ body {
   font-family: "Fira Code", monospace;
   height: calc(100% - 120px);
   overflow-y: auto;
-  max-height: 350px;
+  max-height: 50%;
   margin: 0;
   border: 1px solid grey;
 }
@@ -3178,7 +3181,7 @@ body {
   }
   .sorting-visualizer .visualizer-content .left-section,
   .sorting-visualizer .visualizer-content .right-section {
-    padding: 1.5rem;
+    padding: 0rem;
   }
   .sorting-visualizer .visualizer-content .code-box {
     height: 300px;

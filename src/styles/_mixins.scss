@@ -13,7 +13,7 @@
 
     select {
       width: 100%;
-      padding: 0.8rem 1rem;
+      padding: 0.5rem ;
       background: rgba(0, 0, 0, 0.2);
       border: 2px solid rgba(255, 255, 255, 0.1);
       border-radius: 6px;
@@ -68,6 +68,10 @@
       background: rgba(0, 0, 0, 0.2);
       border-radius: 8px;
       border: 1px solid $theme-color;
+      margin: 0.5rem 0;
+      .array-elements{
+        padding: 0 !important;
+      }
       .phase-label {
         color: $theme-color;
         font-weight: 600;
@@ -82,8 +86,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(5px);
+    
     }
 
     .visualizer-content {
@@ -134,8 +137,10 @@
       .left-section,
       .right-section {
         flex: 1;
-        padding: 2rem;
+        padding: 1rem;
         overflow-y: auto;
+        border: 1px solid var(--primary-text);
+        height: 80vh;
       }
 
       .left-section {
@@ -151,6 +156,7 @@
         color: $theme-color;
         margin-bottom: 0.1rem;
         font-size: 1.5rem;
+        text-align: center;
       }
 
       .input-section {
@@ -168,9 +174,7 @@
           flex-direction: column;
           gap: 1rem;
 
-          .array-input-section {
-            width: 100%;
-          }
+         
 
           .playback-controls {
             width: 100%;
@@ -180,6 +184,7 @@
         }
 
         .array-input-section {
+          width: 100%;
           flex: 1;
           display: flex;
           align-items: center;
@@ -203,7 +208,7 @@
 
           input {
             flex: 1;
-            padding: 0.8rem 1rem;
+            padding: 0.5rem ;
             background: var(--primary-background);
             border: 2px solid rgba(255, 255, 255, 0.1);
             color: var(--primary-text);
@@ -211,6 +216,7 @@
             font-size: 0.9rem;
             font-family: var(--secondary-font);
             transition: all 0.3s ease;
+          
 
             &::placeholder {
               color: rgba(255, 255, 255, 0.3);
@@ -260,7 +266,7 @@
             }
 
             .play-pause {
-              align-self: center;
+              align-self: center ;
             }
           }
 
@@ -377,6 +383,7 @@
         background: rgba(0, 0, 0, 0.2);
         border-radius: 8px;
         border: 1px solid grey;
+        height: 50%;
 
         h4 {
           color: $theme-color;
@@ -432,7 +439,7 @@
         font-family: "Fira Code", monospace;
         height: calc(100% - 120px);
         overflow-y: auto;
-        max-height: 350px;
+        max-height: 50%;
         margin: 0;
         border: 1px solid grey;
 
@@ -498,7 +505,7 @@
 
       .left-section,
       .right-section {
-        padding: 1.5rem;
+        padding: 0rem;
       }
 
       .code-box {
