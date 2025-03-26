@@ -448,7 +448,7 @@ body {
   z-index: -1;
 }
 .navigation-wrap .dropdown-menu .dropdown-item:hover {
-  color: var(--light-yellow);
+  color: var(--primary-background) !important;
   transform: translateX(3px);
   text-shadow: 0 0 10px rgba(252, 189, 0, 0.2);
 }
@@ -2737,12 +2737,12 @@ body {
   bottom: 0;
 }
 .sorting-visualizer .visualizer-content {
-  position: relative;
+  position: absolute;
+  top: 0;
   display: flex;
-  width: 90%;
+  width: 95%;
   height: 90vh;
   background: var(--primary-background);
-  border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
@@ -2782,7 +2782,7 @@ body {
   padding: 1rem;
   overflow-y: auto;
   border: 1px solid var(--primary-text);
-  height: 80vh;
+  height: 85vh;
 }
 .sorting-visualizer .visualizer-content .left-section {
   background: linear-gradient(145deg, #111010, #1a1a1a);

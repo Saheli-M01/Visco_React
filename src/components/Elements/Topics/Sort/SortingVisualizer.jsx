@@ -1512,37 +1512,108 @@ void bucketSort(float arr[], int n) {
       mergeSortWithSteps(arr, 0, n - 1);
     } else if (selectedAlgorithm === "bubble") {
       for (let i = 0; i < n - 1; i++) {
+        steps.push({
+          array: [...arr],
+          i,
+          j: null,
+          highlightLine: selectedLanguage === "c" || selectedLanguage === "c++" ? 2 : 3,
+          action: `Starting outer loop iteration ${i + 1}`,
+        });
+        history.push(
+          `Step ${steps.length}: Starting outer loop iteration ${i + 1} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+        );
+
         for (let j = 0; j < n - i - 1; j++) {
           steps.push({
             array: [...arr],
             i,
             j,
-            highlightLine: 4,
+            highlightLine: selectedLanguage === "c" || selectedLanguage === "c++" ? 2 : 3,
+            action: `Starting inner loop iteration ${j + 1}`,
+            showVariable: 'j'
+          });
+          history.push(
+            `Step ${steps.length}: Starting inner loop iteration ${j + 1} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+          );
+
+          steps.push({
+            array: [...arr],
+            i,
+            j,
+            highlightLine: selectedLanguage === "c" || selectedLanguage === "cpp" ? 3 : 4,
             action: `Comparing elements at positions ${j} and ${j + 1}`,
+            showVariable: 'j'
           });
           history.push(
             `Step ${steps.length}: Comparing arr[${j}]=${arr[j]} and arr[${j + 1}]=${arr[j + 1]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
           );
 
           if (arr[j] > arr[j + 1]) {
-            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-            steps.push({
-              array: [...arr],
-              i,
-              j,
-              highlightLine: 5,
-              action: `Swapped elements ${arr[j]} and ${arr[j + 1]}`,
-            });
-            history.push(
-              `Step ${steps.length}: Swapped arr[${j}]=${arr[j]} and arr[${j + 1}]=${arr[j + 1]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
-            );
+            if (selectedLanguage === "python") {
+              // For Python, use tuple unpacking
+              [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+              steps.push({
+                array: [...arr],
+                i,
+                j,
+                highlightLine: selectedLanguage === "c" || selectedLanguage === "cpp" ? 4 : 5,
+                action: `Swapped elements ${arr[j]} and ${arr[j + 1]} using tuple unpacking`,
+                showVariable: 'j'
+              });
+              history.push(
+                `Step ${steps.length}: Swapped arr[${j}]=${arr[j]} and arr[${j + 1}]=${arr[j + 1]} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+              );
+            } else {
+              // For C/C++ and other languages, use temp variable
+              const temp = arr[j];
+              steps.push({
+                array: [...arr],
+                i,
+                j,
+                highlightLine: selectedLanguage === "c" || selectedLanguage === "cpp" ? 4 : 5,
+                action: `Storing ${temp} in temp variable`,
+                temp: temp,
+                showVariable: 'j'
+              });
+              history.push(
+                `Step ${steps.length}: Storing arr[${j}]=${temp} in temp variable - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+              );
+
+              arr[j] = arr[j + 1];
+              steps.push({
+                array: [...arr],
+                i,
+                j,
+                highlightLine: selectedLanguage === "c" || selectedLanguage === "cpp" ? 5 : 6,
+                action: `Moving ${arr[j + 1]} to position ${j}`,
+                temp: temp,
+                showVariable: 'j'
+              });
+              history.push(
+                `Step ${steps.length}: Moving arr[${j + 1}]=${arr[j + 1]} to position ${j} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+              );
+
+              arr[j + 1] = temp;
+              steps.push({
+                array: [...arr],
+                i,
+                j,
+                highlightLine: selectedLanguage === "c" || selectedLanguage === "cpp" ? 6 : 7,
+                action: `Moving temp=${temp} to position ${j + 1}`,
+                temp: temp,
+                showVariable: 'j'
+              });
+              history.push(
+                `Step ${steps.length}: Moving temp=${temp} to position ${j + 1} - <span style="color: var(--light-yellow)">Array state: [${arr.join(", ")}]</span>`
+              );
+            }
           }
         }
         steps.push({
           array: [...arr],
           i,
           j: null,
-          highlightLine: 3,
+          highlightLine: selectedLanguage === "c" || selectedLanguage === "cpp" ? 1 : 2,
           action: `Completed pass ${i + 1}`,
         });
         history.push(
