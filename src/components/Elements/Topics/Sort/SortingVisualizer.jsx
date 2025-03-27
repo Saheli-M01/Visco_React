@@ -1211,7 +1211,7 @@ void bucketSort(float arr[], int n) {
     if (selectedAlgorithm === "quick") {
       const quickSortWithSteps = (array, low, high) => {
         if (low < high) {
-          // Show the current subarray being processed
+          // show the current subarray being processed
           steps.push({
             array: [...array],
             i: low,
@@ -1224,10 +1224,10 @@ void bucketSort(float arr[], int n) {
             `Step ${steps.length}: Processing subarray [${array.slice(low, high + 1).join(", ")}] - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
           );
 
-          // Validate and adjust pivot index if needed
+          // validate and adjust pivot index if needed
           let actualPivotIndex = Math.min(Math.max(low + pivotIndex, low), high);
           
-          // Swap the selected pivot with the last element
+          // swap the selected pivot with the last element
           if (actualPivotIndex !== high) {
             [array[actualPivotIndex], array[high]] = [array[high], array[actualPivotIndex]];
             steps.push({
@@ -1329,7 +1329,7 @@ void bucketSort(float arr[], int n) {
 
         const middle = Math.floor((start + end) / 2);
 
-        // Show division step
+        // show division step
         steps.push({
           array: [...array],
           i: start,
@@ -1344,17 +1344,17 @@ void bucketSort(float arr[], int n) {
           `Step ${steps.length}: Dividing array [${array.slice(start, end + 1).join(",")}] into left [${array.slice(start, middle + 1).join(",")}] and right [${array.slice(middle + 1, end + 1).join(",")}] - <span style="color: var(--light-yellow)">Array state: [${array.join(", ")}]</span>`
         );
 
-        // Recursively sort left and right halves
+        // recursively sort left and right halves
         mergeSortWithSteps(array, start, middle);
         mergeSortWithSteps(array, middle + 1, end);
 
-        // Create temporary arrays for merging
+        // create temporary arrays for merging
         const leftSize = middle - start + 1;
         const rightSize = end - middle;
         const leftArray = new Array(leftSize);
         const rightArray = new Array(rightSize);
 
-        // Copy to left array
+        // copy to left array
         for (let i = 0; i < leftSize; i++) {
           leftArray[i] = array[start + i];
           steps.push({
@@ -1373,7 +1373,7 @@ void bucketSort(float arr[], int n) {
           );
         }
 
-        // Copy to right array
+        // copy to right array
         for (let i = 0; i < rightSize; i++) {
           rightArray[i] = array[middle + 1 + i];
           steps.push({
@@ -1392,7 +1392,7 @@ void bucketSort(float arr[], int n) {
           );
         }
 
-        // Merge process
+        // merge process
         let i = 0,
           j = 0,
           k = start;
@@ -1466,7 +1466,7 @@ void bucketSort(float arr[], int n) {
           k++;
         }
 
-        // Copy remaining elements from left array
+        // copy remaining elements from left array
         while (i < leftSize) {
           array[k] = leftArray[i];
           steps.push({
@@ -1487,7 +1487,7 @@ void bucketSort(float arr[], int n) {
           k++;
         }
 
-        // Copy remaining elements from right array
+        // copy remaining elements from right array
         while (j < rightSize) {
           array[k] = rightArray[j];
           steps.push({
