@@ -12,9 +12,10 @@ import Background from './components/Common/BackgroundAnimation';
 import { ToastProvider } from './components/Common/ToastContext';
 import BackToTop from './components/Common/BackToTop';
 import KeyboardNav from './components/Common/KeyboardNav';
-import LoadingSpinner from './components/Common/LoadingSpinner';
 import KeyboardShortcuts from './components/Common/KeyboardShortcuts';
 import KeyboardInfo from './components/Common/KeyboardInfo';
+import LoadingPage from './components/Common/LoadingPage';
+import './styles/CommonStyle/_loading.scss';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -56,7 +57,7 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return <LoadingSpinner size="large" />;
+    return <LoadingPage />;
   }
 
   return (

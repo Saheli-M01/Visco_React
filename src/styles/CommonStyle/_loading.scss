@@ -74,4 +74,209 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--primary-background);
+  position: relative;
+  overflow: hidden;
+
+  .neural-network {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 2rem;
+    z-index: 2;
+
+    .node {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--light-orange);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+      opacity: 0;
+      box-shadow: 0 0 10px var(--light-orange);
+
+      &.active {
+        opacity: 1;
+      }
+
+      @for $i from 1 through 12 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{$i * 0.1}s;
+        }
+      }
+    }
+
+    .connection {
+      position: absolute;
+      background: var(--light-orange);
+      height: 2px;
+      transform-origin: left center;
+      opacity: 0;
+      animation: connect 2s infinite;
+      box-shadow: 0 0 5px var(--light-orange);
+
+      &.active {
+        opacity: 1;
+      }
+
+      @for $i from 1 through 8 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{$i * 0.1}s;
+        }
+      }
+    }
+  }
+
+  .loading-text {
+    font-size: 1.5rem;
+    color: var(--light-orange);
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+    animation-delay: 1s;
+    text-shadow: 0 0 10px var(--light-orange);
+    z-index: 2;
+
+    &::after {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 1.5rem;
+      background: var(--light-orange);
+      margin-left: 4px;
+      animation: blink 1s infinite;
+      box-shadow: 0 0 5px var(--light-orange);
+    }
+  }
+
+  .radiation-waves {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border: 2px solid var(--light-orange);
+    border-radius: 50%;
+    opacity: 0;
+    animation: radiation 2s infinite;
+    box-shadow: 0 0 20px var(--light-orange);
+
+    &:nth-child(2) {
+      animation-delay: 0.5s;
+      width: 250px;
+      height: 250px;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 1s;
+      width: 200px;
+      height: 200px;
+    }
+
+    &:nth-child(4) {
+      animation-delay: 1.5s;
+      width: 150px;
+      height: 150px;
+    }
+  }
+
+  .energy-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--light-orange);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat 3s infinite;
+      box-shadow: 0 0 5px var(--light-orange);
+
+      @for $i from 1 through 20 {
+        &:nth-child(#{$i}) {
+          left: random(100) * 1%;
+          top: random(100) * 1%;
+          animation-delay: random(3) * -1s;
+        }
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes connect {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes radiation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(random(100) - 50px, random(100) - 50px) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 } 
